@@ -7,10 +7,11 @@ const WaitingPlayersTime = 10;
 const RazminkaModeTime = 120;
 const GameModeTime = 1500;
 const End0fMatchStateValue = 10;
-const WaitingStateValue = `Waiting`;
+const WaitingStateValue = `WaitingMode`;
 const RazminkaModeStateValue = `RazminkaMode`;
 const GameStateValue = `Game`;
 const End0fMatchStateValue = `End0fMatch`;
+const MockModeStateValue = `MockMode`;
 const MaxDeaths = api.Players.MaxCount * 5;
 
 // * Задаём обработку переменных констант, которые сослужат для взаимодействий с режимом. * //
@@ -70,7 +71,7 @@ api.Timers.OnPlayerTimer.Add(function (t) {
 api.Damage.OnKill.Add(function (p, k) {
  if (!p.id == k.id) { ++p.Properties.Kills.Value;
   p.Properties.Get(`Kills/Deaths/Spawns`).Value = `${p.Properties.Kills.Value}/${p.Properties.Deaths.Value}/${p.Properties.Spawns.Value}`;
-  p.Properties.Scores.Value += 15;
+  p.Properties.Scores.Value += 10;
 }
  if (p.Properties.Kills.Value == 5) { 
   p.Inventory.Melee.Value = false, p.Inventory.Secondary.Value = true;
@@ -100,13 +101,112 @@ api.Damage.OnKill.Add(function (p, k) {
   p.ContextedProperties.MaxHp.Value = 1500;
  }
  if (p.Properties.Kills.Value >= 50) {
-  SetEnd_End0fMatch();
+  SetEnd0fMatch();
       }
 });
 
 // * Обработчик смертей. * //
 api.Damage.OnDeath.Add(function (p) {
+ if (StateProp.Value == MockModeStateValue) {
+    return api.Spawns.GetContext(p).Spawn();
+ }
  ++p.Properties.Deaths.Value;
+   p.Properties.Get(`Kills/Deaths/Spawns`).Value = `${p.Properties.Kills.Value}/${p.Properties.Deaths.Value}/${p.Properties.Spawns.Value}`;
+});
+
+// * Обработчик респавнов игроков. * //
+api.Spawns.OnSpawn.Add(function (p) {
+ ++p.Properties.Spawns.Value;
+  p.Properties.Get(`Kills/Deaths/Spawns`).Value = `${p.Properties.Kills.Value}/${p.Properties.Deaths.Value}/${p.Properties.Spawns.Value}`;
+});
+
+// * Если игрок умирает, контекст смертей игроков уменьшается в прямоугольнике команде. * //
+api.Properties.OnPlayerProperty.Add(function (c, v) {
+ if (!v.Name == `Deaths`) return;
+ if (c.Player.Team == null) return;
+  c.Player.Team.Properties.Get(`Deaths`).Value--;
+});
+// * Если числа в команде прямоугольниках занулились, то заыершаем катку. * //
+api.Properties.OnTeamProperty.Add(function (c, v) {
+ if (!v.Name == `Deaths`) return;
+ if (v.Name <= 0) SetEnd0fMatch();
+});
+
+// * Разрешаем игроку, зайти в любую команду. * //
+api.Teams.OnRequestJoinTeam.Add(function (p, t) {
+ t.Add(p);
+  p.Properties.Get(`RoomID`).Value = p.IdInRoom;
+});
+// * Респавним игрока, после захода в команду. * //
+api.Teams.OnPlayerChangeTeam.Add(function (p) { p.Spawns.Spawn(); });
+
+// * Таймер ресурса очков, за время в комнате. * //
+ScoresTimer.OnTimer.Add(function () {
+if (p.Team == null) continue;
+ for (const p of api.Players.All) {
+  p.Properties.Scores.Value += 5;
+     }
+});
+
+// * Основной таймер, переключения режимов игры. * //
+MainTimer.OnTimer.Add(function () {
+ switch (StateProp.Value) {
+  case WaitingStateValue:
+   SetRazminkaMode();
+    break;
+  case RazminkaModeStateValue:
+   SetGameMode();
+    break;
+  case GameStateValue:
+   SetEnd0fMatch();
+    break;
+  case MockModeStateValue:
+   SetEnd_End0fMatch();
+    break;
+  case End0fMatchStateValue:
+   RestartGame();
+    break;
+     }
+});
+
+// * Первеночальное игровое состоние игры. * //
+SetWaitingMode();
+
+// * Состояние игры. * //
+function SetWaitingMode() {
+ StateProp.Value = WaitingModeStateValue;
+ api.Ui.GetContext().Hint.Value = `<b>Загрузка...</b>`;
+ api.Spawns.GetContext().Enable = false;
+ MainTimer.Restart(WaitingPlayersTime);
+}
+function SetRazminkaMode() {
+ StateProp.Value = RazminkaModeStateValue;
+ api.Ui.GetContext().Hint.Value = `\n<b>Выберите, команду...</b>`;
+  RedTeam.Ui.Hint.Value = `\nРазминка.Потренируйтесь, перед матчем!`;
+  BlueTeam.Ui.Hint.Value = `\nРазминка.Потренируйтесь, перед матчем!`;
+ const inventory = api.Inventory.GetContext();
+  inventory.Main.Value = true;
+  inventory.Secondary.Value = true;
+  inventory.Melee.Value = true;
+  inventory.Explosive.Value = true;
+  inventory.Build.Value = false;
+
+  api.Spawns.GetContext().Enable = true;
+   MainTimer.Restart(RazminkaModeTime);
+  SpawnTeams();
+}
+function SetGameMode() {
+ StateProp.Value = GameModeStateValue;
+ api.Ui.GetContext().Hint.Value = `\nМатч начался.Победите в этой схватке!`;
+
+
+ 
+
+   
+
+
+
+ 
 
 
  
