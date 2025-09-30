@@ -22,8 +22,14 @@ const MapRotation = api.GameMode.Parameters.Get(`MapRotation`);
 api.Damage.GetContext().FriendlyFire.Value = api.GameMode.Parameters.Get(`FriendlyFire`);
 api.BreackGraph.OnlyPlayerBlocksDmg = api.GameMode.Parameters.Get(`PartialDesruction`);
 api.BreackGraph.WeakBlocks = api.GameMode.Parameters.Get(`LoosenBlocks`);
-
 // * Параметры режима, которые помогают в игре дублировать сборку основных типов игровых режимов. * //
 api.BreackGraph.PlayerBlockBoost = true; 
 api.Ui.GetContext().MaiTimerId.Value = MainTimer.Id;
+//api.Properties.GetContext().GameModeName.Value = `GameModes/TeamDeadMatch`;
+api.Damage.GetContext().GranadeTouchExplosive.Value = true;
+api.TeamsBalancer.IsAutoBalance = true;
+
+// * Создаём, 2 сбора команд которые сортируем их в названия. * //
+let RedTeam = libraryTeams.CreateNewTeam(`Red`, `Teams/Red\nby: TnT live (official)`, new base.Color(125/255, 0, 0, 0), 1, api.BuildBlocksSet.Red);
+let BlueTeam = libraryTeams.CreateNewTeam(`Blue`, `Teams/Blue\nby: TnT live (official)`, new base.Color(0, 0, 125/255, 0), 2, api.BuildBlocksSet.Blue);
 
