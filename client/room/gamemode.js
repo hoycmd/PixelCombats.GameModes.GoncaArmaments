@@ -11,6 +11,7 @@ const WaitingStateValue = `Waiting`;
 const RazminkaModeStateValue = `RazminkaMode`;
 const GameStateValue = `Game`;
 const End0fMatchStateValue = `End0fMatch`;
+const MaxDeaths = api.Players.MaxCount * 5;
 
 // * Задаём обработку переменных констант, которые сослужат для взаимодействий с режимом. * //
 const MainTimer = api.Timers.GetContext().Get(`Main`);
@@ -32,4 +33,18 @@ api.TeamsBalancer.IsAutoBalance = true;
 // * Создаём, 2 сбора команд которые сортируем их в названия. * //
 let RedTeam = libraryTeams.CreateNewTeam(`Red`, `Teams/Red\nby: TnT live (official)`, new base.Color(125/255, 0, 0, 0), 1, api.BuildBlocksSet.Red);
 let BlueTeam = libraryTeams.CreateNewTeam(`Blue`, `Teams/Blue\nby: TnT live (official)`, new base.Color(0, 0, 125/255, 0), 2, api.BuildBlocksSet.Blue);
+// * Интерфейс команд, в разных частях прямоугольниках карт. * //
+if (StateProp.Value == GameModeStateValue) {
+ RedTeam.Properties.Get(`UiRedTeam`).Value = MaxDeaths;
+ api.Ui.GetContext().TeamProp1.Value = { Team: `Blue`, Prop: `UiRedTeam` };
+ BlueTeam.Properties.Get(`UiBlueTeam`).Value = MaxDeaths;
+ api.Ui.GetContext().TeamProp2.Value = { Team: `Red`, Prop: `UiBlueTeam` };
+} 
+  else
+if (StateProp.Value == RazminkaStateValue) {
+ RedTeam.Properties.Get(`UiRedTeam`).Value = `< Киллы: ${p.Properties.Kills.Value};
+ api.Ui.GetContext().TeamProp1.Value = { Team: `Blue`, Prop: `UiRedTeam` };
+ BlueTeam.Properties.Get(`UiBlueTeam`).Value = MaxDeaths;
+ api.Ui.GetContext().TeamProp2.Value = { Team: `Red`, Prop: `UiBlueTeam` };
+}  
 
