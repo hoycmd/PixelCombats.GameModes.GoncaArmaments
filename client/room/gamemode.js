@@ -71,7 +71,42 @@ api.Damage.OnKill.Add(function (p, k) {
  if (!p.id == k.id) { ++p.Properties.Kills.Value;
   p.Properties.Get(`Kills/Deaths/Spawns`).Value = `${p.Properties.Kills.Value}/${p.Properties.Deaths.Value}/${p.Properties.Spawns.Value}`;
   p.Properties.Scores.Value += 15;
-} 
+}
+ if (p.Properties.Kills.Value == 5) { 
+  p.Inventory.Melee.Value = false, p.Inventory.Secondary.Value = true;
+ }
+ if (p.Inventory.Kills.Value == 10) { 
+  p.Inventory.Secondary.Value = false, p.Inventory.Explosive.Value = true, p.Inventory.Explosive.Value = true;
+ }
+ if (p.Properties.Kills.Value == 15) { 
+  p.Inventory.Explosive.Value = false, p.Inventory.Main.Value = true;
+ }
+ if (p.Properties.Kills.Value == 20) {
+  p.Inventory.MainInfinity.Value = true;
+ }
+ if (p.Properties.Kills.Value == 25) {
+  p.ContextedProperties.MaxHp.Value = 250;
+ }
+ if (p.Properties.Kills.Value == 30) { 
+  p.ContextedProperties.IventoryType.Value = true, p.Properties.Explosive.Value = true, p.Properties.Melee.Value = true, p.Properties.ExplosiveInfinity.Value = true;
+ }
+ if (p.Properties.Kills.Value == 35) {
+  p.ContextedProperties.InventoryType.Value = false, p.Inventory.Explosive.Value = false, p.Inventory.Melee.Value = false, p.Inventory.Main.Value = true;
+ }
+ if (p.Properties.Kills.Value == 40) {
+  p.Properties.MainInfinity.Value = true;
+ }
+ if (p.Properties.Kills.Value == 45) {
+  p.ContextedProperties.MaxHp.Value = 1500;
+ }
+ if (p.Properties.Kills.Value >= 50) {
+  SetEnd_End0fMatch();
+      }
+});
+
+// * Обработчик смертей. * //
+api.Damage.OnDeath.Add(function (p) {
+ ++p.Properties.Deaths.Value;
 
 
  
