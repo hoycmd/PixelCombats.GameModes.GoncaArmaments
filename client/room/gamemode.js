@@ -40,11 +40,6 @@ if (StateProp.Value == GameModeStateValue) {
  BlueTeam.Properties.Get(`UiBlueTeam`).Value = MaxDeaths;
  api.Ui.GetContext().TeamProp2.Value = { Team: `Red`, Prop: `UiBlueTeam` };
 } 
-  else
-if (StateProp.Value == RazminkaStateValue) {
- RedTeam.Properties.Get(`UiRedTeam`).Value = `< Киллы: ${p.Properties.Kills.Value};
- api.Ui.GetContext().TeamProp1.Value = { Team: `Blue`, Prop: `UiRedTeam` };
- BlueTeam.Properties.Get(`UiBlueTeam`).Value = MaxDeaths;
- api.Ui.GetContext().TeamProp2.Value = { Team: `Red`, Prop: `UiBlueTeam` };
-}  
 
+// * Задаём в лидерборде заданные значения, которые нужно вводить в таблицу. * //
+api.LeaberBoard.
