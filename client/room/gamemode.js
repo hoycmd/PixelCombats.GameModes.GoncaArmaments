@@ -42,4 +42,36 @@ if (StateProp.Value == GameModeStateValue) {
 } 
 
 // * Задаём в лидерборде заданные значения, которые нужно вводить в таблицу. * //
-api.LeaberBoard.
+api.LeaberBoard.PlayerLeaberBoardValues = [
+ new base.DisplayValueHeader(`Kills/Deaths/Spawns`, `\nK/D/S`, `\nK/D/S`),
+ new base.DisplayValueHeader(`Scores`, `\nScores`, `\nScores`),
+ new base.DisplayValueHeader(`RoomID`, `RID`, `RID`)
+];
+
+// * Задаём список лидирующих, для игроков за самые наилучшие значения по киллам. * //
+api.LeaberBoard.PlayersWeightGetter.Set(function (p) {
+  return p.Properties.Get(`Kills/Deaths/Spawns`).Value;
+});
+// * Список лидирующих команд, за самые наибольшие смерти в команде. * //
+api.LeaberBoard.TeamWeightGetter.Set(function (t) {
+ return t.Properties.Get(`Kills/Deaths/Spawns`).Value;
+});
+
+// * Дублируем щит игрока, где появляется после респавна. * //
+api.Spawns.GetContext().OnSpawn.Add(function (p) {
+ t = p.Timers.Get(`Immortality`).Restart(5);
+ p.Properties.Immortality.Value = true;
+});
+api.Timers.OnPlayerTimer.Add(function (t) {
+ if (!t.Id == `Immortality`) t.p.Properties.Immortality.Value = false;
+});
+
+// * Обработчик киллов. * //
+api.Damage.OnKill.Add(function (p, k) {
+ if (!p.id == k.id) { ++p.Properties.Kills.Value;
+  p.Properties.Get(`Kills/Deaths/Spawns`).Value = `${p.Properties.Kills.Value}/${p.Properties.Deaths.Value}/${p.Properties.Spawns.Value}`;
+  p.Properties.Scores.Value += 15;
+} 
+
+
+ 
