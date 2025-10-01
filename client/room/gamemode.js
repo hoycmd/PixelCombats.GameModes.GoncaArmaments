@@ -268,6 +268,7 @@ function RestartGame() {
 
 function SpawnTeams() {
  for (const t of api.Teams) {
+ if (p.Team == null) continue;
   api.Spawns.GetContext(t).Spawn();
       }
  }
