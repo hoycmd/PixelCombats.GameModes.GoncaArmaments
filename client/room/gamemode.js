@@ -255,10 +255,22 @@ function SetMockMode(winners, loosers) {
 function SetEnd_End0fMatch() {
  StateProp.Value = End0fMatchStateValue;
  api.Ui.GetContext().Hint.Value = `\nКонец матча.Победила команда: ${leaberboard[0].Player.Teams}!`;
+ MainTimer.Restart(End0fMatchTime);
  ScoresTimer.Stop();
   const spawns = api.Spawns.GetContext();
    spawns.Enable = false;
    spawns.Despawn();
+}
+function RestartGame() {
+ if (api.GameMode.Parameters.GetBool(`Load`)) { Map.LoadRandomMap(); }
+  Game.RestartGame();    
+}
+
+function SpawnTeams() {
+ for (const t of api.Teams) {
+  api.Spawns.GetContext(t).Spawn();
+      }
+ }
 
  
     
