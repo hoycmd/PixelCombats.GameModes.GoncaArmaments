@@ -64,7 +64,7 @@ api.Spawns.GetContext().OnSpawn.Add(function (p) {
  p.Properties.Immortality.Value = true;
 });
 api.Timers.OnPlayerTimer.Add(function (t) {
- if (!t.Id == `Immortality`) t.p.Properties.Immortality.Value = false;
+ if (t.Id != `Immortality`) t.p.Properties.Immortality.Value = false;
 });
 
 // * Обработчик киллов. * //
@@ -122,13 +122,13 @@ api.Spawns.OnSpawn.Add(function (p) {
 
 // * Если игрок умирает, контекст смертей игроков уменьшается в прямоугольнике команде. * //
 api.Properties.OnPlayerProperty.Add(function (c, v) {
- if (!v.Name == `Deaths`) return;
+ if (v.Name !== `Deaths`) return;
  if (c.Player.Team == null) return;
   c.Player.Team.Properties.Get(`Deaths`).Value--;
 });
 // * Если числа в команде прямоугольниках занулились, то заыершаем катку. * //
 api.Properties.OnTeamProperty.Add(function (c, v) {
- if (!v.Name == `Deaths`) return;
+ if (v.Name !== `Deaths`) return;
  if (v.Name <= 0) SetEnd0fMatch();
 });
 
@@ -192,13 +192,76 @@ function SetRazminkaMode() {
   inventory.Build.Value = false;
 
   api.Spawns.GetContext().Enable = true;
+   SpawnTeams();
    MainTimer.Restart(RazminkaModeTime);
-  SpawnTeams();
 }
 function SetGameMode() {
  StateProp.Value = GameModeStateValue;
- api.Ui.GetContext().Hint.Value = `\nМатч начался.Победите в этой схватке!`;
+ api.Ui.GetContext().Hint.Value = `\nМатч начался.Победите, в этой схватке!`;
+const inventory = api.Inventory.GetContext();
+ inventory.Main.Value = false;
+ inventory.Secondary.Value = false;
+ inventory.Melee.Value = true;
+ inventory.Explosive.Value = false;
+ inventory.Build.Value = false;
 
+ api.Spawns.GetContext().Despawn();
+ SpawnTeams();
+ MainTimer.Restart(GameModeTime);
+}
+function SetEnd0fMatch() {
+ const leaberboard = api.LeaberBoard.GetTeams();
+  if (leaberboard[0].Weight !== leaberboard[1].Weight) {
+    SetMockMode(leaberboard[0].Team, leaberboard[1].Team);
+  for (const winPlayer of leaberboard[0].Team.Players) {
+   winPlayer.Properties.Scores.Value += 15;
+      }
+  } else { SetEnd_End0fMatch();
+       ScoresTimer.Stop();
+       }
+  }
+function SetMockMode(winners, loosers) {
+ StateProp.Value = MockModeStateValue;
+ api.Spawns.GetContext().Despawn();
+ ScoresTimer.Stop();
+ SpawnTeams();
+ MainTimer.Restart(20);
+ api.ContextedProperties.GetContext(loosers).SkinType.Value = 1;
+ api.ContextedProperties.GetContext(winners).SkinType.Value = 2;
+ api.Ui.GetContext(loosers).Hint.Value = `\nПоражение.Мы проиграли, в этой битве!`;
+ api.Ui.GetContext(winners).Hint.Value = `\nМы победили.Мы выиграли, эту схватку!`;
+ api.Spawns.GetContext().RespawnTime.Value = 0;
+ api.Damage.GetContext().DamageOut.Value = true;
+ //api.Damage.GetContext(winners).FriendlyFire.Value = true;
+
+ const inventory = api Inventory.GetContext(loosers);
+  inventory.Main.Value = false;
+  inventory.Secondary.Value = false;
+  inventory.Melee.Value = false;
+  inventory.Explosive.Value = false;
+  inventory.Build.Value = false;
+
+ inventory = api.Inventory.GetContext(winners);
+  inventory.Main.Value = true;
+  inventory.MainInfinity.Value = true;
+  inventory.Secondary.Value = true;
+  inventory.SecondaryInfinity.Value = true;
+  inventory.Melee.Value = true;
+  inventory.Explosive.Value = true;
+  inventory.ExplosiveInfinity.Value = true;
+  inventory.Build.Value = true;
+  inventory.BuildInfinity.Value = true;
+}
+function SetEnd_End0fMatch() {
+ StateProp.Value = End0fMatchStateValue;
+ api.Ui.GetContext().Hint.Value = `\nКонец матча.Победила команда: ${leaberboard[0].Player.Teams}!`;
+ ScoresTimer.Stop();
+  const spawns = api.Spawns.GetContext();
+   spawns.Enable = false;
+   spawns.Despawn();
+
+ 
+    
 
  
 
