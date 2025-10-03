@@ -2,6 +2,8 @@
 import * as api from `pixel_combats/room`;
 import * as base from `pixel_combats/basic`;
 
+try {
+	
 // * Класс констант, которые поступают в режим для обработок, или взаимодействии с ними. * //
 const WaitingPlayersTime = 10;
 const RazminkaModeTime = 120;
@@ -271,6 +273,9 @@ function SpawnTeams() {
 				
 ScoresTimer.RestartLoop(12);
 
+} catch(e) {
+ api.msg.Show(`${e.name}: ${e.message} ${e.stack}`);
+  }
 
 
  
