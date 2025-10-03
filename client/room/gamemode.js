@@ -34,8 +34,8 @@ api.Damage.GetContext().GranadeTouchExplosive.Value = true;
 api.TeamsBalancer.IsAutoBalance = true;
 
 // * Создаём, 2 сбора команд которые сортируем их в названия. * //
-let RedTeam = libraryTeams.CreateNewTeam(`Red`, `Teams/Red\nby: TnT live (official)`, new base.Color(125/255, 0, 0, 0), 1, api.BuildBlocksSet.Red);
-let BlueTeam = libraryTeams.CreateNewTeam(`Blue`, `Teams/Blue\nby: TnT live (official)`, new base.Color(0, 0, 125/255, 0), 2, api.BuildBlocksSet.Blue);
+let RedTeam = CreateNewTeam(`Red`, `Teams/Red\nby: TnT live (official)`, new base.Color(125/255, 0, 0, 0), 1, api.BuildBlocksSet.Red);
+let BlueTeam = CreateNewTeam(`Blue`, `Teams/Blue\nby: TnT live (official)`, new base.Color(0, 0, 125/255, 0), 2, api.BuildBlocksSet.Blue);
 // * Интерфейс команд, в разных частях прямоугольниках карт. * //
 if (StateProp.Value == GameModeStateValue) {
  RedTeam.Properties.Get(`UiRedTeam`).Value = MaxDeaths;
@@ -270,7 +270,15 @@ function SpawnTeams() {
   api.Spawns.GetContext(t).Spawn();
       }
  }
-				
+
+function CreateNewTeam(TeamName, TeamDisplayName, TeamColor, TeamSpawnPointGroup, TeamBuildBlocksSet) {
+         api.Teams.Add(TeamName, TeamDisplayName, TeamColor);
+        let NewTeam = api.Teams.Get(TeamName);
+        NewTeam.Spawns.SpawnPointsGroups.Add(TeamSpawnPointGroup);
+        NewTeam.Build.BlocksSet.Value = TeamBuildBlocksSet;
+        return NewTeam;
+}
+
 ScoresTimer.RestartLoop(12);
 
 } catch(e) {
