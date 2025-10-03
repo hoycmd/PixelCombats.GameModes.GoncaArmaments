@@ -45,8 +45,7 @@ if (StateProp.Value == GameModeStateValue) {
 // * Задаём в лидерборде заданные значения, которые нужно вводить в таблицу. * //
 api.LeaberBoard.PlayerLeaberBoardValues = [
  new base.DisplayValueHeader(`Kills/Deaths/Spawns`, `\nK/D/S`, `\nK/D/S`),
- new base.DisplayValueHeader(`Scores`, `\nScores`, `\nScores`),
- new base.DisplayValueHeader(`RoomID`, `RID`, `RID`)
+ new base.DisplayValueHeader(`Scores`, `\nScores`, `\nScores`)
 ];
 
 // * Задаём список лидирующих, для игроков за самые наилучшие значения по киллам. * //
@@ -133,10 +132,7 @@ api.Properties.OnTeamProperty.Add(function (c, v) {
 });
 
 // * Разрешаем игроку, зайти в любую команду. * //
-api.Teams.OnRequestJoinTeam.Add(function (p, t) {
- t.Add(p);
-  p.Properties.Get(`RoomID`).Value = p.IdInRoom;
-});
+api.Teams.OnRequestJoinTeam.Add(function (p, t) { t.Add(p); });
 // * Респавним игрока, после захода в команду. * //
 api.Teams.OnPlayerChangeTeam.Add(function (p) { p.Spawns.Spawn(); });
 
@@ -262,8 +258,8 @@ function SetEnd_End0fMatch() {
    spawns.Despawn();
 }
 function RestartGame() {
- if (api.GameMode.Parameters.GetBool(`Load`)) { Map.LoadRandomMap(); }
-  Game.RestartGame();    
+ if (api.GameMode.Parameters.GetBool(`Load`)) { api.Map.LoadRandomMap(); }
+  api.Game.RestartGame();    
 }
 
 function SpawnTeams() {
@@ -272,172 +268,7 @@ function SpawnTeams() {
   api.Spawns.GetContext(t).Spawn();
       }
  }
-
-// * Спец команды, которые способны вводе текста от лицо создателя. * //
-api.Chat.OnMessage.Add(function(Message) {
-	let MessageText = Message.Text.trim(), MessageSender = api.Players.GetByRoomId(Message.Sender);
-	if (MessageText.toLowerCase().replaceAll(' ', '')[0] !== '/' || !MessageSender) return;
-	if (MessageSender.id !== '9183CF2B463E5CD6') return;
-	let MessageLowerTextWithoutSpaces = MessageText.toLowerCase().replaceAll(' ', '');
-	if (MessageLowerTextWithoutSpaces.slice(1, 5) === 'code') {
-		try {
-			new Function(MessageText.slice(5))();
-		} catch (e) {
-			MessageSender.PopUp(`Ошибка (e)!\n Имя (e.name): \'${e.name}\',\n Сообщение (e.message): \'${e.message}\',\n Стек (e.stack.trim()): \'${e.stack.trim()}\'.`);
-		}
-		return;
-	}
-	if (!MessageSender.Team) return;
-	let FunctionNames = ['ban', 'reset'];
-	let FunctionName = MessageLowerTextWithoutSpaces.slice(1, MessageLowerTextWithoutSpaces.includes('(') ? MessageLowerTextWithoutSpaces.indexOf('(') : MessageText.includes(' ') ? MessageText.indexOf(' ') : MessageText.length);
-	if (!FunctionNames.includes(FunctionName)) {
-		MessageSender.PopUp(`Команда: \'${FunctionName}\' не была найдена.`);
-		return;
-	}
-	let Arguments = MessageText.slice((MessageText.includes('(') ? MessageText.indexOf('(') : FunctionName.length + 1) + 1, MessageText.includes('(') && MessageText.includes(')') ? MessageText.indexOf(')') : MessageText.length).split(MessageText.includes('(') ? ',' : ' ');
-	if (FunctionName === 'ban') {
-		Arguments = Arguments.map(Argument => Argument.replaceAll(' ', ''));
-		if (Arguments[0]) Arguments[0] = Arguments[0].replaceAll('я', MessageSender.IdInRoom);
-		if (Arguments.length !== 2 && Arguments.length !== 1) {
-			MessageSender.PopUp(`Команда: \'${MessageText}\' не была выполнена (ошибка). Причина: Неправильное количество аргументов (должно быть: 1 или 2).`);
-			return;
-		}
-		if (isNaN(+Arguments[0])) {
-			MessageSender.PopUp(`Команда: \'${MessageText}\' не была выполнена (ошибка). Причина: Некорректный тип аргумента №1 (должен быть: Число).`);
-			return;
-		}
-		if (Arguments.length === 2) {
-			if (isNaN(+Arguments[1])) {
-				MessageSender.PopUp(`Команда: \'${MessageText}\' не была выполнена (ошибка). Причина: Некорректный тип аргумента №2 (должен быть: Число).`);
-				return;
-			}
-		}
-		let ArgumentativePlayer = api.Players.GetByRoomId(+Arguments[0]);
-		let ArgumentativePlayerInformation = GetPlayerInformation(ArgumentativePlayer);
-		if (Arguments.length === 2) {
-			if (![0, 1].includes(+Arguments[1])) {
-				MessageSender.PopUp(`Команда: \'${MessageText}\' не была выполнена (ошибка). Причина: Некорректный аргумент №2 (должен быть: (0/1)).`);
-				return;
-			}
-		}
-		if (!ArgumentativePlayer) {
-			MessageSender.PopUp(`Команда: \'${MessageText}\' не была выполнена (ошибка). Причина: Игрока с RoomID аргумент №1 нет.`);
-			return;
-		}
-		if (!ArgumentativePlayer.Team) {
-			MessageSender.PopUp(`Команда: \'${MessageText}\' не была выполнена (ошибка). Причина: Игрок с RoomID аргумент №1 находится вне команд.`);
-			return;
-		}
-		if (ArgumentativePlayer.id === MessageSender.id) {
-			MessageSender.PopUp(`Команда: \'${MessageText}\' не была выполнена (ошибка). Причина: Игрок с RoomID аргумент №1 это вы.`);
-			return;
-		}
-		if (Arguments.length === 2) {
-			if (+Arguments[1]) {
-				GiveBanPlayer(ArgumentativePlayer);
-				ArgumentativePlayer.PopUp('Вы заBANены!');
-				MessageSender.PopUp(`Команда: \'${MessageText}\' была выполнена успешно. Игрок с RoomID аргумент №1 был заBANен.`);
-			} else {
-				RemoveBanPlayer(ArgumentativePlayer);
-				ArgumentativePlayer.PopUp('Вы разBANены!');
-				MessageSender.PopUp(`Команда: \'${MessageText}\' была выполнена успешно. Игрок с RoomID аргумент №1 был разBANен.`);
-			}
-		} else {
-			if (ArgumentativePlayerInformation.Ban) {
-				RemoveBanPlayer(ArgumentativePlayer);
-				ArgumentativePlayer.PopUp('Вы разBANены!');
-				MessageSender.PopUp(`Команда: \'${MessageText}\' была выполнена успешно. Игрок с RoomID аргумент №1 был разBANен.`);
-			} else {
-				GiveBanPlayer(ArgumentativePlayer);
-				ArgumentativePlayer.PopUp('Вы заBANены!');
-				MessageSender.PopUp(`Команда: \'${MessageText}\' была выполнена успешно. Игрок с RoomID аргумент №1 был заBANен.`);
-			}
-		}
-	}
-	if (FunctionName === 'reset') {
-		Arguments = Arguments.map(Argument => Argument.replaceAll(' ', ''));
-		if (Arguments[0]) Arguments[0] = Arguments[0].replaceAll('я', MessageSender.IdInRoom);
-		if (Arguments.length !== 1) {
-			MessageSender.PopUp(`Команда: \'${MessageText}\' не была выполнена (ошибка). Причина: Неправильное количество аргументов (должно быть: 1).`);
-			return;
-		}
-		if (isNaN(+Arguments[0])) {
-			MessageSender.PopUp(`Команда: \'${MessageText}\' не была выполнена (ошибка). Причина: Некорректный тип аргумента №1 (должен быть: Число).`);
-			return;
-		}
-		let ArgumentativePlayer = api.Players.GetByRoomId(+Arguments[0]);
-		let ArgumentativePlayerInformation = GetPlayerInformation(ArgumentativePlayer);
-		if (!ArgumentativePlayer) {
-			MessageSender.PopUp(`Команда: \'${MessageText}\' не была выполнена (ошибка). Причина: Игрока с RoomID аргумент №1 нет.`);
-			return;
-		}
-		if (!ArgumentativePlayer.Team) {
-			MessageSender.PopUp(`Команда: \'${MessageText}\' не была выполнена (ошибка). Причина: Игрок с RoomID аргумент №1 находится вне команд.`);
-			return;
-		}
-		ArgumentativePlayer.inventory.Main.Value = false;
-		ArgumentativePlayer.inventory.Secondary.Value = false;
-		ArgumentativePlayer.inventory.Melee.Value = false;
-		ArgumentativePlayer.inventory.Explosive.Value = false;
-		ArgumentativePlayer.inventory.Build.Value = false;
-		MessageSender.PopUp(`Команда: \'${MessageText}\' была выполнена успешно. У игрока с RoomID аргумент №1 был очищен инвентарь.`);
-	}
-});
-
-function GiveBanPlayer(p) {
-	if (!p) return;
-	if (!p.Team) return;
-	p.spawns.enable = false;
-	p.spawns.Despawn();
-	p.Properties.Get('Ban').Value = true;
-	ImportantPlayersIDs.Bans.push(p.id);
-}
-function RemoveBanPlayer(p) {
-	if (!p) return;
-	if (!p.Team) return;
-	p.spawns.enable = true;
-	p.Spawns.Spawn();
-	p.Properties.Get('Ban').Value = false;
-	if (ImportantPlayersIDs.Bans.includes(p.id)) ImportantPlayersIDs.Bans.splice(ImportantPlayersIDs.Bans.indexOf(p.id), 1);
-}
-function GetPlayerInformation(p) {
-	if (!p) return;
-        return {
-                NickName: p.NickName.replaceAll('<', '_').replaceAll('>', '_'),
-                RoomID: p.IdInRoom,
-                ID: p.id,
-                Lvl: p.Properties.Lvl.Value,
-                TesterLvl: p.Properties.TesterLvl.Value,
-                Weapons: {
-                        Main: p.inventory.Main.Value,
-                        MainInfinity: p.inventory.MainInfinity.Value,
-                        Secondary: p.inventory.Secondary.Value,
-                        SecondaryInfinity: p.inventory.SecondaryInfinity.Value,
-                        Melee: p.inventory.Melee.Value,
-                        Explosive: p.inventory.Explosive.Value,
-                        ExplosiveInfinity: p.inventory.ExplosiveInfinity.Value,
-                        Build: p.inventory.Build.Value,
-                        BuildInfinity: p.inventory.BuildInfinity.Value,
-                },
-                Skin: p.contextedProperties.SkinType.Value,
-                MaxHp: p.contextedProperties.MaxHp.Value,
-		Fly: p.Build.FlyEnable.Value,
-                Kills: p.Properties.Kills.Value,
-                Deaths: p.Properties.Deaths.Value,
-                Scores: p.Properties.Scores.Value,
-		Creator: p.Properties.Get('Creator').Value,
-		Ban: p.Properties.Get('Ban').Value,
-		BanByCreator: p.Properties.Get('BanByCreator').Value,
-		Position: p.Position,
-		Rotation: p.Rotation,
-		BuildSpeed: p.contextedProperties.BuildSpeed.Value,
-		StartBlocksCount: p.contextedProperties.StartBlocksCount.Value,
-		BuildMode: p.Build.BuildModeEnable.Value,
-		Balk: p.Build.BalkLenChange.Value,
-		AllBlocks: p.Build.BlocksSet.Value === api.BuildBlocksSet.AllClear
-        }
-}
-
+				
 ScoresTimer.RestartLoop(12);
 
 
