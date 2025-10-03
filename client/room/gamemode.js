@@ -36,14 +36,7 @@ api.TeamsBalancer.IsAutoBalance = true;
 // * Создаём, 2 сбора команд которые сортируем их в названия. * //
 let RedTeam = CreateNewTeam(`Red`, `Teams/Red\nby: TnT live (official)`, new base.Color(125/255, 0, 0, 0), 1, api.BuildBlocksSet.Red);
 let BlueTeam = CreateNewTeam(`Blue`, `Teams/Blue\nby: TnT live (official)`, new base.Color(0, 0, 125/255, 0), 2, api.BuildBlocksSet.Blue);
-// * Интерфейс команд, в разных частях прямоугольниках карт. * //
-if (StateProp.Value == GameModeStateValue) {
- RedTeam.Properties.Get(`UiRedTeam`).Value = MaxDeaths;
- api.Ui.GetContext().TeamProp1.Value = { Team: `Blue`, Prop: `UiRedTeam` };
- BlueTeam.Properties.Get(`UiBlueTeam`).Value = MaxDeaths;
- api.Ui.GetContext().TeamProp2.Value = { Team: `Red`, Prop: `UiBlueTeam` };
-} 
-
+	
 // * Задаём в лидерборде заданные значения, которые нужно вводить в таблицу. * //
 api.LeaberBoard.PlayerLeaberBoardValues = [
  new base.DisplayValueHeader(`Kills/Deaths/Spawns`, `\nK/D/S`, `\nK/D/S`),
@@ -203,6 +196,12 @@ const inventory = api.Inventory.GetContext();
  inventory.Explosive.Value = false;
  inventory.Build.Value = false;
 
+// * Интерфейс команд, в разных частях прямоугольниках карт. * //
+ RedTeam.Properties.Get(`UiRedTeam`).Value = MaxDeaths;
+ api.Ui.GetContext().TeamProp1.Value = { Team: `Blue`, Prop: `UiRedTeam` };
+ BlueTeam.Properties.Get(`UiBlueTeam`).Value = MaxDeaths;
+ api.Ui.GetContext().TeamProp2.Value = { Team: `Red`, Prop: `UiBlueTeam` };
+	
  api.Spawns.GetContext().Despawn();
  SpawnTeams();
  MainTimer.Restart(GameModeTime);
