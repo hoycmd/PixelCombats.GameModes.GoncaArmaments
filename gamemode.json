@@ -1,0 +1,36 @@
+{
+ "Name": "<b><color=Green>Ｇo̷ɴｋ₳</a> <i><a>ВоØр匕жＥнIя|</a></i> <color=Yellow>ᴮʸ:</a> <color=Red>ƬＮƬ ▶</a></b>",
+ "Description": "<b><color=Green>Ｇo̷ɴｋ₳</a> <a>ВоØр匕жＥнIя</a>  <i><color=Yellow>- The winner is the team that scores more kills than the enemy team!</a> <color=Red>&& Побеждает та команда, которая набирёт, больше киллов, чем у вражеской команды!</a></i></b>",
+  "MapFilter": {
+   "IsBlank": false,
+  },
+  "MapLists": [
+    {
+      "MapListId": 21239,
+    },
+    {
+      "MapListId": 581,
+    }
+  ],
+  "Parameters": {
+   "Bool": [
+      {
+        "Name": "LoosenBlocks",
+        "DisplayName": "<b><color=Green>Ｇo̷ɴｋ₳</a> <a>ВоØр匕жＥнIя|</a> <i><color=Yellow>- Weak blocks</a> <color=Red>&& Слабые блоки</a> <a>▶</a></i></b>"
+      },
+      {
+        "Name": "PartialDesruction",
+        "DisplayName": "<b><color=Green>Ｇo̷ɴｋ₳</a> <a>ВоØр匕жＥнIя|</a> <i><color=Yellow>- Partial destruction</a> <color=Red>&& Частичное разрушение</a> <a>▶</a></i></b>"
+      },
+      {
+       "Name": "FriendlyFire",
+       "DisplayName": "<b><color=Green>Ｇo̷ɴｋ₳</a> <a>ВоØр匕жＥнIя|</a> <i><color=Yellow>- Damage po swoim</a> <color=Red>&& Урон по своим</a> <a>▶</a></i></b>"  
+      },
+      {
+       "Name": "LoadRandomMap",
+       "DisplayName": "<b><color=Green>Ｇo̷ɴｋ₳</a> <a>ВоØр匕жＥнIя|</a> <i><color=Yellow>- Map loadrandom</a> <color=Red>&& загрузка рандомной карты</a> <a>▶</a></i></b>"
+            }
+       ]
+   }
+}
+                                   
