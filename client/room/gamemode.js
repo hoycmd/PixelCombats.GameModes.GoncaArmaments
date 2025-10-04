@@ -63,7 +63,7 @@ api.Timers.OnPlayerTimer.Add(function (t) {
 
 // * Обработчик киллов. * //
 api.Damage.OnKill.Add(function (p, k) {
- if (!p.id == k.id) { ++p.Properties.Kills.Value;
+ if (p.id !== k.id) { ++p.Properties.Kills.Value;
   p.Properties.Get(`Kills/Deaths/Spawns`).Value = `${p.Properties.Kills.Value}/${p.Properties.Deaths.Value}/${p.Properties.Spawns.Value}`;
   p.Properties.Scores.Value += 10;
 }
@@ -102,7 +102,8 @@ api.Damage.OnKill.Add(function (p, k) {
 // * Обработчик смертей. * //
 api.Damage.OnDeath.Add(function (p) {
  if (StateProp.Value == MockModeStateValue) {
-    api.Spawns.GetContext(p).Spawn(); return;
+    api.Spawns.GetContext(p).Spawn(); 
+	 return;
  }
  ++p.Properties.Deaths.Value;
    p.Properties.Get(`Kills/Deaths/Spawns`).Value = `${p.Properties.Kills.Value}/${p.Properties.Deaths.Value}/${p.Properties.Spawns.Value}`;
@@ -116,13 +117,13 @@ api.Spawns.OnSpawn.Add(function (p) {
 
 // * Если игрок умирает, контекст смертей игроков уменьшается в прямоугольнике команде. * //
 api.Properties.OnPlayerProperty.Add(function (c, v) {
- if (v.Name !== `Deaths`) return;
+ if (v.Name !== `UiTeam`) return;
  if (c.Player.Team == null) return;
-  c.Player.Team.Properties.Get(`Deaths`).Value--;
+  c.Player.Team.Properties.Get(`UiTeam`).Value--;
 });
 // * Если числа в команде прямоугольниках занулились, то заыершаем катку. * //
 api.Properties.OnTeamProperty.Add(function (c, v) {
- if (v.Name !== `Deaths`) return;
+ if (v.Name !== `UiTeam`) return;
  if (v.Name <= 0) SetEnd0fMatch();
 });
 
@@ -197,10 +198,10 @@ const inventory = api.Inventory.GetContext();
  inventory.Build.Value = false;
 
 // * Интерфейс команд, в разных частях прямоугольниках карт. * //
- RedTeam.Properties.Get(`UiRedTeam`).Value = MaxDeaths;
- api.Ui.GetContext().TeamProp1.Value = { Team: `Blue`, Prop: `UiRedTeam` };
- BlueTeam.Properties.Get(`UiBlueTeam`).Value = MaxDeaths;
- api.Ui.GetContext().TeamProp2.Value = { Team: `Red`, Prop: `UiBlueTeam` };
+ RedTeam.Properties.Get(`UiTeam`).Value = MaxDeaths;
+ api.Ui.GetContext().TeamProp1.Value = { Team: `Blue`, Prop: `UiTeam` };
+ BlueTeam.Properties.Get(`UiTeam`).Value = MaxDeaths;
+ api.Ui.GetContext().TeamProp2.Value = { Team: `Red`, Prop: `UiTeam` };
 	
  api.Spawns.GetContext().Despawn();
  SpawnTeams();
