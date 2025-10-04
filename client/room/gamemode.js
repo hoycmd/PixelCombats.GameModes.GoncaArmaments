@@ -114,10 +114,10 @@ const leaderboard = Room.LeaderBoard.GetTeams();
 	if (Player.Properties.Kills.Value === 5) { Player.inventory.Secondary.Value = true, Player.inventory.Melee.Value = false; }
 if (Player.Properties.Kills.Value === 10) { Player.inventory.Secondary.Value = false, Player.inventory.Explosive.Value = true, Player.inventory.ExplosiveInfinity.Value = true; }
 if (Player.Properties.Kills.Value === 15) { Player.inventory.Explosive.Value = false, Player.inventory.Main.Value = true; }
-if (Player.Properties.Kills.Value === 20) { Player.ContextedProperties.SkinType.Value = 2; }
-if (Player.Properties.Kills.Value === 25) { Player.ContextedProperties.MaxHp.Value += 595; }
+if (Player.Properties.Kills.Value === 20) {  Player.Properties.Kills.Value += 5; }
+if (Player.Properties.Kills.Value === 25) { Player.ContextedProperties.MaxHp.Value += 500; }
 if (Player.Properties.Kills.Value === 30) { Player.inventory.MainInfinity.Value = true; }
-if (Player.Properties.Kills.Value === 35) { Player.ContextedProperties.MaxHp.Value = 1408; }
+if (Player.Properties.Kills.Value === 35) { Player.ContextedProperties.MaxHp.Value = 1000; }
 if (Player.Properties.Kills.Value === 40) { Player.inventory.Build.Value = true; }
 if (Player.Properties.Kills.Value === 45) { Player.Properties.Kills.Value += 10; }
 if (Player.Properties.Kills.Value === 50) SetEnd0fMatch();
@@ -360,8 +360,6 @@ function SetMockMode(winners, loosers) {
  StateProp.Value = MockModeStateValue; // Задаём, название для - режима.
  MainTimer.Restart(MockModeTime); // Таймер, режима.
  ScoresTimer.Stop(); // Останавливаем таймер.
- winners.contextedProperties.SkinType.Value = 2;
- loosers.contextedProperties.SkinType.Value = 1;	
  Room.Ui.GetContext(winners).Hint.Value = '\nМы победили, в этом раунде!'; // Подсказка, для - победивших.
  Room.Ui.GetContext(loosers).Hint.Value = '\nПоражение.Мы проиграли, в этом матче!'; // Подсказка, для - проигравших.
 if (Room.GameMode.Parameters.GetBool('End')) {
@@ -374,35 +372,36 @@ if (Room.GameMode.Parameters.GetBool('End')) {
  Room.Spawns.GetContext(loosers).RespawnTime.Value = 0; // Нулевой спавн, для проигравших.
 	 
 // Set loosers, inventory && сэт инвентаря, для проигравших:
-  Room.Inventory.GetContext(loosers).Main.Value = false;
-  Room.Inventory.GetContext(loosers).Secondary.Value = false;
-  Room.Inventory.GetContext(loosers).Melee.Value = false;
-  Room.Inventory.GetContext(loosers).Explosive.Value = false;
-  Room.Inventory.GetContext(loosers).Build.Value = false;
-// Set winners, inventory && сэт инвентаря, для победивших:
- Room.Inventory.GetContext(winners).Main.Value = true;
- Room.Inventory.GetContext(winners).MainInfinity.Value = true;
- Room.Inventory.GetContext(winners).Secondary.Value = true;
- Room.Inventory.GetContext(winners).SecondaryInfinity.Value = true;
- Room.Inventory.GetContext(winners).Melee.Value = true;
- Room.Inventory.GetContext(winners).Explosive.Value = true;
- Room.Inventory.GetContext(winners).ExplosiveInfinity.Value = true;
- Room.Inventory.GetContext(winners).BuildInfinity.Value = true;
- Room.Inventory.GetContext(winners).Build.Value = true;
+const i = Room.Inventory.GetContext(loosers);
+  i.Main.Value = false;
+  i.Secondary.Value = false;
+  i.Melee.Value = false;
+  i.Explosive.Value = false;
+  i.Build.Value = false;
+i = Room.Inventory.GetContext(winners);
+ i.Main.Value = true;
+ i.MainInfinity.Value = true;
+ i.Secondary.Value = true;
+ i.SecondaryInfinity.Value = true;
+ i.Melee.Value = true;
+ i.Explosive.Value = true;
+ i.ExplosiveInfinity.Value = true;
+ i.Build.Value = true;
+ i.BuildInfinity.Value = true;
 
 // Задаём, табы для loosers&&winners:
 if (loosers.Team == "RedTeam") {
  Room.Teams.Get('Red').Properties.Get('TextLoosersRed').Value = TextLoosersRed;
  Room.Teams.Get('Blue').Properties.Get('TextWinnersBlue').Value = TextWinnersBlue;
- Room.Ui.GetContext(loosers).TeamProp1.Value = { Team: 'Red', Prop: TextLoosersRed };
- Room.Ui.GetContext(winners).TeamProp2.Value = { Team: 'Blue', Prop: TextWinnersBlue };
+ Room.Ui.GetContext(loosers).TeamProp1.Value = { Team: 'Red', Prop: 'TextLoosersRed' };
+ Room.Ui.GetContext(winners).TeamProp2.Value = { Team: 'Blue', Prop: 'TextWinnersBlue' };
 }
 
 if (loosers.Team == "BlueTeam") {
  Room.Teams.Get('Red').Properties.Get('TextWinnersRed').Value = TextWinnersRed;
  Room.Teams.Get('Blue').Properties.Get('TextLoosersBlue').Value = TextLoosersBlue;
- Room.Ui.GetContext(winners).TeamProp1.Value = { Team: 'Red', Prop: TextWinnersRed };
- Room.Ui.GetContext(loosers).TeamProp2.Value = { Team: 'Blue', Prop: TextLoosersBlue };
+ Room.Ui.GetContext(winners).TeamProp1.Value = { Team: 'Red', Prop: 'TextWinnersRed' };
+ Room.Ui.GetContext(loosers).TeamProp2.Value = { Team: 'Blue', Prop: 'TextLoosersBlue' };
   }
 }
 function SetEnd0fMatch_EndMode() {
