@@ -5,9 +5,7 @@ import * as Room from 'pixel_combats/room';
 try {
 	
 // Константы, таймера:
-let MainTime = 1801;
-if (Room.GameMode.Parameters.GetBool('1hour')) MainTime = 3601;
-if (Room.GameMode.Parameters.GetBool('2hour')) MainTime = 7201;
+const MainTime = 1801;
 const SixTime = 11;
 const RazmincaTime = 121;
 const MockModeTime = 133;
@@ -39,8 +37,8 @@ const ScoresTimer = Room.Timers.GetContext().Get('Scores');
 Room.Ui.GetContext().MainTimerId.Value = MainTimer.Id;
 
 // Создание, команд:
-Room.Teams.Add('Red', '<b><size=30><color=#962605>尺</color><color=#9a040c>ᴇ</color><color=#b8110b>D</color></size></b>\n<size=89>ГОНКА ВООРУЖЕНИЯ BY: TNT!</size>' new Basic.Color(125/255, 0, 0, 0));
-Room.Teams.Add('Blue', '<b><size=30><color=#0d177c>ß</color><color=#03088c>l</color><color=#0607b0>ᴜ</color><color=#1621ae>E</color></size></b>\n<size=89>ГОНКА ВООРУЖЕНИЯ BY: TNT!</size>' new Basic.Color(0, 0, 125/255, 0));
+Room.Teams.Add('Red', '<b><size=30><color=#962605>尺</color><color=#9a040c>ᴇ</color><color=#b8110b>D</color></size></b>\n<size=89>ГОНКА ВООРУЖЕНИЯ by: TNT!</size>' new Basic.Color(125/255, 0, 0, 0));
+Room.Teams.Add('Blue', '<b><size=30><color=#0d177c>ß</color><color=#03088c>l</color><color=#0607b0>ᴜ</color><color=#1621ae>E</color></size></b>\n<size=89>ГОНКА ВООРУЖЕНИЯ by: TNT!</size>' new Basic.Color(0, 0, 125/255, 0));
 const RedTeam = Room.Teams.Get('Red');
 const BlueTeam = Room.Teams.Get('Blue');
 RedTeam.Spawns.SpawnPointsGroups.Add(2);
@@ -135,18 +133,7 @@ if (StateProp.Value == MockModeStateValue) {
 	return;
 }
     ++Player.Properties.Deaths.Value;
-const leaderboard = Room.LeaderBoard.GetTeams();
-	if (Player.Properties.Deaths.Value === 5) { Player.ContextedProperties.MaxHp.Value -= 40; if (Player.ContextedProperties.MaxHp.Value <= 0) Player.ContextedProperties.MaxHp.Value = 1; }
-if (Player.Properties.Deaths.Value === 10) { Room.Spawns.RespawnTime.Value = 3; }
-if (Player.Properties.Deaths.Value === 15) { Player.ContextedProperties.SkinType.Value = 1; }
-if (Player.Properties.Deaths.Value === 20) { Player.ContextedProperties.MaxHp.Value -= 60; if (Player.ContextedProperties.MaxHp.Value <= 0) Player.ContextedProperties.MaxHp.Value = 1;}
-if (Player.Properties.Deaths.Value === 25) { Player.ContextedProperties.MaxHp.Value -= 70; if (Player.ContextedProperties.MaxHp.Value <= 0) Player.ContextedProperties.MaxHp.Value = 1; }
-if (Player.Properties.Deaths.Value === 30) { Player.Properties.Deaths.Value += 10; }
-if (Player.Properties.Deaths.Value === 35) { Player.Properties.Scores.Value -= 3000; }
-if (Player.Properties.Deaths.Value === 40) { Player.Properties.Kills.Value -= 5; }
-if (Player.Properties.Deaths.Value === 45) { Player.Properties.Deaths.Value += 30; }
-if (Player.Properties.Deaths.Value === 50) SetEnd0fMatch();
-   }
+	}
 });
 
 // После каждой - смерти игрока, отнимаем одну - смерть, в команде:
@@ -316,7 +303,7 @@ if (Room.GameMode.Parameters.GetBool('En')) Room.Ui.GetContext().Hint.Value = '\
 }
 function SetRazminca() {
  StateProp.Value = RazmincaStateValue;
- Room.Ui.GetContext().Hint.Value = '<b>\nРазминка.</b>';
+ Room.Ui.GetContext().Hint.Value = '\nРазминка.Потренируйтесь, перед матчем!';
 if (Room.GameMode.Parameters.GetBool('En')) Room.Ui.GetContext().Hint.Value = '\nWarmup.';
  Room.Spawns.GetContext().Enable = true; 
  SpawnTeams();
@@ -337,7 +324,7 @@ Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'Text' };
 }
 function SetMain() {
  StateProp.Value = MainStateValue;
- Room.Ui.GetContext().Hint.Value = '<b>\nМатч начался!</b>';
+ Room.Ui.GetContext().Hint.Value = 'Матч начался.Победите, в этой схватке!';
 if (Room.GameMode.Parameters.GetBool('En')) Room.Ui.GetContext().Hint.Value = '\nMatch begun!';
  SpawnTeams();
  MainTimer.Restart(MainTime);
@@ -375,8 +362,8 @@ function SetMockMode(winners, loosers) {
  ScoresTimer.Stop(); // Останавливаем таймер.
  winners.contextedProperties.SkinType.Value = 2;
  loosers.contextedProperties.SkinType.Value = 1;	
- Room.Ui.GetContext(winners).Hint.Value = '\nПобеда, караем - проигравших!))'; // Подсказка, для - победивших.
- Room.Ui.GetContext(loosers).Hint.Value = '\nМы проиграли, победившие карают - нас!'; // Подсказка, для - проигравших.
+ Room.Ui.GetContext(winners).Hint.Value = '\nМы победили, в этом раунде!'; // Подсказка, для - победивших.
+ Room.Ui.GetContext(loosers).Hint.Value = '\nПоражение.Мы проиграли, в этом матче!'; // Подсказка, для - проигравших.
 if (Room.GameMode.Parameters.GetBool('End')) {
  Room.Ui.GetContext(winners).Hint.Value = '\nVictory, we punish - the losers!))';
 }
@@ -387,16 +374,12 @@ if (Room.GameMode.Parameters.GetBool('End')) {
  Room.Spawns.GetContext(loosers).RespawnTime.Value = 0; // Нулевой спавн, для проигравших.
 	 
 // Set loosers, inventory && сэт инвентаря, для проигравших:
-if (loosers.contextedProperties.SkinType === 1) {
   Room.Inventory.GetContext(loosers).Main.Value = false;
   Room.Inventory.GetContext(loosers).Secondary.Value = false;
   Room.Inventory.GetContext(loosers).Melee.Value = false;
   Room.Inventory.GetContext(loosers).Explosive.Value = false;
   Room.Inventory.GetContext(loosers).Build.Value = false;
-}
-
 // Set winners, inventory && сэт инвентаря, для победивших:
-if (winners.contextedProperties.SkinType.Value === 2) {
  Room.Inventory.GetContext(winners).Main.Value = true;
  Room.Inventory.GetContext(winners).MainInfinity.Value = true;
  Room.Inventory.GetContext(winners).Secondary.Value = true;
@@ -406,17 +389,16 @@ if (winners.contextedProperties.SkinType.Value === 2) {
  Room.Inventory.GetContext(winners).ExplosiveInfinity.Value = true;
  Room.Inventory.GetContext(winners).BuildInfinity.Value = true;
  Room.Inventory.GetContext(winners).Build.Value = true;
-}
 
 // Задаём, табы для loosers&&winners:
-if (loosers.Team == "Red") {
+if (loosers.Team == "RedTeam") {
  Room.Teams.Get('Red').Properties.Get('TextLoosersRed').Value = TextLoosersRed;
  Room.Teams.Get('Blue').Properties.Get('TextWinnersBlue').Value = TextWinnersBlue;
  Room.Ui.GetContext(loosers).TeamProp1.Value = { Team: 'Red', Prop: TextLoosersRed };
  Room.Ui.GetContext(winners).TeamProp2.Value = { Team: 'Blue', Prop: TextWinnersBlue };
 }
 
-if (loosers.Team == "Blue") {
+if (loosers.Team == "BlueTeam") {
  Room.Teams.Get('Red').Properties.Get('TextWinnersRed').Value = TextWinnersRed;
  Room.Teams.Get('Blue').Properties.Get('TextLoosersBlue').Value = TextLoosersBlue;
  Room.Ui.GetContext(winners).TeamProp1.Value = { Team: 'Red', Prop: TextWinnersRed };
