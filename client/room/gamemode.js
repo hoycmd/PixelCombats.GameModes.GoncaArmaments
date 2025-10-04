@@ -392,15 +392,15 @@ i = Room.Inventory.GetContext(winners);
 
 // Задаём, табы для loosers&&winners:
 if (winners.Team == "RedTeam") {
- Room.Teams.Get('Red').Properties.Get('TextLoosersRed').Value = TextLoosersRed;
- Room.Teams.Get('Blue').Properties.Get('TextWinnersBlue').Value = TextWinnersBlue;
+ loosers.Properties.Get('TextLoosersRed').Value = TextLoosersRed;
+ winners.Properties.Get('TextWinnersBlue').Value = TextWinnersBlue;
  Room.Ui.GetContext(loosers).TeamProp1.Value = { Team: 'Red', Prop: 'TextLoosersRed' };
  Room.Ui.GetContext(winners).TeamProp2.Value = { Team: 'Blue', Prop: 'TextWinnersBlue' };
 }
 
 if (winners.Team == "BlueTeam") {
- Room.Teams.Get('Red').Properties.Get('TextWinnersRed').Value = TextWinnersRed;
- Room.Teams.Get('Blue').Properties.Get('TextLoosersBlue').Value = TextLoosersBlue;
+ winners.Properties.Get('TextWinnersRed').Value = TextWinnersRed;
+ loosers.Properties.Get('TextLoosersBlue').Value = TextLoosersBlue;
  Room.Ui.GetContext(winners).TeamProp1.Value = { Team: 'Red', Prop: 'TextWinnersRed' };
  Room.Ui.GetContext(loosers).TeamProp2.Value = { Team: 'Blue', Prop: 'TextLoosersBlue' };
   }
