@@ -7,7 +7,7 @@ try {
 // Константы, таймера:
 const MainTime = 1801;
 const SixTime = 11;
-const RazmincaTime = 121;
+const RazmincaTime = 101;
 const MockModeTime = 133;
 
 const Kill_SCORES = 1000;
