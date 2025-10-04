@@ -350,6 +350,7 @@ if (leaderboard[0].Weight !== leaderboard[1].Weight) {
 	// очки для победивших
      for (const WinPlayer of leaderboard[0].Team.Players) {
 	WinPlayer.Properties.Scores.Value += Winner_SCORES;
+	WinPlayer.Properties.Kills.Value += 10;
 } 
   }
 	else {
@@ -360,8 +361,8 @@ function SetMockMode(winners, loosers) {
  StateProp.Value = MockModeStateValue; // Задаём, название для - режима.
  MainTimer.Restart(MockModeTime); // Таймер, режима.
  ScoresTimer.Stop(); // Останавливаем таймер.
- Room.Ui.GetContext(winners).Hint.Value = '\nМы победили, в этом раунде!'; // Подсказка, для - победивших.
- Room.Ui.GetContext(loosers).Hint.Value = '\nПоражение.Мы проиграли, в этом матче!'; // Подсказка, для - проигравших.
+ Room.Ui.GetContext(winners).Hint.Value = '\nПобеда.'; // Подсказка, для - победивших.
+ Room.Ui.GetContext(loosers).Hint.Value = '\nПоражение.'; // Подсказка, для - проигравших.
 if (Room.GameMode.Parameters.GetBool('End')) {
  Room.Ui.GetContext(winners).Hint.Value = '\nVictory, we punish - the losers!))';
 }
@@ -390,14 +391,14 @@ i = Room.Inventory.GetContext(winners);
  i.BuildInfinity.Value = true;
 
 // Задаём, табы для loosers&&winners:
-if (loosers.Team == "RedTeam") {
+if (winners.Team == "RedTeam") {
  Room.Teams.Get('Red').Properties.Get('TextLoosersRed').Value = TextLoosersRed;
  Room.Teams.Get('Blue').Properties.Get('TextWinnersBlue').Value = TextWinnersBlue;
  Room.Ui.GetContext(loosers).TeamProp1.Value = { Team: 'Red', Prop: 'TextLoosersRed' };
  Room.Ui.GetContext(winners).TeamProp2.Value = { Team: 'Blue', Prop: 'TextWinnersBlue' };
 }
 
-if (loosers.Team == "BlueTeam") {
+if (winners.Team == "BlueTeam") {
  Room.Teams.Get('Red').Properties.Get('TextWinnersRed').Value = TextWinnersRed;
  Room.Teams.Get('Blue').Properties.Get('TextLoosersBlue').Value = TextLoosersBlue;
  Room.Ui.GetContext(winners).TeamProp1.Value = { Team: 'Red', Prop: 'TextWinnersRed' };
