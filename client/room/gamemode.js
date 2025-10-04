@@ -22,14 +22,14 @@ const StateProp = api.Properties.GetContext().Get(`State`);
 const ScoresTimer = api.Timers.GetContext().Get(`Scores`);
 
 // * Настраиваем конструктор выборов настроек, для пред создании команты. * //
-const MapRotation = api.GameMode.Parameters.Get(`MapRotation`);
+api.Map.Rotation = api.GameMode.Parameters.Get(`MapRotation`);
 api.Damage.GetContext().FriendlyFire.Value = api.GameMode.Parameters.Get(`FriendlyFire`);
 api.BreackGraph.OnlyPlayerBlocksDmg = api.GameMode.Parameters.Get(`PartialDesruction`);
 api.BreackGraph.WeakBlocks = api.GameMode.Parameters.Get(`LoosenBlocks`);
 // * Параметры режима, которые помогают в игре дублировать сборку основных типов игровых режимов. * //
 api.BreackGraph.PlayerBlockBoost = true; 
 api.Ui.GetContext().MaiTimerId.Value = MainTimer.Id;
-//api.Properties.GetContext().GameModeName.Value = `GameModes/TeamDeadMatch`;
+api.Damage.GetContext().DamageOut.Value = true;
 api.Damage.GetContext().GranadeTouchExplosive.Value = true;
 api.TeamsBalancer.IsAutoBalance = true;
 
@@ -39,17 +39,18 @@ let BlueTeam = CreateNewTeam(`Blue`, `Teams/Blue\nby: TnT live (official)`, new 
 	
 // * Задаём в лидерборде заданные значения, которые нужно вводить в таблицу. * //
 api.LeaberBoard.PlayerLeaberBoardValues = [
- new base.DisplayValueHeader(`Kills/Deaths/Spawns`, `\nK/D/S`, `\nK/D/S`),
+ new base.DisplayValueHeader(`Kills/Deaths`, `\nK/D`, `\nK/D`),
+ new base.DisplayValueHeader(`Spawns`, `S`, `S`),
  new base.DisplayValueHeader(`Scores`, `\nScores`, `\nScores`)
 ];
 
 // * Задаём список лидирующих, для игроков за самые наилучшие значения по киллам. * //
 api.LeaberBoard.PlayersWeightGetter.Set(function (p) {
-  return p.Properties.Get(`Kills/Deaths/Spawns`).Value;
+  return p.Properties.Get(`Scores`).Value;
 });
 // * Список лидирующих команд, за самые наибольшие смерти в команде. * //
 api.LeaberBoard.TeamWeightGetter.Set(function (t) {
- return t.Properties.Get(`Kills/Deaths/Spawns`).Value;
+ return t.Properties.Get(`Scores`).Value;
 });
 
 // * Дублируем щит игрока, где появляется после респавна. * //
@@ -106,13 +107,13 @@ api.Damage.OnDeath.Add(function (p) {
 	 return;
  }
  ++p.Properties.Deaths.Value;
-   p.Properties.Get(`Kills/Deaths/Spawns`).Value = `${p.Properties.Kills.Value}/${p.Properties.Deaths.Value}/${p.Properties.Spawns.Value}`;
+   p.Properties.Get(`Kills/Deaths`).Value = `${p.Properties.Kills.Value}/${p.Properties.Deaths.Value}`;
 });
 
 // * Обработчик респавнов игроков. * //
 api.Spawns.OnSpawn.Add(function (p) {
  ++p.Properties.Spawns.Value;
-  p.Properties.Get(`Kills/Deaths/Spawns`).Value = `${p.Properties.Kills.Value}/${p.Properties.Deaths.Value}/${p.Properties.Spawns.Value}`;
+  p.Properties.Get(`Kills/Deaths`).Value = `${p.Properties.Kills.Value}/${p.Properties.Deaths.Value}`;
 });
 
 // * Если игрок умирает, контекст смертей игроков уменьшается в прямоугольнике команде. * //
@@ -134,8 +135,8 @@ api.Teams.OnPlayerChangeTeam.Add(function (p) { p.Spawns.Spawn(); });
 
 // * Таймер ресурса очков, за время в комнате. * //
 ScoresTimer.OnTimer.Add(function () {
-if (p.Team == null) continue;
  for (const p of api.Players.All) {
+	if (p.Team == null) continue;
   p.Properties.Scores.Value += 5;
      }
 });
