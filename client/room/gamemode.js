@@ -1,6 +1,9 @@
-import { Players, Inventory, GameMode, Game, Map, Chat, Teams, Spawns, Build, Timers, TeamsBalancer, BuildBlocksSet, Properties, LeaberBoard, AreaPlayerTriggerService, AreaViewService, room } from 'pixel_combats/room';
+import { room,Players, Inventory, GameMode, Game, Map, Chat, Teams, Spawns, Build, Timers, TeamsBalancer, BuildBlocksSet, Properties, LeaberBoard, AreaPlayerTriggerService, AreaViewService } from 'pixel_combats/room';
 import { DisplayValueHeader, Color } from 'pixel_combats/basic';
 try {
+
+// * Задаём разрешения, на включения - попапов. * //
+room.PopupsEnable = true;
 	
 // * Константы таймеров и очков, команд. * //
 const GameModeTime = 1801;
@@ -14,6 +17,7 @@ const ScoresWINNER = 30;
 const ScoresLOOSER = 10;
 const ScoresKILL = 20;
 const ScoresINTERVALtime = 40;	
+	
 // * Константы, для табов - в разных прямоугольниках. * //
 const maxDeaths = Room.Players.MaxCount * ScoresTIMER;
 const TextBlue = '\n<b><size=220><color=#0d177c>ß</color><color=#03088c>l</color><color=#0607b0>ᴜ</color><color=#1621ae>E</color></size></b>';
@@ -21,13 +25,15 @@ const TextRed = '\n<b><size=220><color=#962605>尺</color><color=#9a040c>ᴇ</co
 const TextLoosersBlue = '\n<b><size=220><color=#0303a4>ß</color><color=#0b2cc0>l</color><color=#0903af>ᴜ</color><color=#2a00de>E</color><color=#ce0206> </color><color=#0735bb>Ｇ</color><color=#1c15b5>ᴀ</color><color=#1b28d2>爪</color><color=#0e24b8>Ɇ</color><color=#d22c0d> </color><color=#0b06bc>Ｏ</color><color=#0021c3>ᴠ</color><color=#094ed2>E</color><color=#1c0be4>尺</color><color=#1234c5>!</color></size></b>';
 const TextLoosersRed = '\n<b><size=220><color=#c00f03>尺</color><color=#da140f>ᴇ</color><color=#bc0015>D</color><color=#f02c13> </color><color=#ce0206>Ｇ</color><color=#c6220c>ᴀ</color><color=#c70213>爪</color><color=#d82a09>Ɇ</color><color=#d72c0e> </color><color=#d22c0d>Ｏ</color><color=#c50705>ᴠ</color><color=#d42907>E</color><color=#ab081c>尺</color><color=#d10e0c>!</color></size></b>';	
 const TextWinnersRed = '\n<b><size=220><color=#c00f03>尺</color><color=#da140f>ᴇ</color><color=#bc0015>D</color><color=#f02c13> </color><color=#ce0206>Ｇ</color><color=#c6220c>ᴀ</color><color=#c70213>爪</color><color=#d82a09>Ɇ</color><color=#d72c0e> </color><color=#d22c0d>Ｗ</color><color=#c50705>ɪ</color><color=#d42907>ｎ</color><color=#ab081c>ᴇ</color><color=#d10e0c>Ɇ</color><color=#d51220>尺</color><color=#b90700>ｓ</color><color=#d1102e>!</color></size></b>';
-const TextWinnersBlue = '\n<b><size=220><color=#0303a4>ß</color><color=#0b2cc0>l</color><color=#0903af>ᴜ</color><color=#2a00de>E</color><color=#ce0206> </color><color=#0735bb>Ｇ</color><color=#1c15b5>ᴀ</color><color=#1b28d2>爪</color><color=#0e24b8>Ɇ</color><color=#d22c0d> </color><color=#0b06bc>ͬ</color><color=#0021c3>Ｗ</color><color=#094ed2>ɪ</color><color=#1c0be4>ｎ</color><color=#1234c5>ᴇ</color><color=#0a1ace>Ɇ</color><color=#0416b5>尺</color><color=#1600c7>ｓ</color><color=#0b27ff>!</color></size></b>';		
+const TextWinnersBlue = '\n<b><size=220><color=#0303a4>ß</color><color=#0b2cc0>l</color><color=#0903af>ᴜ</color><color=#2a00de>E</color><color=#ce0206> </color><color=#0735bb>Ｇ</color><color=#1c15b5>ᴀ</color><color=#1b28d2>爪</color><color=#0e24b8>Ɇ</color><color=#d22c0d> </color><color=#0b06bc>ͬ</color><color=#0021c3>Ｗ</color><color=#094ed2>ɪ</color><color=#1c0be4>ｎ</color><color=#1234c5>ᴇ</color><color=#0a1ace>Ɇ</color><color=#0416b5>尺</color><color=#1600c7>ｓ</color><color=#0b27ff>!</color></size></b>';	
+	
 // * Имена констант, в разных - матчах. * //
 const WaitingStateValue = 'Waiting';
 const RazmincaStateValue = 'Razminca';
 const MainStateValue = 'Main';
 const MockModeStateValue = 'MockMode';
 const End0fMatchStateValue = 'End0fMatch';	
+	
 // * Имена констант, используемых объектов. * // 
 const StateProp = Room.Properties.GetContext().Get('State');
 const MainTimer = Room.Timers.GetContext().Get('Main');
