@@ -267,6 +267,104 @@ Room.Chat.OnMessage.Add(function(Message) {
 	}
 });
 
+var ExplosiveTrigger = Room.AreaPlayerTriggerService.Get('ExplosiveTrigger');
+ExplosiveTrigger.Tags = ['ExplosiveTriggerPlus'];
+ExplosiveTrigger.OnEnter.Add(function(p) {
+if (p.Inventory.Explosive.Value) {
+ p.Ui.Hint.Value = "Вы уже купили: основное оружие!";
+return;
+}
+ if (p.Properties.Scores.Value >= 50000) {
+ p.Ui.Hint.Value = "\nВы купили: взрывчатные снардяды!";
+ p.Properties.Scores.Value -= 50000;
+ p.Inventory.Explosive.Value = true;
+ } else p.Ui.Hint.Value = "\nНедостаточно очков (50000), чтобы купить: взрывчатные снаряды!";
+});
+ExplosiveTrigger.OnExit.Add(function(p) {
+p.Ui.Hint.Reset();
+p.Spawns.Spawn();
+});
+
+var SecondaryTrigger = Room.AreaPlayerTriggerService.Get('SecondaryTrigger');
+SecondaryTrigger.Tags = ['SecondaryTriggerPlus'];
+SecondaryTrigger.OnEnter.Add(function(p) {
+if (p.Inventory.Secondary.Value) {
+ p.Ui.Hint.Value = "Вы уже купили: вторичное оружие!";
+	return;
+}
+ if (p.Properties.Scores.Value >= 1000) {
+ p.Ui.Hint.Value = "\nВы купили: вторичное оружие!";
+ p.Properties.Scores.Value -= 1000;
+ p.Inventory.Secondary.Value = true;
+ } else p.Ui.Hint.Value = "\nНедостаточно очков (1000), чтобы купить: вторичное оружие!";
+});
+SecondaryTrigger.OnExit.Add(function(p) {
+p.Ui.Hint.Reset();
+p.Spawns.Spawn();
+});
+
+var MainTrigger = Room.AreaPlayerTriggerService.Get('MainTrigger');
+MainTrigger.Tags = ['MainTriggerPlus'];
+MainTrigger.OnEnter.Add(function(p) {
+ if (p.Inventory.Main.Value) {
+	p.Ui.Hint.Value = "Вы уже купили: основное оружие!";
+	 return;
+ }
+ if (p.Properties.Scores.Value >= 1500) {
+ p.Ui.Hint.Value = "\nВы купили: основное оружие!";
+ p.Properties.Scores.Value -= 1500;
+ p.Inventory.Main.Value = true;
+ } else p.Ui.Hint.Value = "\nНедостаточно очков (1500), чтобы купить: основное оружие!";
+});
+MainTrigger.OnExit.Add(function(p) {
+p.Ui.Hint.Reset();
+p.Spawns.Spawn();
+});
+
+var Hp100Trigger = Room.AreaPlayerTriggerService.Get('100HpTrigger');
+Hp100Trigger.Tags = ['MaxHp100TriggerPlus'];
+Hp100Trigger.OnEnter.Add(function(p) {
+ if (p.Properties.Scores.Value >= 5000) {
+ p.Ui.Hint.Value = "\nВы купили: 100 хп!";
+ p.Properties.Scores.Value -= 5000;
+ p.contextedProperties.MaxHp.Value += 5000;
+ } else p.Ui.Hint.Value = "Недостаточно очков (5000), что бы купить: 100 хп!";
+});
+Hp100Trigger.OnExit.Add(function(p) {
+p.Ui.Hint.Reset();
+p.Spawns.Spawn();
+});
+
+var Hp10Trigger = Room.AreaPlayerTriggerService.Get('10HpTrigger');
+Hp10Trigger.Tags = ['MaxHp10TriggerPlus'];
+Hp10Trigger.OnEnter.Add(function(p) {
+ if (p.Properties.Scores.Value >= 500) {
+ p.Ui.Hint.Value = "\nВы купили: 10 хп!";
+ p.Properties.Scores.Value -= 500;
+ p.contextedProperties.MaxHp.Value += 10;
+ } else p.Ui.Hint.Value = "\nНедостаточно очков (500), чтобы купить: 10 хп!";
+});
+Hp10Trigger.OnExit.Add(function(p) {
+p.Ui.Hint.Reset();
+p.Spawns.Spawn();
+});	
+
+var MainTrigger = Room.AreaViewService.GetContext().Get('MainTrigger');
+MainTrigger.Tags = ['MainTriggerPlus'];
+MainTrigger.Color = new Basic.Color(125/255, 0, 0, 0);
+var SecondaryTrigger = Room.AreaViewService.GetContext().Get('SecondaryTrigger');
+SecondaryTrigger.Tags = ['SecondaryTriggerPlus'];
+Secondary.Color = new Basic.Color(0, 0, 125/255, 0);
+var ExplosiveTrigger = Room.AreaViewService.GetContext().Get('ExplosiveTrigger');
+ExplosiveTrigger.Tags = ['ExplosiveTriggerPlus'];
+ExplosiveTrigger.Color = new Basic.Color(0.5, 125/255, 125/255, 0);
+var Hp10Trigger = Room.AreaViewService.GetContext().Get('Hp10Trigger');
+Hp10Trigger.Tags = ['MaxHp10TriggerPlus'];
+Hp10Trigger.Color = new Basic.Color(0.5, 0, 0, 0);
+var Hp100Trigger = Room.AreaViewService.GetContext().Get('Hp100Trigger');
+Hp100Trigger.Tags = ['MaxHp100TriggerPlus'];
+Ho100Trigger.Color = new Basic.Color(0.5, 0, 0, 0);
+
 // Переключение, режимов:
 MainTimer.OnTimer.Add(function() {
  switch (StateProp.Value) {
@@ -298,6 +396,11 @@ function SetWaitingMode() {
  Room.Ui.GetContext().Hint.Value = '<b>By: ƬＮ丅 ｌivɆ (ᵒᶠᶠⁱᶜⁱᵃˡ) \nОжидание, игроков...</b>';
 if (Room.GameMode.Parameters.GetBool('En')) Room.Ui.GetContext().Hint.Value = '\n<b>Waiting, players...</b>';
  MainTimer.Restart(SixTime);
+ MeleeTrigger.Enable = false;
+ SecondaryTrigger.Enable = false;
+ MainTrigger.Enable = false;
+ Hp10Trigger.Enable = false;
+ Hp100Trigger.Enable = false;
 }
 function SetRazminca() {
  StateProp.Value = RazmincaStateValue;
@@ -315,6 +418,11 @@ var inventory = Room.Inventory.GetContext();
  inventory.Explosive.Value = true;
  inventory.Build.Value = false;
 
+MeleeTrigger.Enable = true;
+ SecondaryTrigger.Enable = true;
+ MainTrigger.Enable = true;
+ Hp10Trigger.Enable = true;
+ Hp100Trigger.Enable = true;	
 Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'Text' }; // Задаём, первоначальные настройки, смертей - в табе.
 Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'Text' };
  Room.Teams.Get('Red').Properties.Get('Text').Value = TextRed;
