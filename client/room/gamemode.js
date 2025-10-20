@@ -405,6 +405,12 @@ if (Room.GameMode.Parameters.GetBool('En')) Room.Ui.GetContext().Hint.Value = '\
  SpawnTeams();
  MainTimer.Restart(RazmincaTime);
  ScoresTimer.Stop();
+
+MeleeTrigger.Enable = true;
+ SecondaryTrigger.Enable = true;
+ MainTrigger.Enable = true;
+ Hp10Trigger.Enable = true;
+ Hp100Trigger.Enable = true;
 	
 var inventory = Room.Inventory.GetContext();
  inventory.Main.Value = true;
@@ -412,12 +418,7 @@ var inventory = Room.Inventory.GetContext();
  inventory.Melee.Value = true;
  inventory.Explosive.Value = true;
  inventory.Build.Value = false;
-
-MeleeTrigger.Enable = true;
- SecondaryTrigger.Enable = true;
- MainTrigger.Enable = true;
- Hp10Trigger.Enable = true;
- Hp100Trigger.Enable = true;	
+	
 Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'Text' }; // Задаём, первоначальные настройки, смертей - в табе.
 Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'Text' };
  Room.Teams.Get('Red').Properties.Get('Text').Value = TextRed;
