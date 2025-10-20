@@ -105,10 +105,10 @@ Room.Damage.OnKill.Add(function(Player, Killed) {
 	 if (StateProp.Value != MockModeStateValue) {
 if (Killed.Team != null && Killed.Team != Player.Team) {
   ++Player.Properties.Kills.Value;
-   // Добавляем, очки - команда, за убийство:
  Player.Properties.Scores.Value += Kill_SCORES;
+ Player.Team.Properties.Get('Deaths').Value += 1;
 }
-const leaderboard = Room.LeaderBoard.GetTeams();
+ const leaderboard = Room.LeaderBoard.GetTeams();
 	if (Player.Properties.Kills.Value === 5) { Player.inventory.Secondary.Value = true, Player.inventory.Melee.Value = false; }
 if (Player.Properties.Kills.Value === 10) { Player.inventory.Secondary.Value = false, Player.inventory.Explosive.Value = true, Player.inventory.ExplosiveInfinity.Value = true; }
 if (Player.Properties.Kills.Value === 15) { Player.inventory.Explosive.Value = false, Player.inventory.Main.Value = true; }
