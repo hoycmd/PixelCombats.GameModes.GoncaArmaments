@@ -10,7 +10,7 @@ const SixTime = 11;
 const RazmincaTime = 101;
 const MockModeTime = 133;
 
-const Kill_SCORES = 20;
+const Kill_SCORES = 30;
 const Winner_SCORES = 30;
 const Timer_SCORES = 10;
 const IntervalTimer_SCORES = 40;
@@ -354,7 +354,7 @@ MainTrigger.Tags = ['MainTriggerPlus'];
 MainTrigger.Color = new Basic.Color(125/255, 0, 0, 0);
 var SecondaryTrigger = Room.AreaViewService.GetContext().Get('SecondaryTrigger');
 SecondaryTrigger.Tags = ['SecondaryTriggerPlus'];
-Secondary.Color = new Basic.Color(0, 0, 125/255, 0);
+SecondaryTrigger.Color = new Basic.Color(0, 0, 125/255, 0);
 var ExplosiveTrigger = Room.AreaViewService.GetContext().Get('ExplosiveTrigger');
 ExplosiveTrigger.Tags = ['ExplosiveTriggerPlus'];
 ExplosiveTrigger.Color = new Basic.Color(0.5, 125/255, 125/255, 0);
@@ -510,6 +510,11 @@ if (winners.Team == RedTeam) {
  Room.Ui.GetContext(winners).TeamProp1.Value = { Team: 'Red', Prop: 'TextWinnersRedLET' };
  Room.Ui.GetContext(loosers).TeamProp2.Value = { Team: 'Blue', Prop: 'TextLoosersBlueLET' };
   }
+MeleeTrigger.Enable = false;
+ SecondaryTrigger.Enable = false;
+ MainTrigger.Enable = false;
+ Hp10Trigger.Enable = false;
+ Hp100Trigger.Enable = false;
 }
 function SetEnd0fMatch_EndMode() {
 StateProp.Value = End0fMatchStateValue;
