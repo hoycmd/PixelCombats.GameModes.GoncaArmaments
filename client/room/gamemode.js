@@ -35,9 +35,9 @@ const MockModeStateValue = 'MockMode';
 const End0fMatchStateValue = 'End0fMatch';	
 	
 // * Имена констант, используемых объектов. * // 
-const StateProp = Room.Properties.GetContext().Get('State');
-const MainTimer = Room.Timers.GetContext().Get('Main');
-const ScoresTimer = Room.Timers.GetContext().Get('Scores');
+const stateProp = Room.Properties.GetContext().Get('State');
+const mainTimer = Room.Timers.GetContext().Get('Main');
+const scoresTimer = Room.Timers.GetContext().Get('Scores');
 	
 // * Создаем, первеночальные команды. * //
 const redTeam = CreateNewTeam('Red', '<b><size=30><color=#962605>尺</color><color=#9a040c>ᴇ</color><color=#b8110b>D</color></size></b>\n<size=89>ГОНКА ВООРУЖЕНИЯ by: TNT!</size>' new Basic.Color(125/255, 0, 0, 0)), 2, BuildBlocksSet.Red);
@@ -124,12 +124,12 @@ Properties.OnTeamProperty.Add(function (c,v) {
 });
 	
 // * Таймер выдачи очков, за время в матче. * //
-ScoresTimer.OnTimer.Add(function () {
+scoresTimer.OnTimer.Add(function () {
 for (const p of Players.All) {
   if (p.Team == null) continue; 
 p.Properties.Scores.Value += ScoresTIMER;
 	}
-ScoresTimer.Restart(ScoresTimer);
+scoresTimer.Restart(ScoresTimer);
 });
 
 // * Основной таймер, переключения игровых - режимов матча. * //
@@ -204,7 +204,7 @@ function SetGameMode() {
  SpawnTeams();
 }
 function SetEnd0fMatch() {
-ScoresTimer.Stop(); 
+scoresTimer.Stop(); 
 const leaderboard = LeaderBoard.GetTeams();
 if (leaderboard[0].Weight !== leaderboard[1].Weight) {
  SetMockMode(leaderboard[0].Team, leaderboard[1].Team);
