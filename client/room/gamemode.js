@@ -540,6 +540,14 @@ function GetPlayerInformation(p) {
         }
 }
 
+function CreateNewTeam(TeamName, TeamDisplayName, TeamColor, TeamSpawnPointGroup, TeamBuildBlocksSet) {
+ Teams.Add(TeamName, TeamDisplayName, TeamColor);
+  let NewTeam = Teams.Get(TeamName);
+ NewTeam.Spawns.SpawnPointsGroups.Add(TeamSpawnPointGroup);
+ ewTeam.Build.BlocksSet.Value = TeamBuildBlocksSet;
+return NewTeam;
+}
+
 ScoresTimer.RestartLoop(ScoresINTERVALtime);
 
 } catch (e) {
