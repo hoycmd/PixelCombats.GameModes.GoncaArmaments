@@ -363,7 +363,7 @@ Hp10Trigger.Tags = ['MaxHp10TriggerPlus'];
 Hp10Trigger.Color = new Basic.Color(0.5, 0, 0, 0);
 var Hp100Trigger = Room.AreaViewService.GetContext().Get('Hp100Trigger');
 Hp100Trigger.Tags = ['MaxHp100TriggerPlus'];
-Ho100Trigger.Color = new Basic.Color(0.5, 0, 0, 0);
+Hp100Trigger.Color = new Basic.Color(0.5, 0, 0, 0);
 
 // Переключение, режимов:
 MainTimer.OnTimer.Add(function() {
