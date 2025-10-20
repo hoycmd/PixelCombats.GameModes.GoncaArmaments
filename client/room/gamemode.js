@@ -269,6 +269,7 @@ Room.Chat.OnMessage.Add(function(Message) {
 
 var ExplosiveTrigger = Room.AreaPlayerTriggerService.Get('ExplosiveTrigger');
 ExplosiveTrigger.Tags = ['ExplosiveTriggerPlus'];
+ExplosiveTrigger.Enable = true;
 ExplosiveTrigger.OnEnter.Add(function(p) {
 if (p.Inventory.Explosive.Value) {
  p.Ui.Hint.Value = "Вы уже купили: основное оружие!";
@@ -287,6 +288,7 @@ p.Spawns.Spawn();
 
 var SecondaryTrigger = Room.AreaPlayerTriggerService.Get('SecondaryTrigger');
 SecondaryTrigger.Tags = ['SecondaryTriggerPlus'];
+SecondaryTrigger.Enable = true;
 SecondaryTrigger.OnEnter.Add(function(p) {
 if (p.Inventory.Secondary.Value) {
  p.Ui.Hint.Value = "Вы уже купили: вторичное оружие!";
@@ -305,6 +307,7 @@ p.Spawns.Spawn();
 
 var MainTrigger = Room.AreaPlayerTriggerService.Get('MainTrigger');
 MainTrigger.Tags = ['MainTriggerPlus'];
+MainTrigger.Enable = true;
 MainTrigger.OnEnter.Add(function(p) {
  if (p.Inventory.Main.Value) {
 	p.Ui.Hint.Value = "Вы уже купили: основное оружие!";
@@ -323,6 +326,7 @@ p.Spawns.Spawn();
 
 var Hp100Trigger = Room.AreaPlayerTriggerService.Get('100HpTrigger');
 Hp100Trigger.Tags = ['MaxHp100TriggerPlus'];
+Hp100Trigger.Enable = true;
 Hp100Trigger.OnEnter.Add(function(p) {
  if (p.Properties.Scores.Value >= 5000) {
  p.Ui.Hint.Value = "\nВы купили: 100 хп!";
@@ -337,6 +341,7 @@ p.Spawns.Spawn();
 
 var Hp10Trigger = Room.AreaPlayerTriggerService.Get('10HpTrigger');
 Hp10Trigger.Tags = ['MaxHp10TriggerPlus'];
+Hp10Trigger.Enable = true;
 Hp10Trigger.OnEnter.Add(function(p) {
  if (p.Properties.Scores.Value >= 500) {
  p.Ui.Hint.Value = "\nВы купили: 10 хп!";
@@ -351,25 +356,24 @@ p.Spawns.Spawn();
 
 var MainTrigger = Room.AreaViewService.GetContext().Get('MainTrigger');
 MainTrigger.Tags = ['MainTriggerPlus'];
+MainTrigger.Enable = true;
 MainTrigger.Color = new Basic.Color(125/255, 0, 0, 0);
 var SecondaryTrigger = Room.AreaViewService.GetContext().Get('SecondaryTrigger');
 SecondaryTrigger.Tags = ['SecondaryTriggerPlus'];
+SecondaryTrigger.Enable = true;
 SecondaryTrigger.Color = new Basic.Color(0, 0, 125/255, 0);
 var ExplosiveTrigger = Room.AreaViewService.GetContext().Get('ExplosiveTrigger');
 ExplosiveTrigger.Tags = ['ExplosiveTriggerPlus'];
+ExplosiveTrigger.Enable = true;
 ExplosiveTrigger.Color = new Basic.Color(0.5, 125/255, 125/255, 0);
 var Hp10Trigger = Room.AreaViewService.GetContext().Get('Hp10Trigger');
 Hp10Trigger.Tags = ['MaxHp10TriggerPlus'];
+Hp10Trigger.Enable = true;
 Hp10Trigger.Color = new Basic.Color(0.5, 0, 0, 0);
 var Hp100Trigger = Room.AreaViewService.GetContext().Get('Hp100Trigger');
 Hp100Trigger.Tags = ['MaxHp100TriggerPlus'];
+Hp100Trigger.Enable = true;
 Hp100Trigger.Color = new Basic.Color(0.5, 0, 0, 0);
-
-MeleeTrigger.Enable = true;
- SecondaryTrigger.Enable = true;
- MainTrigger.Enable = true;
- Hp10Trigger.Enable = true;
- Hp100Trigger.Enable = true;
 	
 // Переключение, режимов:
 MainTimer.OnTimer.Add(function() {
