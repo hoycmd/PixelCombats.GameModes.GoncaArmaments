@@ -107,9 +107,7 @@ if (Killed.Team != null && Killed.Team != Player.Team) {
   ++Player.Properties.Kills.Value;
    // Добавляем, очки - команда, за убийство:
  Player.Properties.Scores.Value += Kill_SCORES;
-     if (StateProp.Value !== MainStateValue && Player.Team != null)
-	  Player.Team.Properties('Scores').Value += Kill_SCORES;
-}
+Player.Team.Properties('Deaths').Value += 1;
 const leaderboard = Room.LeaderBoard.GetTeams();
 	if (Player.Properties.Kills.Value === 5) { Player.inventory.Secondary.Value = true, Player.inventory.Melee.Value = false; }
 if (Player.Properties.Kills.Value === 10) { Player.inventory.Secondary.Value = false, Player.inventory.Explosive.Value = true, Player.inventory.ExplosiveInfinity.Value = true; }
@@ -307,7 +305,6 @@ function SetRazminca() {
 if (Room.GameMode.Parameters.GetBool('En')) Room.Ui.GetContext().Hint.Value = '\nWarmup.';
  Room.Spawns.GetContext().Enable = true; 
  SpawnTeams();
- Room.TeamsBalancer.IsAutoBalance = false;
  MainTimer.Restart(RazmincaTime);
  ScoresTimer.Stop();
 	
@@ -328,9 +325,8 @@ function SetMain() {
  Room.Ui.GetContext().Hint.Value = 'Матч начался.Победите, в этой схватке!';
 if (Room.GameMode.Parameters.GetBool('En')) Room.Ui.GetContext().Hint.Value = '\nMatch begun!';
  SpawnTeams();
- Room.TeamsBalancer.IsAutoBalance = true;
- Room.TeamsBlancer.BalanceTeams();
  MainTimer.Restart(MainTime);
+ Room.TeamsBalancer.BalanceTeams();
 
 var inventory = Room.Inventory.GetContext();
  inventory.Main.Value = false;
