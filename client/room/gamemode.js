@@ -10,10 +10,10 @@ const SixTime = 11;
 const RazmincaTime = 101;
 const MockModeTime = 133;
 
-const Kill_SCORES = 1000;
-const Winner_SCORES = 10000;
-const Timer_SCORES = 120;
-const IntervalTimer_SCORES = 190;
+const Kill_SCORES = 30;
+const Winner_SCORES = 30;
+const Timer_SCORES = 10;
+const IntervalTimer_SCORES = 40;
 
 const MaxDeaths = Room.Players.MaxCount * 5;
 const TextBlue = '\n<b><size=220><color=#0d177c>ß</color><color=#03088c>l</color><color=#0607b0>ᴜ</color><color=#1621ae>E</color></size></b>';
@@ -105,12 +105,10 @@ Room.Damage.OnKill.Add(function(Player, Killed) {
 	 if (StateProp.Value != MockModeStateValue) {
 if (Killed.Team != null && Killed.Team != Player.Team) {
   ++Player.Properties.Kills.Value;
-   // Добавляем, очки - команда, за убийство:
  Player.Properties.Scores.Value += Kill_SCORES;
-     if (StateProp.Value !== MainStateValue && Player.Team != null)
-	  Player.Team.Properties('Scores').Value += Kill_SCORES;
+ Player.Team.Properties.Get('Deaths').Value += 1;
 }
-const leaderboard = Room.LeaderBoard.GetTeams();
+ const leaderboard = Room.LeaderBoard.GetTeams();
 	if (Player.Properties.Kills.Value === 5) { Player.inventory.Secondary.Value = true, Player.inventory.Melee.Value = false; }
 if (Player.Properties.Kills.Value === 10) { Player.inventory.Secondary.Value = false, Player.inventory.Explosive.Value = true, Player.inventory.ExplosiveInfinity.Value = true; }
 if (Player.Properties.Kills.Value === 15) { Player.inventory.Explosive.Value = false, Player.inventory.Main.Value = true; }
@@ -269,6 +267,104 @@ Room.Chat.OnMessage.Add(function(Message) {
 	}
 });
 
+var ExplosiveTrigger = Room.AreaPlayerTriggerService.Get('ExplosiveTrigger');
+ExplosiveTrigger.Tags = ['ExplosiveTriggerPlus'];
+ExplosiveTrigger.OnEnter.Add(function(p) {
+if (p.Inventory.Explosive.Value) {
+ p.Ui.Hint.Value = "Вы уже купили: основное оружие!";
+return;
+}
+ if (p.Properties.Scores.Value >= 50000) {
+ p.Ui.Hint.Value = "\nВы купили: взрывчатные снардяды!";
+ p.Properties.Scores.Value -= 50000;
+ p.Inventory.Explosive.Value = true;
+ } else p.Ui.Hint.Value = "\nНедостаточно очков (50000), чтобы купить: взрывчатные снаряды!";
+});
+ExplosiveTrigger.OnExit.Add(function(p) {
+p.Ui.Hint.Reset();
+p.Spawns.Spawn();
+});
+
+var SecondaryTrigger = Room.AreaPlayerTriggerService.Get('SecondaryTrigger');
+SecondaryTrigger.Tags = ['SecondaryTriggerPlus'];
+SecondaryTrigger.OnEnter.Add(function(p) {
+if (p.Inventory.Secondary.Value) {
+ p.Ui.Hint.Value = "Вы уже купили: вторичное оружие!";
+	return;
+}
+ if (p.Properties.Scores.Value >= 1000) {
+ p.Ui.Hint.Value = "\nВы купили: вторичное оружие!";
+ p.Properties.Scores.Value -= 1000;
+ p.Inventory.Secondary.Value = true;
+ } else p.Ui.Hint.Value = "\nНедостаточно очков (1000), чтобы купить: вторичное оружие!";
+});
+SecondaryTrigger.OnExit.Add(function(p) {
+p.Ui.Hint.Reset();
+p.Spawns.Spawn();
+});
+
+var MainTrigger = Room.AreaPlayerTriggerService.Get('MainTrigger');
+MainTrigger.Tags = ['MainTriggerPlus'];
+MainTrigger.OnEnter.Add(function(p) {
+ if (p.Inventory.Main.Value) {
+	p.Ui.Hint.Value = "Вы уже купили: основное оружие!";
+	 return;
+ }
+ if (p.Properties.Scores.Value >= 1500) {
+ p.Ui.Hint.Value = "\nВы купили: основное оружие!";
+ p.Properties.Scores.Value -= 1500;
+ p.Inventory.Main.Value = true;
+ } else p.Ui.Hint.Value = "\nНедостаточно очков (1500), чтобы купить: основное оружие!";
+});
+MainTrigger.OnExit.Add(function(p) {
+p.Ui.Hint.Reset();
+p.Spawns.Spawn();
+});
+
+var Hp100Trigger = Room.AreaPlayerTriggerService.Get('100HpTrigger');
+Hp100Trigger.Tags = ['MaxHp100TriggerPlus'];
+Hp100Trigger.OnEnter.Add(function(p) {
+ if (p.Properties.Scores.Value >= 5000) {
+ p.Ui.Hint.Value = "\nВы купили: 100 хп!";
+ p.Properties.Scores.Value -= 5000;
+ p.contextedProperties.MaxHp.Value += 5000;
+ } else p.Ui.Hint.Value = "Недостаточно очков (5000), что бы купить: 100 хп!";
+});
+Hp100Trigger.OnExit.Add(function(p) {
+p.Ui.Hint.Reset();
+p.Spawns.Spawn();
+});
+
+var Hp10Trigger = Room.AreaPlayerTriggerService.Get('10HpTrigger');
+Hp10Trigger.Tags = ['MaxHp10TriggerPlus'];
+Hp10Trigger.OnEnter.Add(function(p) {
+ if (p.Properties.Scores.Value >= 500) {
+ p.Ui.Hint.Value = "\nВы купили: 10 хп!";
+ p.Properties.Scores.Value -= 500;
+ p.contextedProperties.MaxHp.Value += 10;
+ } else p.Ui.Hint.Value = "\nНедостаточно очков (500), чтобы купить: 10 хп!";
+});
+Hp10Trigger.OnExit.Add(function(p) {
+p.Ui.Hint.Reset();
+p.Spawns.Spawn();
+});	
+
+var MainTrigger = Room.AreaViewService.GetContext().Get('MainTrigger');
+MainTrigger.Tags = ['MainTriggerPlus'];
+MainTrigger.Color = new Basic.Color(125/255, 0, 0, 0);
+var SecondaryTrigger = Room.AreaViewService.GetContext().Get('SecondaryTrigger');
+SecondaryTrigger.Tags = ['SecondaryTriggerPlus'];
+SecondaryTrigger.Color = new Basic.Color(0, 0, 125/255, 0);
+var ExplosiveTrigger = Room.AreaViewService.GetContext().Get('ExplosiveTrigger');
+ExplosiveTrigger.Tags = ['ExplosiveTriggerPlus'];
+ExplosiveTrigger.Color = new Basic.Color(0.5, 125/255, 125/255, 0);
+var Hp10Trigger = Room.AreaViewService.GetContext().Get('Hp10Trigger');
+Hp10Trigger.Tags = ['MaxHp10TriggerPlus'];
+Hp10Trigger.Color = new Basic.Color(0.5, 0, 0, 0);
+var Hp100Trigger = Room.AreaViewService.GetContext().Get('Hp100Trigger');
+Hp100Trigger.Tags = ['MaxHp100TriggerPlus'];
+Hp100Trigger.Color = new Basic.Color(0.5, 0, 0, 0);
+
 // Переключение, режимов:
 MainTimer.OnTimer.Add(function() {
  switch (StateProp.Value) {
@@ -309,6 +405,12 @@ if (Room.GameMode.Parameters.GetBool('En')) Room.Ui.GetContext().Hint.Value = '\
  SpawnTeams();
  MainTimer.Restart(RazmincaTime);
  ScoresTimer.Stop();
+
+MeleeTrigger.Enable = true;
+ SecondaryTrigger.Enable = true;
+ MainTrigger.Enable = true;
+ Hp10Trigger.Enable = true;
+ Hp100Trigger.Enable = true;
 	
 var inventory = Room.Inventory.GetContext();
  inventory.Main.Value = true;
@@ -316,7 +418,7 @@ var inventory = Room.Inventory.GetContext();
  inventory.Melee.Value = true;
  inventory.Explosive.Value = true;
  inventory.Build.Value = false;
-
+	
 Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'Text' }; // Задаём, первоначальные настройки, смертей - в табе.
 Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'Text' };
  Room.Teams.Get('Red').Properties.Get('Text').Value = TextRed;
@@ -328,6 +430,7 @@ function SetMain() {
 if (Room.GameMode.Parameters.GetBool('En')) Room.Ui.GetContext().Hint.Value = '\nMatch begun!';
  SpawnTeams();
  MainTimer.Restart(MainTime);
+ Room.TeamsBalancer.BalanceTeams();
 
 var inventory = Room.Inventory.GetContext();
  inventory.Main.Value = false;
@@ -369,41 +472,45 @@ if (Room.GameMode.Parameters.GetBool('End')) {
 if (Room.GameMode.Parameters.GetBool('End')) {
  Room.Ui.GetContext(loosers).Hint.Value = '\nWe lost, the winners - punish us!';
 }	
- Room.Spawns.GetContext(loosers).Spawn(); // Заспавнить проигравших, на базу.
- Room.Spawns.GetContext(loosers).RespawnTime.Value = 0; // Нулевой спавн, для проигравших.
-	 
-// Set loosers, inventory && сэт инвентаря, для проигравших:
-const i = Room.Inventory.GetContext(loosers);
-  i.Main.Value = false;
-  i.Secondary.Value = false;
-  i.Melee.Value = false;
-  i.Explosive.Value = false;
-  i.Build.Value = false;
-i = Room.Inventory.GetContext(winners);
- i.Main.Value = true;
- i.MainInfinity.Value = true;
- i.Secondary.Value = true;
- i.SecondaryInfinity.Value = true;
- i.Melee.Value = true;
- i.Explosive.Value = true;
- i.ExplosiveInfinity.Value = true;
- i.Build.Value = true;
- i.BuildInfinity.Value = true;
+  Room.contextedProperties.GetContext(loosers).SkinType.Value = 1;
+  Room.contextedProperties.GetContext(winners).SkinType.Value = 2;
+  Room.Spawns.GetContext(loosers).Spawn(); // Заспавнить проигравших, на базу.
+  Room.Spawns.GetContext(loosers).RespawnTime.Value = 0; // Нулевой спавн, для проигравших.
+	
+  Room.Inventory.GetContext(loosers).Main.Value = false;
+  Room.Inventory.GetContext(loosers).Secondary.Value = false;
+  Room.Inventory.GetContext(loosers).Melee.Value = false;
+  Room.Inventory.GetContext(loosers).Explosive.Value = false;
+  Room.Inventory.GetContext(loosers).Build.Value = false;
+  Room.Inventory.GetContext(winners).Main.Value = true;
+  Room.Inventory.GetContext(winners).MainInfinity.Value = true;
+  Room.Inventory.GetContext(winners).Secondary.Value = true;
+  Room.Inventory.GetContext(winners).SecondaryInfinity.Value = true;
+  Room.Inventory.GetContext(winners).Melee.Value = true;
+  Room.Inventory.GetContext(winners).Explosive.Value = true;
+  Room.Inventory.GetContext(winners).ExplosiveInfinity.Value = true;
+  Room.Inventory.GetContext(winners).Build.Value = true;
+  Room.Inventory.GetContext(winners).BuildInfinity.Value = true;
 
 // Задаём, табы для loosers&&winners:
-if (winners.Team == "RedTeam") {
- loosers.Properties.Get('TextLoosersRed').Value = TextLoosersRed;
- winners.Properties.Get('TextWinnersBlue').Value = TextWinnersBlue;
- Room.Ui.GetContext(loosers).TeamProp1.Value = { Team: 'Red', Prop: 'TextLoosersRed' };
- Room.Ui.GetContext(winners).TeamProp2.Value = { Team: 'Blue', Prop: 'TextWinnersBlue' };
+if (winners.Team == BlueTeam) {
+ redTeam.Properties.Get('TextLoosersRed').Value = TextLoosersRed;
+ blueTeam.Properties.Get('TextWinnersBlue').Value = TextWinnersBlue;
+ Room.Ui.GetContext(loosers).TeamProp1.Value = { Team: 'Red', Prop: 'TextLoosersRedLET' };
+ Room.Ui.GetContext(winners).TeamProp2.Value = { Team: 'Blue', Prop: 'TextWinnersBlueLET' };
 }
 
-if (winners.Team == "BlueTeam") {
- winners.Properties.Get('TextWinnersRed').Value = TextWinnersRed;
- loosers.Properties.Get('TextLoosersBlue').Value = TextLoosersBlue;
- Room.Ui.GetContext(winners).TeamProp1.Value = { Team: 'Red', Prop: 'TextWinnersRed' };
- Room.Ui.GetContext(loosers).TeamProp2.Value = { Team: 'Blue', Prop: 'TextLoosersBlue' };
+if (winners.Team == RedTeam) {
+ redTeam.Properties.Get('TextWinnersRedLET').Value = TextWinnersRed;
+ blueTeam.Properties.Get('TextLoosersBlueLET').Value = TextLoosersBlue;
+ Room.Ui.GetContext(winners).TeamProp1.Value = { Team: 'Red', Prop: 'TextWinnersRedLET' };
+ Room.Ui.GetContext(loosers).TeamProp2.Value = { Team: 'Blue', Prop: 'TextLoosersBlueLET' };
   }
+MeleeTrigger.Enable = false;
+ SecondaryTrigger.Enable = false;
+ MainTrigger.Enable = false;
+ Hp10Trigger.Enable = false;
+ Hp100Trigger.Enable = false;
 }
 function SetEnd0fMatch_EndMode() {
 StateProp.Value = End0fMatchStateValue;
