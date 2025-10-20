@@ -1,4 +1,4 @@
-import { room,Players, Inventory, GameMode, Game, Map, Chat, Teams, Spawns, Build, Timers, TeamsBalancer, BuildBlocksSet, Properties, LeaberBoard, AreaPlayerTriggerService, AreaViewService, NewGame, NewGameVote } from 'pixel_combats/room';
+import { room, Players, Inventory, GameMode, Game, Map, Chat, Teams, Spawns, Build, Timers, TeamsBalancer, BuildBlocksSet, Properties, LeaberBoard, AreaPlayerTriggerService, AreaViewService, NewGame, NewGameVote } from 'pixel_combats/room';
 import { DisplayValueHeader, Color } from 'pixel_combats/basic';
 try {
 
