@@ -365,6 +365,12 @@ var Hp100Trigger = Room.AreaViewService.GetContext().Get('Hp100Trigger');
 Hp100Trigger.Tags = ['MaxHp100TriggerPlus'];
 Hp100Trigger.Color = new Basic.Color(0.5, 0, 0, 0);
 
+MeleeTrigger.Enable = true;
+ SecondaryTrigger.Enable = true;
+ MainTrigger.Enable = true;
+ Hp10Trigger.Enable = true;
+ Hp100Trigger.Enable = true;
+	
 // Переключение, режимов:
 MainTimer.OnTimer.Add(function() {
  switch (StateProp.Value) {
@@ -432,11 +438,6 @@ var inventory = Room.Inventory.GetContext();
  inventory.Melee.Value = true;
  inventory.Explosive.Value = false;
  inventory.Build.Value = false;
-MeleeTrigger.Enable = true;
- SecondaryTrigger.Enable = true;
- MainTrigger.Enable = true;
- Hp10Trigger.Enable = true;
- Hp100Trigger.Enable = true;
 
 Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'Deaths' }; 
 Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'Deaths' };
