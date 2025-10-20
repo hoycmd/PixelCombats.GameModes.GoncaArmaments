@@ -396,11 +396,6 @@ function SetWaitingMode() {
  Room.Ui.GetContext().Hint.Value = '<b>By: ƬＮ丅 ｌivɆ (ᵒᶠᶠⁱᶜⁱᵃˡ) \nОжидание, игроков...</b>';
 if (Room.GameMode.Parameters.GetBool('En')) Room.Ui.GetContext().Hint.Value = '\n<b>Waiting, players...</b>';
  MainTimer.Restart(SixTime);
- MeleeTrigger.Enable = false;
- SecondaryTrigger.Enable = false;
- MainTrigger.Enable = false;
- Hp10Trigger.Enable = false;
- Hp100Trigger.Enable = false;
 }
 function SetRazminca() {
  StateProp.Value = RazmincaStateValue;
