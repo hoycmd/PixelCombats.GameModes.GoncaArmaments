@@ -3,7 +3,7 @@ import * as Basic from 'pixel_combats/basic';
 import * as Room from 'pixel_combats/room';
 
 try {
-	
+
 // * Константы таймеров и очков, команд. * //
 const GameModeTime = 1801;
 const WaitingPlayersTime = 10;
@@ -113,13 +113,13 @@ Room.Damage.OnDeath.Add(function (p) {
 });
 
 // * За каждую смерть игрока, отнимаем смерть в команде. * //
-Room.Properties.OnPlayerProperty.Add(function (c, v) {
+Room.Properties.OnPlayerProperty.Add(function (c,v) {
  if (v.Name !== 'Deaths') return; 
  if (c.Player.Team == null) return;
  c.Player.Team.Properties.Get('Deaths').Value--;
 });
 // * Если в команде, числа занулились - то завершаем матч. * //
-Room.Properties.OnTeamProperty.Add(function (c, v) {
+Room.Properties.OnTeamProperty.Add(function (c,v) {
   if (v.Name !== 'Deaths') return;
   if (v.Value <= 0) SetEnd0fMatch();
 });
@@ -137,9 +137,10 @@ ScoresTimer.Restart(ScoresTimer);
 MainTimer.OnTimer.Add(function () {
  switch (StateProp.Value) {
 case WaitingStateValue:
- SetRazminca(); 
+  SetRazminca();
  break;
 case RazmincaStateValue:
+  SetGameMode();
  break;
 case GameStateValue:
   SetEnd0fMatch();
@@ -150,6 +151,7 @@ case MockModeStateValue:
 case End0fMatchStateValue: 
   START_VOTE();
  if (!Room.GameMode.Parameters.GetBool('MapRotation')) RestartGame();
+ if (Room.GameMode.Parameters.GetBool('LoadRandomMap')) LoadRandomMap();
  break;
 	}
 });
@@ -160,8 +162,8 @@ SetWaitingMode();
 // * Состояние, игровых матчей. * //
 function SetWaitingMode() {
  StateProp.Value = WaitingStateValue;
- Room.Spawns.GetContext().Enable = true;
- Room.Ui.GetContext().Hint.Value = '<b>By: ƬＮ丅 ｌivɆ (ᵒᶠᶠⁱᶜⁱᵃˡ) \nОжидание, игроков...(ЗАГРУЗКА)</b>';	
+ Room.Spawns.GetContext().Enable = false;
+ Room.Ui.GetContext().Hint.Value = '<b>By: ƬＮ丅 ｌivɆ (ᵒᶠᶠⁱᶜⁱᵃˡ) \nОжидание, игроков...</b>';
  MainTimer.Restart(WaitingPlayersTime);
 }
 function SetRazminca() {
