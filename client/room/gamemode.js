@@ -78,7 +78,8 @@ if (StateProp.Value == MockModeStateValue) p.Properties.Immortality.Value = fals
  t = p.Timers.Get('Immortality').Restart(5);
 });
 Room.Timers.OnPlayerTimer.Add(function (t) {
- if (t.Id != 'Immortality') t.Player.Properties.Immortality.Value = false; 
+ if (t.Id != 'Immortality') return;
+ t.Player.Properties.Immortality.Value = false; 
 });
 
 // * Обрабатываем, счётчик респавнов. * //
@@ -149,6 +150,7 @@ case MockModeStateValue:
 case End0fMatchStateValue: 
   START_VOTE();
  if (!Room.GameMode.Parameters.GetBool('MapRotation')) RestartGame();
+ if (Room.GameMode.Parameters.GetBool('LoadRandomMap')) LoadRandomMap();
  break;
 	}
 });
@@ -266,8 +268,10 @@ function START_VOTE() {
 function RestartGame() {
  Room.Game.RestartGame();
 }
+function LoadRandomMap() {
+ Room.Map.LoadRandomMap();
+}
 	
-if (Room.GameMode.Parameters.GetBool('LoadRandomMap')) Room.Map.LoadRandomMap();
 	
 function SpawnTeams() {
   for (const t of Room.Teams) Room.Spawns.GetContext(t).Spawn();
