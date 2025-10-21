@@ -77,35 +77,30 @@ if (StateProp.Value == MockModeStateValue) p.Properties.Immortality.Value = fals
 Room.Timers.OnPlayerTimer.Add(function (t) {
  if (t.Id != 'Immortality') t.Player.Properties.Immortality.Value = false; });
 
-// Счётчик, спавнов:
-Room.Spawns.OnSpawn.Add(function(Player) {
-if (stateProp.Value == MockModeStateValue) return;
- ++Player.Properties.Spawns.Value;
-});
-	
-// Счётчик, убийств:
-Room.Damage.OnKill.Add(function(Player, Killed) {
-	if (StateProp.Value != RazmincaStateValue) {
-	 if (StateProp.Value != MockModeStateValue) {
-if (Killed.Team != null && Killed.Team != Player.Team) {
-  ++Player.Properties.Kills.Value;
- Player.Properties.Scores.Value += Kill_SCORES;
- Player.Team.Properties.Get('Deaths').Value += 1;
+// * Обрабатываем, счётчик респавнов. * //
+Room.Spawns.OnSpawn.Add(function (p) { ++p.Properties.Spawns.Value; });
+
+
+// * Обрабатываем, счётчик киллов. * //
+Room.Damage.OnKill.Add(function (p,k) {
+if (StateProp.Value != RazmincaStateValue && StateProp.Value == MockModeStateValue) {
+if (p.id !== k.id) { ++p.Properties.Kills.Value;
+ p.Properties.Scores.Value += ScoresKILL;
+ p.Team.Properties.Get('Deaths').Value += 1;
 }
- const leaderboard = Room.LeaderBoard.GetTeams();
-	if (Player.Properties.Kills.Value === 5) { Player.inventory.Secondary.Value = true, Player.inventory.Melee.Value = false; }
-if (Player.Properties.Kills.Value === 10) { Player.inventory.Secondary.Value = false, Player.inventory.Explosive.Value = true, Player.inventory.ExplosiveInfinity.Value = true; }
-if (Player.Properties.Kills.Value === 15) { Player.inventory.Explosive.Value = false, Player.inventory.Main.Value = true; }
-if (Player.Properties.Kills.Value === 20) {  Player.Properties.Kills.Value += 5; }
-if (Player.Properties.Kills.Value === 25) { Player.ContextedProperties.MaxHp.Value += 500; }
-if (Player.Properties.Kills.Value === 30) { Player.inventory.MainInfinity.Value = true; }
-if (Player.Properties.Kills.Value === 35) { Player.ContextedProperties.MaxHp.Value = 1000; }
-if (Player.Properties.Kills.Value === 40) { Player.inventory.Build.Value = true; }
-if (Player.Properties.Kills.Value === 45) { Player.Properties.Kills.Value += 10; }
-if (Player.Properties.Kills.Value === 50) SetEnd0fMatch();
-	  }
-     }
-   });
+ // * Обработчик выдачи ресов, за каждые - 5 киллов. * //
+if (p.Properties.Kills.Value === 5) { p.Inventory.Secondary.Value = true, p.Inventory.Melee.Value = false; }
+if (p.Properties.Kills.Value === 10) { p.Inventory.Secondary.Value = false, p.Inventory.Explosive.Value = true, p.Inventory.ExplosiveInfinity.Value = true; }
+if (p.Properties.Kills.Value === 15) { p.Inventory.Explosive.Value = false, p.Inventory.Main.Value = true; }
+if (p.Properties.Kills.Value === 20) { p.Inventory.MainInfinity.Value = true; }
+if (p.Properties.Kills.Value === 25) { p.contextedProperties.MaxHp.Value += 500, p.PopUp('500 HP\nВы получили: 500 HP!'); }
+if (p.Properties.Kills.Value === 30) { p.contextedProperties.MaxHp.Value += 1000, p.PopUp('1000 HP\nВы получили: 1000 HP!'); }
+if (p.Properties.Kills.Value === 35) { p.Properties.Scores.Value += 40, p.PopUp('40 SCORES\nВы получили: 40 SCORES!'); }
+if (p.Properties.Kills.Value === 40) { p.contextedProperties.SkinType.Value = 2 p.PopUp('SKIN ZEK\nВы получили: SKIN ZEK!'); }
+if (p.Properties.Kills.Value === 45) { p.Properties.Kills.Value += 10, p.PopUp('10 KILL\nВы получили: 10 KILL!'); }
+if (p.Properties.Kills.Value === 50) SetEnd0fMatch();
+   }
+});
 	
 // Счётчик, смертей:
 Room.Damage.OnDeath.Add(function(Player) {
