@@ -7,6 +7,7 @@ Room.room.PopupsEnable = true;
 
 // * Константы таймеров и очков, команд. * //
 const GameModeTime = 1801;
+const CrucialMatchTime = 31;
 const WaitingPlayersTime = 10;
 const End0fMatchTime = 11;
 const RazmincaTime = 51;
@@ -30,6 +31,7 @@ const TextWinnersBlue = '\n<b><size=220><color=#0303a4>ß</color><color=#0b2cc0>
 	
 // * Имена констант, в разных - матчах. * //
 const WaitingStateValue = 'Waiting';
+const CrucialMatchStateValue = 'CrucialMatch';
 const RazmincaStateValue = 'Razminca';
 const GameStateValue = 'Game';
 const MockModeStateValue = 'MockMode';
@@ -148,8 +150,11 @@ case RazmincaStateValue:
   SetGameMode();
  break;
 case GameStateValue:
-  SetEnd0fMatch();
+  SetCrucialMatch();
  break;
+case CrucialMatchStateValue:
+  SetEnd0fMatch();
+  break;
 case MockModeStateValue:
  SetEnd0fMatch_EndMode();
  break;
@@ -208,6 +213,18 @@ function SetGameMode() {
  Room.TeamsBalancer.BalanceTeams();	
  MainTimer.Restart(GameModeTime);
  SpawnTeams();
+}
+function SetCrucialMatch() {
+ for (const t of Teams) {
+ StateProp.Value = CrucialMatchStateValue;
+ Room.Ui.GetContext().Hint.Value = 'Решающий раунд!\nВыйграйте, эту схватку!';
+ Room.Spawns.GetContext(t).Despawn();
+ Room.TeamsBalancer.BalanceTeams();
+ MainTimer.Restart(CrucialMatchTime);
+ SpawnTeams();
+ } 
+	else { End0fMatch_EndMode(); 
+		    }
 }
 function SetEnd0fMatch() {
 ScoresTimer.Stop(); 
