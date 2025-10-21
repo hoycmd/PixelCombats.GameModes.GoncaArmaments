@@ -215,7 +215,7 @@ if (leaderboard[0].Weight !== leaderboard[1].Weight) {
  SetMockMode(leaderboard[0].Team, leaderboard[1].Team);
  for (const WinP of leaderboard[0].Team.Players) { WinP.Properties.Scores.Value += ScoresWINNER; } 
  for (const LosP of leaberboard[1].Team.Players) { LosP.Properties.Scores.Value += ScoresLOOSER; }
-} else SetEnd0fMatch_EndMode();	
+} else { SetEnd0fMatch_EndMode(); }
 }
 function SetMockMode(winners, loosers) {
  StateProp.Value = MockModeStateValue;  // * Дублируем, основное имя режиму. * //
