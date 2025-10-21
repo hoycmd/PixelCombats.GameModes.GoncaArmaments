@@ -18,8 +18,6 @@ const ScoresWINNER = 30;
 const ScoresLOOSER = 10;
 const ScoresKILL = 20;
 const ScoresINTERVALtime = 40;	
-const redCount = 0;
-const blueCount = 0;
 	
 // * Константы, для табов - в разных прямоугольниках. * //
 const maxDeaths = Room.Players.MaxCount * 5;
@@ -57,12 +55,7 @@ Room.Damage.GetContext().GranadeTouchExplosion.Value = true;    // * Повре�
 Room.Ui.GetContext().MainTimerId.Value = MainTimer.Id;   // * Индификатор, основного таймера. * //
 
 // * Разрешаем игрокам, заходить в команду - по запросу. * //
-Room.Teams.OnRequestJoinTeam.Add(function (p,t) { 
-t.Add(p); 
- p.Properties.Get('RoomID').Value = p.IdInRoom; 
-if (p.Team == BlueTeam) ++blueCount;
-if (p.Team == RedTeam) ++redCount;
-});
+Room.Teams.OnRequestJoinTeam.Add(function (p,t) {  t.Add(p);  p.Properties.Get('RoomID').Value = p.IdInRoom; });
 // * Респавним игрока - после входа в команду. * //
 Room.Teams.OnPlayerChangeTeam.Add(function (p) { p.Spawns.Spawn()});
 	
