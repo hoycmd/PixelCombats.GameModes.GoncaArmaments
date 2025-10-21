@@ -215,16 +215,12 @@ function SetGameMode() {
  SpawnTeams();
 }
 function SetCrucialMatch() {
- for (const t of Teams) {
  StateProp.Value = CrucialMatchStateValue;
  Room.Ui.GetContext().Hint.Value = 'Решающий раунд!\nВыйграйте, эту схватку!';
- Room.Spawns.GetContext(t).Despawn();
+ Room.Spawns.GetContext().Despawn();
  Room.TeamsBalancer.BalanceTeams();
  MainTimer.Restart(CrucialMatchTime);
- SpawnTeams();
- } 
-	else { End0fMatch_EndMode(); 
-		    }
+ SpawnTeams(); 
 }
 function SetEnd0fMatch() {
 ScoresTimer.Stop(); 
