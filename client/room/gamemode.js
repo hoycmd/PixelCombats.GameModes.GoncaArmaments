@@ -217,6 +217,15 @@ if (leaderboard[0].Weight !== leaderboard[1].Weight) {
  for (const WinP of leaderboard[0].Team.Players) { WinP.Properties.Scores.Value += ScoresWINNER; } 
  for (const LosP of leaberboard[1].Team.Players) { LosP.Properties.Scores.Value += ScoresLOOSER; }
 } else { SetEnd0fMatch_EndMode(); }
+ Room.Inventory.GetContext().Main.Value = false;
+ Room.Inventory.GetContext().MainInfinity.Value = false;
+ Room.Inventory.GetContext().Secondary.Value = false;
+ Room.Inventory.GetContext().Secondary.Value = false;
+ Room.Inventory.GetContext().Melee.Value = false;
+ Room.Inventory.GetContext().Explosive.Value = false;
+ Room.Inventory.GetContext().ExplosiveInfinity.Value = false;
+ Room.Inventory.GetContext().Build.Value = false;	
+ Room.Inventory.GetContext().BuildInfinity.Value = false;
 }
 function SetMockMode(winners, loosers) {
  StateProp.Value = MockModeStateValue;  // * Дублируем, основное имя режиму. * //
