@@ -4,8 +4,6 @@ import * as Room from 'pixel_combats/room';
 
 try {
 
-Room.PopupsEnable = true;
-	
 // * Константы таймеров и очков, команд. * //
 const GameModeTime = 1801;
 const WaitingPlayersTime = 10;
