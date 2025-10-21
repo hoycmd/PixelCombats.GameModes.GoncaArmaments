@@ -141,7 +141,7 @@ Room.NewGameVote.OnResult.Add(OnVoteResult);
 MainTimer.OnTimer.Add(function () {
  switch (StateProp.Value) {
 case WaitingStateValue:
-  SetRazmincaMatch();
+  SetRazminca();
  break;
 case RazmincaStateValue:
   SetGameMode();
@@ -171,30 +171,28 @@ function SetWaitingMode() {
 }
 function SetRazminca() {
  StateProp.Value = RazmincaStateValue;
- Room.Ui.GetContext().Hint.Value = '\nРазминка.Потренируйтесь, перед матчем!';
-if (Room.GameMode.Parameters.GetBool('En')) Room.Ui.GetContext().Hint.Value = '\nWarmup.';
- Room.Spawns.GetContext().Enable = true; 
- SpawnTeams();
- MainTimer.Restart(RazmincaTime);
- ScoresTimer.Stop();
+ Room.Ui.GetContext().Hint.Value = 'Разминка.\nПотренируйтесь, перед матчем!';
+	
+ Room.Inventory.GetContext().Main.Value = true;
+ Room.Inventory.GetContext().Secondary.Value = true;
+ Room.Inventory.GetContext().Melee.Value = true;
+ Room.Inventory.GetContext().Explosive.Value = true;
+ Room.Inventory.GetContext().Build.Value = false;
+
+ Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'Text' }; 
+ Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'Text' };
+ redTeam.Properties.Get('Text').Value = TextRed;
+ blueTeam.Properties.Get('Text').Value = TextBlue;
 
 //MeleeTrigger.Enable = true;
- //SecondaryTrigger.Enable = true;
- //MainTrigger.Enable = true;
-// Hp10Trigger.Enable = true;
-// Hp100Trigger.Enable = true;
-	
-var inventory = Room.Inventory.GetContext();
- inventory.Main.Value = true;
- inventory.Secondary.Value = true;
- inventory.Melee.Value = true;
- inventory.Explosive.Value = true;
- inventory.Build.Value = false;
-	
-Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'Text' }; // Задаём, первоначальные настройки, смертей - в табе.
-Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'Text' };
- Room.Teams.Get('Red').Properties.Get('Text').Value = TextRed;
- Room.Teams.Get('Blue').Properties.Get('Text').Value = TextBlue;
+//SecondaryTrigger.Enable = true;
+//MainTrigger.Enable = true;
+//Hp10Trigger.Enable = true;
+//Hp100Trigger.Enable = true;
+
+ Room.Spawns.GetContext().Enable = true; 
+ MainTimer.Restart(RazmincaTime);
+ SpawnTeams();
 }
 function SetGameMode() {
  StateProp.Value = GameModeStateValue;
