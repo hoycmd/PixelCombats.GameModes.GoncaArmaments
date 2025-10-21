@@ -162,6 +162,34 @@ function SetWaitingMode() {
  Room.Ui.GetContext().Hint.Value = '<b>By: ƬＮ丅 ｌivɆ (ᵒᶠᶠⁱᶜⁱᵃˡ) \nОжидание, игроков...</b>';
  MainTimer.Restart(WaitingPlayersTime);
 }
+function SetRazmincaMatch() {
+ StateProp.Value = RazmincaMatchStateValue;
+ Room.Ui.GetContext().Hint.Value = '\nРазминка.Потренируйтесь, перед матчем!';
+if (Room.GameMode.Parameters.GetBool('En')) Room.Ui.GetContext().Hint.Value = '\nWarmup.';
+ Room.Spawns.GetContext().Enable = true; 
+ SpawnTeams();
+ MainTimer.Restart(RazmincaMatchTime);
+ ScoresTimer.Stop();
+
+MeleeTrigger.Enable = true;
+ SecondaryTrigger.Enable = true;
+ MainTrigger.Enable = true;
+ Hp10Trigger.Enable = true;
+ Hp100Trigger.Enable = true;
+	
+var inventory = Room.Inventory.GetContext();
+ inventory.Main.Value = true;
+ inventory.Secondary.Value = true;
+ inventory.Melee.Value = true;
+ inventory.Explosive.Value = true;
+ inventory.Build.Value = false;
+	
+Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'Text' }; // Задаём, первоначальные настройки, смертей - в табе.
+Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'Text' };
+ Room.Teams.Get('Red').Properties.Get('Text').Value = TextRed;
+ Room.Teams.Get('Blue').Properties.Get('Text').Value = TextBlue;
+}
+	
 	
 globalThis.Room = Room;
 globalThis.Basic = Basic;
@@ -375,33 +403,7 @@ var Hp100Trigger = Room.AreaViewService.GetContext().Get('Hp100Trigger');
 Hp100Trigger.Tags = ['MaxHp100TriggerPlus'];
 Hp100Trigger.Color = new Basic.Color(0.5, 0, 0, 0);
 
-function SetRazmincaMatch() {
- StateProp.Value = RazmincaMatchStateValue;
- Room.Ui.GetContext().Hint.Value = '\nРазминка.Потренируйтесь, перед матчем!';
-if (Room.GameMode.Parameters.GetBool('En')) Room.Ui.GetContext().Hint.Value = '\nWarmup.';
- Room.Spawns.GetContext().Enable = true; 
- SpawnTeams();
- MainTimer.Restart(RazmincaMatchTime);
- ScoresTimer.Stop();
 
-MeleeTrigger.Enable = true;
- SecondaryTrigger.Enable = true;
- MainTrigger.Enable = true;
- Hp10Trigger.Enable = true;
- Hp100Trigger.Enable = true;
-	
-var inventory = Room.Inventory.GetContext();
- inventory.Main.Value = true;
- inventory.Secondary.Value = true;
- inventory.Melee.Value = true;
- inventory.Explosive.Value = true;
- inventory.Build.Value = false;
-	
-Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'Text' }; // Задаём, первоначальные настройки, смертей - в табе.
-Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'Text' };
- Room.Teams.Get('Red').Properties.Get('Text').Value = TextRed;
- Room.Teams.Get('Blue').Properties.Get('Text').Value = TextBlue;
-}
 function SetGameMode() {
  StateProp.Value = GameModeStateValue;
  Room.Ui.GetContext().Hint.Value = 'Матч начался.Победите, в этой схватке!';
