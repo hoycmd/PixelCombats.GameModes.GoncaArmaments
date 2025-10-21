@@ -4,7 +4,7 @@ import * as Room from 'pixel_combats/room';
 
 try {
 Room.room.PopupsEnable = true;
-	
+
 // * Константы таймеров и очков, команд. * //
 const GameModeTime = 1801;
 const WaitingPlayersTime = 10;
@@ -55,7 +55,7 @@ Room.Damage.GetContext().GranadeTouchExplosion.Value = true;    // * Повре�
 Room.Ui.GetContext().MainTimerId.Value = MainTimer.Id;   // * Индификатор, основного таймера. * //
 
 // * Разрешаем игрокам, заходить в команду - по запросу. * //
-Room.Teams.OnRequestJoinTeam.Add(function (p,t) {  t.Add(p);  p.Properties.Get('RoomID').Value = p.IdInRoom; });
+Room.Teams.OnRequestJoinTeam.Add(function (p,t) { t.Add(p); p.Properties.Get('RoomID').Value = p.IdInRoom; });
 // * Респавним игрока - после входа в команду. * //
 Room.Teams.OnPlayerChangeTeam.Add(function (p) { p.Spawns.Spawn()});
 	
@@ -93,12 +93,12 @@ if (p.id !== k.id) {
  ++p.Properties.Kills.Value;
  p.Properties.Scores.Value += ScoresKILL;
  p.Team.Properties.Get('Deaths').Value++;
-   }		
+}		
  // * Обработчик выдачи ресов, за каждые - 5 киллов. * //
-if (p.Properties.Kills.Value === 5) { p.Inventory.Secondary.Value = true, p.Inventory.Melee.Value = false; }
-if (p.Properties.Kills.Value === 10) { p.Inventory.Secondary.Value = false, p.Inventory.Explosive.Value = true, p.Inventory.ExplosiveInfinity.Value = true; }
-if (p.Properties.Kills.Value === 15) { p.Inventory.Explosive.Value = false, p.Inventory.Main.Value = true; }
-if (p.Properties.Kills.Value === 20) { p.Inventory.MainInfinity.Value = true; }
+if (p.Properties.Kills.Value === 5) { p.inventory.Secondary.Value = true, p.inventory.Melee.Value = false; }
+if (p.Properties.Kills.Value === 10) { p.inventory.Secondary.Value = false, p.inventory.Explosive.Value = true, p.inventory.ExplosiveInfinity.Value = true; }
+if (p.Properties.Kills.Value === 15) { p.inventory.Explosive.Value = false, p.inventory.Main.Value = true; }
+if (p.Properties.Kills.Value === 20) { p.inventory.MainInfinity.Value = true; }
 if (p.Properties.Kills.Value === 25) { p.contextedProperties.MaxHp.Value += 500, p.PopUp('500 HP\nВы получили: 500 HP!'); }
 if (p.Properties.Kills.Value === 30) { p.contextedProperties.MaxHp.Value += 1000, p.PopUp('1000 HP\nВы получили: 1000 HP!'); }
 if (p.Properties.Kills.Value === 35) { p.Properties.Scores.Value += 40, p.PopUp('40 SCORES\nВы получили: 40 SCORES!'); }
@@ -295,7 +295,7 @@ globalThis.Room = Room;
 globalThis.Basic = Basic;
 
 // Чат команды:
-* //Room.Chat.OnMessage.Add(function(Message) {
+Room.Chat.OnMessage.Add(function(Message) {
 	let MessageText = Message.Text.trim(), MessageSender = Room.Players.GetByRoomId(Message.Sender);
 	if (MessageText.toLowerCase().replaceAll(' ', '')[0] !== '/' || !MessageSender) return;
 	if (MessageSender.id !== '2827CD16AE7CC982') return;
@@ -581,4 +581,4 @@ ScoresTimer.RestartLoop(ScoresINTERVALtime);
         Room.Players.All.forEach(msg => {
                 Room.msg.Show(`${e.name}: ${e.message} ${e.stack}`);
         });
-}
+		}
