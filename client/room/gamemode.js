@@ -108,7 +108,7 @@ if (p.Properties.Kills.Value === 50) SetEnd0fMatch();
 
 // * Обрабатываем, счётчик смертей. * //
 Room.Damage.OnDeath.Add(function (p) {
- if (StateProp.Value == MockModeStateValue) 
+ if (StateProp.Value == MockModeStateValue) {
   Room.Spawns.GetContext(p).Spawn(); 
  return;
 }
