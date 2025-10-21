@@ -41,14 +41,7 @@ const ScoresTimer = Room.Timers.GetContext().Get('Scores');
 // * Создаем, первеночальные команды. * //
 const RedTeam = CreateNewTeam('Red', '<b><size=30><color=#962605>尺</color><color=#9a040c>ᴇ</color><color=#b8110b>D</color></size></b>\n<size=89>ГОНКА ВООРУЖЕНИЯ by: TNT!</size>', new Basic.Color(125/255, 0, 0, 0), 2, Room.BuildBlocksSet.Red);
 const BlueTeam = CreateNewTeam('Blue', '<b><size=30><color=#0d177c>ß</color><color=#03088c>l</color><color=#0607b0>ᴜ</color><color=#1621ae>E</color></size></b>\n<size=89>ГОНКА ВООРУЖЕНИЯ by: TNT!</size>', new Basic.Color(0, 0, 125/255, 0), 1, Room.BuildBlocksSet.Blue);
-// * Интерфейс команд. * //
-if (StateProp.Value == RazmincaStateValue) {
- Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'Text' }; 
- Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'Text' };
- redTeam.Properties.Get('Text').Value = TextRed;
- blueTeam.Properties.Get('Text').Value = TextBlue;
-}
-
+ 
 // * Обработчик настроек параметров, которые нужны - в режиме и в игре. * //
 const MAP_ROTATION = Room.GameMode.Parameters.GetBool('MapRotation');   // * Ротации карты. * //
 Room.BreackGraph.WeakBlocks = Room.GameMode.Parameters.GetBool('LoosenBlocks');     // * Слабые блоки, включенный в игровом режиме. * //
@@ -178,16 +171,23 @@ function SetWaitingMode() {
 }
 function SetRazminca() {
  StateProp.Value = RazmincaStateValue;
+	
+ Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'Text' }; 
+ Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'Text' };
+ redTeam.Properties.Get('Text').Value = TextRed;
+ blueTeam.Properties.Get('Text').Value = TextBlue;
+
  Room.Ui.GetContext().Hint.Value = 'Разминка.\nПотренируйтесь, перед матчем!';
- Room.Spawns.GetContext().Enable = true; 
- MainTimer.Restart(RazmincaTime);
- SpawnTeams();	
+
  Room.Inventory.GetContext().Main.Value = true;
  Room.Inventory.GetContext().Secondary.Value = true;
  Room.Inventory.GetContext().Melee.Value = true;
  Room.Inventory.GetContext().Explosive.Value = true;
  Room.Inventory.GetContext().Build.Value = false;
 
+ Room.Spawns.GetContext().Enable = true; 
+ MainTimer.Restart(RazmincaTime);
+ SpawnTeams();
 }
 function SetGameMode() {
  StateProp.Value = GameModeStateValue;
