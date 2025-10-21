@@ -90,7 +90,7 @@ Room.Damage.OnKill.Add(function (p,k) {
 if (StateProp.Value != RazmincaStateValue && StateProp.Value == MockModeStateValue) {
 if (p.id !== k.id) { ++p.Properties.Kills.Value;
  p.Properties.Scores.Value += ScoresKILL;
- p.Team.Properties.Get('Deaths').Value++;
+ p.Team.Properties.Get('Deaths').Value += 1;
  // * Обработчик выдачи ресов, за каждые - 5 киллов. * //
 if (p.Properties.Kills.Value === 5) { p.Inventory.Secondary.Value = true, p.Inventory.Melee.Value = false; }
 if (p.Properties.Kills.Value === 10) { p.Inventory.Secondary.Value = false, p.Inventory.Explosive.Value = true, p.Inventory.ExplosiveInfinity.Value = true; }
@@ -112,12 +112,13 @@ Room.Damage.OnDeath.Add(function (p) {
  if (StateProp.Value != RazmincaStateValue) {
 ++p.Properties.Deaths.Value;
 	}
+ p.Team.Properties.Get('Deaths').Value -= 1;
 });
 
 // * За каждую смерть игрока, отнимаем смерть в команде. * //
-Room.Properties.OnPlayerProperty.Add(function (c,v) {
+Room.Properties.OnPlayerProperty.Add(function (c, v) {
  if (v.Name !== 'Deaths') return;
- if (c.Player.Team == null) return;
+ if (c.Player.Team === null) return;
  c.Player.Team.Properties.Get('Deaths').Value--;
 });
 // * Если в команде, числа занулились - то завершаем матч. * //
