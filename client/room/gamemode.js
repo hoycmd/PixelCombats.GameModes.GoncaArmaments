@@ -73,13 +73,13 @@ Room.Spawns.GetContext().OnSpawn.Add(function (p) {
 if (StateProp.Value == MockModeStateValue) p.Properties.Immortality.Value = false; 
  p.Properties.Immortality.Value = true;
  t = p.Timers.Get('Immortality').Restart(5);
- });
+});
 Room.Timers.OnPlayerTimer.Add(function (t) {
- if (t.Id != 'Immortality') t.Player.Properties.Get('Immortality').Value = false; });
+ if (t.Id != 'Immortality') t.Player.Properties.Immortality.Value = false; 
+});
 
 // * Обрабатываем, счётчик респавнов. * //
 Room.Spawns.OnSpawn.Add(function (p) { ++p.Properties.Spawns.Value; });
-
 
 // * Обрабатываем, счётчик киллов. * //
 Room.Damage.OnKill.Add(function (p,k) {
@@ -101,15 +101,12 @@ if (p.Properties.Kills.Value === 50) SetEnd0fMatch();
 				   }
    }
 });
-	
-// Счётчик, смертей:
-Room.Damage.OnDeath.Add(function(Player) {
-	if (StateProp.Value != RazmincaStateValue) {
-if (StateProp.Value == MockModeStateValue) {
-	 Spawns.GetContext(Player).Spawn();
-	return;
-}
-    ++Player.Properties.Deaths.Value;
+
+// * Обрабатываем, счётчик смертей. * //
+Room.Damage.OnDeath.Add(function (p) {
+ if (StateProp.Value == MockModeStateValue) Room.Spawns.GetContext(p).Spawn(); return; }
+ if (StateProp.Value != RazmincaStateValue) {
+++p.Properties.Deaths.Value;
 	}
 });
 
