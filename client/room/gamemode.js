@@ -117,8 +117,7 @@ Room.Properties.OnPlayerProperty.Add(function (c,v) {
 });
 // * Если в команде, числа занулились - то завершаем матч. * //
 Room.Properties.OnTeamProperty.Add(function (c,v) {
-  if (v.Name !== 'Deaths') return;								    
-  if (v.Value == 0) SetEnd0fMatch();
+  if (v.Name !== 'Deaths') if (v.Value == 0) SetEnd0fMatch();
 });
 		
 // Переключение, таймеров:
