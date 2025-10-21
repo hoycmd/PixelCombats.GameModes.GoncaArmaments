@@ -244,8 +244,21 @@ function SetMockMode(winners, loosers) {
  Room.Inventory.GetContext(winners).ExplosiveInfinity.Value = true;
  Room.Inventory.GetContext(winners).Build.Value = true;
  Room.Inventory.GetContext(winners).BuildInfinity.Value = true;
-}
-function SetEnd0fMatch_EndMode() {
+
+ if (Room.Teams.Get('Red').Properties.Get('Deaths').Value <= 1 && Room.Teams.Get('Blue').Properties.Get('Deaths').Value >= 1) {
+  Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: TextLoosersRed }; 
+  Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: TextWinnersBlue };
+  Room.Teams.Get('Red').Properties.Get('Deaths').Value = TextLoosersRed;
+  Room.Teams.Get('Blue').Properties.Get('Deaths').Value = TextWinnersBlue;
+ }
+ if (Room.Teams.Get('Red').Properties.Get('Deaths').Value >= 1 && Room.Teams.Get('Blue').Properties.Get('Deaths').Value <= 1) {
+  Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: TextWinnersRed }; 
+  Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: TextLoosersBlue };
+  Room.Teams.Get('Red').Properties.Get('Deaths').Value = TextWinnersRed;
+  Room.Teams.Get('Blue').Properties.Get('Deaths').Value = TextLoosersBlue;
+ }
+}	  
+ function SetEnd0fMatch_EndMode() {
 StateProp.Value = End0fMatchStateValue;
 Room.Ui.GetContext().Hint.Value = '<b>BY: ƬＮ丅 ｌivɆ (ᵒᶠᶠⁱᶜⁱᵃˡ)\nКонец, матча!</b>';
 MainTimer.Restart(End0fMatchTime);
