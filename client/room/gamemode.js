@@ -84,7 +84,9 @@ Room.Timers.OnPlayerTimer.Add(function (t) {
 });
 
 // * Обрабатываем, счётчик респавнов. * //
-Room.Spawns.OnSpawn.Add(function (p) { ++p.Properties.Spawns.Value; });
+Room.Spawns.OnSpawn.Add(function (p) { 
+	++p.Properties.Spawns.Value; 
+});
 
 // * Обрабатываем, счётчик киллов. * //
 Room.Damage.OnKill.Add(function (p,k) {
