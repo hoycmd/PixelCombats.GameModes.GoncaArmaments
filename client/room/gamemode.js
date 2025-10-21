@@ -3,7 +3,8 @@ import * as Basic from 'pixel_combats/basic';
 import * as Room from 'pixel_combats/room';
 
 try {
-
+Room.room.PopupsEnable = true;
+	
 // * Константы таймеров и очков, команд. * //
 const GameModeTime = 1801;
 const WaitingPlayersTime = 10;
