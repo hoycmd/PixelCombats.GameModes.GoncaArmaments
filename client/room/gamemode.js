@@ -89,7 +89,7 @@ Room.Spawns.OnSpawn.Add(function (p) { ++p.Properties.Spawns.Value; });
 // * Обрабатываем, счётчик киллов. * //
 Room.Damage.OnKill.Add(function (p,k) {
 if (StateProp.Value != RazmincaStateValue && StateProp.Value == MockModeStateValue && StateProp.Value == GameStateValue) {
-if (p.id !== k.id) { p.Team.Properties.Get('Deaths').Value += 1;
+if (p.id !== k.id) { 
  ++p.Properties.Kills.Value;
  p.Properties.Scores.Value += ScoresKILL;
 }		
@@ -121,6 +121,9 @@ Room.Properties.OnPlayerProperty.Add(function (c,v) {
  if (v.Name !== 'Deaths') return; 
  if (c.Player.Team == null) return;
  c.Player.Team.Properties.Get('Deaths').Value--;
+ if (c.Player.Properties.Kills.Value += 1) {
+ c.Player.Team.Properties.Get('Deaths').Value += 1;
+   }
 });
 // * Если в команде, числа занулились - то завершаем матч. * //
 Room.Properties.OnTeamProperty.Add(function (c,v) {
