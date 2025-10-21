@@ -36,16 +36,9 @@ const MainTimer = Room.Timers.GetContext().Get('Main');
 const ScoresTimer = Room.Timers.GetContext().Get('Scores');
 Room.Ui.GetContext().MainTimerId.Value = MainTimer.Id;
 
-// Создание, команд:
-Room.Teams.Add('Red', '<b><size=30><color=#962605>尺</color><color=#9a040c>ᴇ</color><color=#b8110b>D</color></size></b>\n<size=89>ГОНКА ВООРУЖЕНИЯ by: TNT!</size>' new Basic.Color(125/255, 0, 0, 0));
-Room.Teams.Add('Blue', '<b><size=30><color=#0d177c>ß</color><color=#03088c>l</color><color=#0607b0>ᴜ</color><color=#1621ae>E</color></size></b>\n<size=89>ГОНКА ВООРУЖЕНИЯ by: TNT!</size>' new Basic.Color(0, 0, 125/255, 0));
-const RedTeam = Room.Teams.Get('Red');
-const BlueTeam = Room.Teams.Get('Blue');
-RedTeam.Spawns.SpawnPointsGroups.Add(2);
-RedTeam.Build.BlocksSet.Value = Room.BuildBlocksSet.Red;
-BlueTeam.Spawns.SpawnPointsGroups.Add(1); 
-BlueTeam.Build.BlocksSet.Value = Room.BuildBlocksSet.Blue;
-
+// * Создаем, первеночальные команды. * //
+const RedTeam = CreateNewTeam('Red', '<b><size=30><color=#962605>尺</color><color=#9a040c>ᴇ</color><color=#b8110b>D</color></size></b>\n<size=89>ГОНКА ВООРУЖЕНИЯ by: TNT!</size>' new Basic.Color(125/255, 0, 0, 0)), 2, BuildBlocksSet.Red);
+const BlueTeam = CreateNewTeam('Blue', '<b><size=30><color=#0d177c>ß</color><color=#03088c>l</color><color=#0607b0>ᴜ</color><color=#1621ae>E</color></size></b>\n<size=89>ГОНКА ВООРУЖЕНИЯ by: TNT!</size>' new Basic.Color(0, 0, 125/255, 0)), 1, BuildBlocksSet.Blue);
 
 // * Обработчик настроек параметров, которые нужны - в режиме и в игре. * //
 const MAP_ROTATION = Room.GameMode.Parameters.GetBool('MapRotation');   // * Ротации карты. * //
@@ -588,6 +581,7 @@ function GetPlayerInformation(p) {
 		AllBlocks: p.Build.BlocksSet.Value === Room.BuildBlocksSet.AllClear
         }
 }
+
 
 ScoresTimer.RestartLoop(IntervalTimer_SCORES);
 
