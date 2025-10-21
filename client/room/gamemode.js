@@ -75,7 +75,7 @@ if (StateProp.Value == MockModeStateValue) p.Properties.Immortality.Value = fals
  t = p.Timers.Get('Immortality').Restart(5);
  });
 Room.Timers.OnPlayerTimer.Add(function (t) {
- if (t.Id != 'Immortality') t.Player.Properties.Immortality.Value = false; });
+ if (t.Id != 'Immortality') t.Player.Properties.Get('Immortality').Value = false; });
 
 // * Обрабатываем, счётчик респавнов. * //
 Room.Spawns.OnSpawn.Add(function (p) { ++p.Properties.Spawns.Value; });
