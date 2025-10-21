@@ -108,16 +108,15 @@ if (p.Properties.Kills.Value === 50) SetEnd0fMatch();
 
 // * Обрабатываем, счётчик смертей. * //
 Room.Damage.OnDeath.Add(function (p) {
- if (StateProp.Value == MockModeStateValue) Room.Spawns.GetContext(p).Spawn(); return; 
- if (StateProp.Value != RazmincaStateValue) {
+ if (StateProp.Value == MockModeStateValue) return; Room.Spawns.GetContext(p).Spawn(); 
+ if (StateProp.Value != RazmincaStateValue) 
 ++p.Properties.Deaths.Value;
-	}
 });
 
 // * За каждую смерть игрока, отнимаем смерть в команде. * //
 Room.Properties.OnPlayerProperty.Add(function (c, v) {
  if (v.Name !== 'Deaths') return; 
- if (c.Player.Team == null) return;
+ if (c.Player.Team == null) continue;
  c.Player.Team.Properties.Get('Deaths').Value--;
 });
 // * Если в команде, числа занулились - то завершаем матч. * //
@@ -153,7 +152,6 @@ case MockModeStateValue:
 case End0fMatchStateValue: 
   START_VOTE();
  if (!Room.GameMode.Parameters.GetBool('MapRotation')) RestartGame();
- if (Room.GameMode.Parameters.GetBool('LoadRandomMap')) LoadRandomMap();
  break;
 	}
 });
