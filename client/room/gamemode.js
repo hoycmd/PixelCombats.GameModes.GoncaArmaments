@@ -124,7 +124,7 @@ Room.Properties.OnPlayerProperty.Add(function (c,v) {
 // * Если в команде, числа занулились - то завершаем матч. * //
 Room.Properties.OnTeamProperty.Add(function (c,v) {
   if (v.Name !== 'Deaths') return;
-  if (v.Value <= 0) SetEnd0fMatch();
+  if (v.Value === 0) SetEnd0fMatch();
 });
 
 // * Таймер выдачи очков, за время в матче. * //
@@ -222,8 +222,8 @@ function SetMockMode(winners, loosers) {
  ScoresTimer.Stop();   // * Остонавливаем таймер очков. * //
  Room.Ui.GetContext(winners).Hint.Value = 'Победа.\nВы выиграли, в этой битве!';   // * Подска, для выигрывших раунд. * //
  Room.Ui.GetContext(loosers).Hint.Value = 'Поражение.\nМы проиграли, этот матч!';    // * Подска, для проигравших матч. * //	
- Room.contextedProperties.GetContext(winners).SkinType.Value = 2; // * Задаём обработанный скин, для выигрывших игроков. * //
- Room.contextedProperties.GetContext(looders).SkinType.Value = 1; // * Задаём дублированный скин проигравших, игроков. * //
+ winners.contextedProperties.SkinType.Value = 2; // * Задаём обработанный скин, для выигрывших игроков. * //
+ loosers.contextedProperties.SkinType.Value = 1; // * Задаём дублированный скин проигравших, игроков. * //
  Room.Spawns.GetContext(loosers).Spawn(); // * Респавн, для лузеров. * //
  Room.Spawns.GetContext(loosers).RespawnTime.Value = 0; // * Таймер респавна игроков, для проигравших. * //
 
