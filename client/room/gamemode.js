@@ -592,7 +592,7 @@ function GetPlayerInformation(p) {
         }
 }
 
-scoresTimer.RestartLoop(IntervalTimer_SCORES);
+ScoresTimer.RestartLoop(ScoresINTERVALtime);
 
 } catch (e) {
         Room.Players.All.forEach(msg => {
