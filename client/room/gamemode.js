@@ -53,19 +53,14 @@ Room.Damage.GetContext().FriendlyFire.Value = Room.GameMode.Parameters.GetBool('
 Room.Damage.GetContext().DamageOut.Value = true;  // Урон.
 Room.TeamsBalancer.IsAutoBalance = true; // Авто - баланс, команд.
 Room.Damage.GetContext().GranadeTouchExplosion.Value = true;  // Урон, по гранате.
-Room.Map.Rotation = Room.GameMode.Parameters.GetBool('MapRotation');  // Ротация, карт.
-  
-// Разрешаем, вход в - команду по, запросу:
-Room.Teams.OnRequestJoinTeam.Add(function(Player, Team) { 
-	Team.Add(Player);
-	Player.Properties.Get('RoomID').Value = Player.IdInRoom;
-});
-// Спавним, игрока при - входе в, команду:
-Room.Teams.OnPlayerChangeTeam.Add(function(Player) { 
-	Player.Spawns.Spawn();
-});
+Room.Map.Rotation = Room.GameMode.Parameters.GetBool('MapRotation');
+
+// * Разрешаем игрокам, заходить в команду - по запросу. * //
+Room.Teams.OnRequestJoinTeam.Add(function (p,t) { t.Add(p); p.Properties.Get('RoomID').Value = p.IdInRoom; });
+// * Респавним игрока - после входа в команду. * //
+Room.Teams.OnPlayerChangeTeam.Add(function (p) { p.Spawns.Spawn()});
 	
-// ЛидерБорды:
+// * Задаём значения в лидерборде, которые обязательно нужно вводить в таблицу. * //
 Room.LeaderBoard.PlayerLeaderBoardValues = [
   new Basic.DisplayValueHeader('Kills', '<b><size=30><color=#be5f1b>K</color><color=#b65219>i</color><color=#ae4517>l</color><color=#a63815>l</color><color=#9e2b13>s</color></size></b>', '<b><size=30><color=#be5f1b>K</color><color=#b65219>i</color><color=#ae4517>l</color><color=#a63815>l</color><color=#9e2b13>s</color></size></b>'),
   new Basic.DisplayValueHeader('Deaths', '<b><size=30><color=#be5f1b>D</color><color=#b85519>e</color><color=#b24b17>a</color><color=#ac4115>t</color><color=#a63713>h</color><color=#a02d11>s</color></size></b>', '<b><size=30><color=#be5f1b>D</color><color=#b85519>e</color><color=#b24b17>a</color><color=#ac4115>t</color><color=#a63713>h</color><color=#a02d11>s</color></size></b>'),
@@ -73,14 +68,10 @@ Room.LeaderBoard.PlayerLeaderBoardValues = [
   new Basic.DisplayValueHeader('Scores', '<b><size=30><color=#be5f1b>S</color><color=#b85519>c</color><color=#b24b17>o</color><color=#ac4115>r</color><color=#a63713>e</color><color=#a02d11>s</color></size></b>', '<b><size=30><color=#be5f1b>S</color><color=#b85519>c</color><color=#b24b17>o</color><color=#ac4115>r</color><color=#a63713>e</color><color=#a02d11>s</color></size></b>'),
   new Basic.DisplayValueHeader('RoomID', '<b><size=30><color=#cf5515>R</color><color=#cd4412>I</color><color=#cb330f>D</color></size></b>', '<b><size=30><color=#cf5515>R</color><color=#cd4412>I</color><color=#cb330f>D</color></size></b>')
 ];
-// Определяем, вес команды - в лидерБорде:
-Room.LeaderBoard.TeamWeightGetter.Set(function(Team) {
-	return Team.Properties.Get('Deaths').Value;
-});
-// Определяем, вес игрока - в лидерБорде:
-Room.LeaderBoard.PlayersWeightGetter.Set(function(Player) {
- return Player.Properties.Get('Kills').Value;
-});
+// * Дублируем команды, за самые наилучшие смерти - в команде игрока. * //
+Room.LeaderBoard.TeamWeightGetter.Set(function (t) { return t.Properties.Get('Deaths').Value; });
+// * Определяем игроков, за наибольшие киллы - в команде игроков. * //
+Room.LeaderBoard.PlayersWeightGetter.Set(function (p) { return p.Properties.Get('Kills').Value; });
 
 // Счётчик, спавнов:
 Room.Spawns.OnSpawn.Add(function(Player) {
