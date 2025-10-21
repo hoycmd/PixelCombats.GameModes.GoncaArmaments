@@ -46,14 +46,16 @@ RedTeam.Build.BlocksSet.Value = Room.BuildBlocksSet.Red;
 BlueTeam.Spawns.SpawnPointsGroups.Add(1); 
 BlueTeam.Build.BlocksSet.Value = Room.BuildBlocksSet.Blue;
 
-// Параметры, создания - комнаты (Настройки):
-Room.BreackGraph.WeakBlocks = Room.GameMode.Parameters.GetBool('LoosenBlocks'); // Ослабить, блоки.
-Room.BreackGraph.OnlyPlayerBlocksDmg = Room.GameMode.Parameters.GetBool('PartialDesruction'); // Усилить, блоки.
-Room.Damage.GetContext().FriendlyFire.Value = Room.GameMode.Parameters.GetBool('FriendlyFire');  // Урон, по своим.  
-Room.Damage.GetContext().DamageOut.Value = true;  // Урон.
-Room.TeamsBalancer.IsAutoBalance = true; // Авто - баланс, команд.
-Room.Damage.GetContext().GranadeTouchExplosion.Value = true;  // Урон, по гранате.
-Room.Map.Rotation = Room.GameMode.Parameters.GetBool('MapRotation');
+
+// * Обработчик настроек параметров, которые нужны - в режиме и в игре. * //
+const MAP_ROTATION = Room.GameMode.Parameters.GetBool('MapRotation');   // * Ротации карты. * //
+Room.BreackGraph.WeakBlocks = Room.GameMode.Parameters.GetBool('LoosenBlocks');     // * Слабые блоки, включенный в игровом режиме. * //
+Room.BreackGraph.OnlyPlayerBlocksDmg = Room.GameMode.Parameters.GetBool('PartialDesruction');       // * Усилитель блоков, включенный в игровом режиме. * //
+Room.Damage.GetContext().FriendlyFire.Value = Room.GameMode.Parameters.GetBool('FriendlyFire');   // * Наносим урон по своим, если включить - в игровом режиме. * //  
+Room.Damage.GetContext().DamageOut.Value = true;     // * Урон командам. * //
+Room.TeamsBalancer.IsAutoBalance = true;     // * Автомотический балансер команд. * //
+Room.Damage.GetContext().GranadeTouchExplosion.Value = true;    // * Повреждение, если папасть гранатой в игрока. * //
+Room.Ui.GetContext().MainTimerId.Value = MainTimer.Id;   // * Индификатор, основного таймера. * //
 
 // * Разрешаем игрокам, заходить в команду - по запросу. * //
 Room.Teams.OnRequestJoinTeam.Add(function (p,t) { t.Add(p); p.Properties.Get('RoomID').Value = p.IdInRoom; });
@@ -372,7 +374,7 @@ case MockModeStateValue:
  SetEnd0fMatch_EndMode();
  break;
 case End0fMatchStateValue: 
-  RestartGame();
+  START_VOTE();
  break;
 	}
 });
@@ -513,11 +515,19 @@ Room.Spawns.GetContext().Enable = false;
 Room.Spawns.GetContext().Despawn();
 }
 	
-function RestartGame() {
-if (Room.GameMode.Parameters.GetBool('LoadRandomMap')) Room.Map.LoadRandomMap();
-else Room.Game.RestartGame(); 
+function OnVoteResult(v) {
+ if (v.Result === null) return;
+  Room.NewGame.RestartGame(v.Result);
 }
+Room.NewGameVote.OnResult.Add(OnVoteResult);
 
+function START_VOTE() {
+ Room.NewGameVote.Start({
+	 Variants: [{ MapId: 0 }],
+	 Timer: VoteTime,
+ }, MAP_ROTATION ? 3 : 0);
+} 
+	
 function SpawnTeams() {
   for (const Player of Room.Players.All) {
 if (Player.Team === null) continue; // В не команды, не спавним игрока. 
