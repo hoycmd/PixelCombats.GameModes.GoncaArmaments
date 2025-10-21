@@ -89,10 +89,9 @@ Room.Spawns.OnSpawn.Add(function (p) { ++p.Properties.Spawns.Value; });
 // * Обрабатываем, счётчик киллов. * //
 Room.Damage.OnKill.Add(function (p,k) {
 if (StateProp.Value != RazmincaStateValue && StateProp.Value == MockModeStateValue && StateProp.Value == GameStateValue) {
-if (p.id !== k.id) {
+if (p.id !== k.id) { p.Team.Properties.Get('Deaths').Value += 1;
  ++p.Properties.Kills.Value;
  p.Properties.Scores.Value += ScoresKILL;
- p.Team.Properties.Get('Deaths').Value++;
 }		
  // * Обработчик выдачи ресов, за каждые - 5 киллов. * //
 if (p.Properties.Kills.Value === 5) { p.inventory.Secondary.Value = true, p.inventory.Melee.Value = false; }
