@@ -260,17 +260,11 @@ function START_VOTE() {
 	 Variants: [{ MapId: 0 }],
 	 Timer: VoteTime,
  }, MAP_ROTATION ? 3 : 0);
-} else Room.Game.RestartGame();
+} 
 	
 function SpawnTeams() {
-  for (const Player of Room.Players.All) {
-if (Player.Team === null) continue; // В не команды, не спавним игрока. 
-   Room.Spawns.GetContext(RedTeam).Spawn();
-Room.Spawns.GetContext(BlueTeam).Spawn();
-  }
+  for (const t of Room.Teams) Room.Spawns.GetContext(t).Spawn();
 }
-
-	
 	
 globalThis.Room = Room;
 globalThis.Basic = Basic;
