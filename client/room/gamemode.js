@@ -153,6 +153,34 @@ case End0fMatchStateValue:
 
 // * Дублируем первое, игровое состояние матча. * //
 SetWaitingMode();
+
+
+// * Состояние, игровых матчей. * //
+function SetWaitingMode() {
+ StateProp.Value = WaitingStateValue;
+ Room.Spawns.GetContext().Enable = false;
+ Room.Ui.GetContext().Hint.Value = '<b>By: ƬＮ丅 ｌivɆ (ᵒᶠᶠⁱᶜⁱᵃˡ) \nОжидание, игроков...</b>';
+ MainTimer.Restart(WaitingPlayersTime);
+}
+function SetRazmincaMatch() {
+ StateProp.Value = RazmincaMatchStateValue;
+ Room.Ui.GetContext().Hint.Value = 'Разминка.\nПотренируйтесь, перед матчем!';
+	
+ Room.Inventory.GetContext().Main.Value = true;
+ Room.Inventory.GetContext().Secondary.Value = true;
+ Room.Inventory.GetContext().Melee.Value = true;
+ Room.Inventory.GetContext().Explosive.Value = true;
+ Room.Inventory.GetContext().Build.Value = false;
+
+ Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'Text' }; 
+ Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'Text' };
+ redTeam.Properties.Get('Text').Value = TextRed;
+ blueTeam.Properties.Get('Text').Value = TextBlue;
+
+ Room.Spawns.GetContext().Enable = true; 
+ MainTimer.Restart(RazmincaMatchTime);
+ SpawnTeams();
+}
 	
 globalThis.Room = Room;
 globalThis.Basic = Basic;
@@ -270,6 +298,7 @@ Room.Chat.OnMessage.Add(function(Message) {
 
 var ExplosiveTrigger = Room.AreaPlayerTriggerService.Get('ExplosiveTrigger');
 ExplosiveTrigger.Tags = ['ExplosiveTriggerPlus'];
+ExplosiveTrigger.Enable = true;
 ExplosiveTrigger.OnEnter.Add(function(p) {
 if (p.Inventory.Explosive.Value) {
  p.Ui.Hint.Value = "Вы уже купили: основное оружие!";
@@ -288,6 +317,7 @@ p.Spawns.Spawn();
 
 var SecondaryTrigger = Room.AreaPlayerTriggerService.Get('SecondaryTrigger');
 SecondaryTrigger.Tags = ['SecondaryTriggerPlus'];
+SecondaryTrigger.Enable = true;
 SecondaryTrigger.OnEnter.Add(function(p) {
 if (p.Inventory.Secondary.Value) {
  p.Ui.Hint.Value = "Вы уже купили: вторичное оружие!";
@@ -306,6 +336,7 @@ p.Spawns.Spawn();
 
 var MainTrigger = Room.AreaPlayerTriggerService.Get('MainTrigger');
 MainTrigger.Tags = ['MainTriggerPlus'];
+MainTrigger.Enable = true;
 MainTrigger.OnEnter.Add(function(p) {
  if (p.Inventory.Main.Value) {
 	p.Ui.Hint.Value = "Вы уже купили: основное оружие!";
@@ -324,6 +355,7 @@ p.Spawns.Spawn();
 
 var Hp100Trigger = Room.AreaPlayerTriggerService.Get('100HpTrigger');
 Hp100Trigger.Tags = ['MaxHp100TriggerPlus'];
+Hp100Trigger.Enable = true;
 Hp100Trigger.OnEnter.Add(function(p) {
  if (p.Properties.Scores.Value >= 5000) {
  p.Ui.Hint.Value = "\nВы купили: 100 хп!";
@@ -338,6 +370,7 @@ p.Spawns.Spawn();
 
 var Hp10Trigger = Room.AreaPlayerTriggerService.Get('10HpTrigger');
 Hp10Trigger.Tags = ['MaxHp10TriggerPlus'];
+Hp10Trigger.Enable = true;
 Hp10Trigger.OnEnter.Add(function(p) {
  if (p.Properties.Scores.Value >= 500) {
  p.Ui.Hint.Value = "\nВы купили: 10 хп!";
@@ -348,59 +381,29 @@ Hp10Trigger.OnEnter.Add(function(p) {
 Hp10Trigger.OnExit.Add(function(p) {
 p.Ui.Hint.Reset();
 p.Spawns.Spawn();
-});	
 
 var MainTrigger = Room.AreaViewService.GetContext().Get('MainTrigger');
 MainTrigger.Tags = ['MainTriggerPlus'];
+MainTrigger.Enable = true;
 MainTrigger.Color = new Basic.Color(125/255, 0, 0, 0);
 var SecondaryTrigger = Room.AreaViewService.GetContext().Get('SecondaryTrigger');
 SecondaryTrigger.Tags = ['SecondaryTriggerPlus'];
+SecondaryTrigger.Enable = true;
 SecondaryTrigger.Color = new Basic.Color(0, 0, 125/255, 0);
 var ExplosiveTrigger = Room.AreaViewService.GetContext().Get('ExplosiveTrigger');
 ExplosiveTrigger.Tags = ['ExplosiveTriggerPlus'];
+ExplosiveTrigger.Enable = true;
 ExplosiveTrigger.Color = new Basic.Color(0.5, 125/255, 125/255, 0);
 var Hp10Trigger = Room.AreaViewService.GetContext().Get('Hp10Trigger');
 Hp10Trigger.Tags = ['MaxHp10TriggerPlus'];
+Hp10Trigger.Enable = true;
 Hp10Trigger.Color = new Basic.Color(0.5, 0, 0, 0);
 var Hp100Trigger = Room.AreaViewService.GetContext().Get('Hp100Trigger');
 Hp100Trigger.Tags = ['MaxHp100TriggerPlus'];
+Hp100Trigger.Enable = true;
 Hp100Trigger.Color = new Basic.Color(0.5, 0, 0, 0);
 
-// Ожидание, игры:
-function SetWaitingMode() {
- StateProp.Value = WaitingStateValue;
- Room.Spawns.GetContext().Enable = false;
- Room.Ui.GetContext().Hint.Value = '<b>By: ƬＮ丅 ｌivɆ (ᵒᶠᶠⁱᶜⁱᵃˡ) \nОжидание, игроков...</b>';
-if (Room.GameMode.Parameters.GetBool('En')) Room.Ui.GetContext().Hint.Value = '\n<b>Waiting, players...</b>';
- MainTimer.Restart(WaitingPlayersTime);
-}
-function SetRazmincaMatch() {
- StateProp.Value = RazmincaMatchStateValue;
- Room.Ui.GetContext().Hint.Value = '\nРазминка.Потренируйтесь, перед матчем!';
-if (Room.GameMode.Parameters.GetBool('En')) Room.Ui.GetContext().Hint.Value = '\nWarmup.';
- Room.Spawns.GetContext().Enable = true; 
- SpawnTeams();
- MainTimer.Restart(RazmincaMatchTime);
- ScoresTimer.Stop();
-
-MeleeTrigger.Enable = true;
- SecondaryTrigger.Enable = true;
- MainTrigger.Enable = true;
- Hp10Trigger.Enable = true;
- Hp100Trigger.Enable = true;
-	
-var inventory = Room.Inventory.GetContext();
- inventory.Main.Value = true;
- inventory.Secondary.Value = true;
- inventory.Melee.Value = true;
- inventory.Explosive.Value = true;
- inventory.Build.Value = false;
-	
-Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'Text' }; // Задаём, первоначальные настройки, смертей - в табе.
-Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'Text' };
- Room.Teams.Get('Red').Properties.Get('Text').Value = TextRed;
- Room.Teams.Get('Blue').Properties.Get('Text').Value = TextBlue;
-}
+									 
 function SetGameMode() {
  StateProp.Value = GameModeStateValue;
  Room.Ui.GetContext().Hint.Value = 'Матч начался.Победите, в этой схватке!';
