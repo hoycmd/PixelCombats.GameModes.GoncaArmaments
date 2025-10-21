@@ -44,7 +44,7 @@ const RedTeam = CreateNewTeam('Red', '<b><size=30><color=#962605>尺</color><col
 const BlueTeam = CreateNewTeam('Blue', '<b><size=30><color=#0d177c>ß</color><color=#03088c>l</color><color=#0607b0>ᴜ</color><color=#1621ae>E</color></size></b>\n<size=89>ГОНКА ВООРУЖЕНИЯ by: TNT!</size>', new Basic.Color(0, 0, 125/255, 0), 1, Room.BuildBlocksSet.Blue);
  
 // * Обработчик настроек параметров, которые нужны - в режиме и в игре. * //
-const MAP_ROTATION = Room.GameMode.Parameters.GetBool('MapRotation');   // * Ротации карты. * //
+const MapRotation = Room.GameMode.Parameters.GetBool('MapRotation');   // * Ротации карты. * //
 Room.BreackGraph.WeakBlocks = Room.GameMode.Parameters.GetBool('LoosenBlocks');     // * Слабые блоки, включенный в игровом режиме. * //
 Room.BreackGraph.OnlyPlayerBlocksDmg = Room.GameMode.Parameters.GetBool('PartialDesruction');       // * Усилитель блоков, включенный в игровом режиме. * //
 Room.Damage.GetContext().FriendlyFire.Value = Room.GameMode.Parameters.GetBool('FriendlyFire');   // * Наносим урон по своим, если включить - в игровом режиме. * //  
@@ -259,7 +259,7 @@ function START_VOTE() {
  Room.NewGameVote.Start({
 	 Variants: [{ MapId: 0 }],
 	 Timer: VoteTime,
- }, MAP_ROTATION ? 3 : 0);
+ }, MapRotation ? 3 : 0);
 } 
 
 if (Room.GameMode.Parameters.GetBool('LoadRandomMap')) Room.Map.LoadRandomMap();
