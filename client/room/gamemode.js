@@ -87,7 +87,6 @@ if (StateProp.Value != RazmincaStateValue && StateProp.Value == MockModeStateVal
 if (p.id !== k.id) { ++p.Properties.Kills.Value;
  p.Properties.Scores.Value += ScoresKILL;
  p.Team.Properties.Get('Deaths').Value += 1;
-}
  // * Обработчик выдачи ресов, за каждые - 5 киллов. * //
 if (p.Properties.Kills.Value === 5) { p.Inventory.Secondary.Value = true, p.Inventory.Melee.Value = false; }
 if (p.Properties.Kills.Value === 10) { p.Inventory.Secondary.Value = false, p.Inventory.Explosive.Value = true, p.Inventory.ExplosiveInfinity.Value = true; }
@@ -99,6 +98,7 @@ if (p.Properties.Kills.Value === 35) { p.Properties.Scores.Value += 40, p.PopUp(
 if (p.Properties.Kills.Value === 40) { p.contextedProperties.SkinType.Value = 2 p.PopUp('SKIN ZEK\nВы получили: SKIN ZEK!'); }
 if (p.Properties.Kills.Value === 45) { p.Properties.Kills.Value += 10, p.PopUp('10 KILL\nВы получили: 10 KILL!'); }
 if (p.Properties.Kills.Value === 50) SetEnd0fMatch();
+				   }
    }
 });
 	
