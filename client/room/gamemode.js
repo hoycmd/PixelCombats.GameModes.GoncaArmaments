@@ -110,17 +110,17 @@ Room.Damage.OnDeath.Add(function (p) {
 	}
 });
 
-// После каждой - смерти игрока, отнимаем одну - смерть, в команде:
-Room.Properties.OnPlayerProperty.Add(function (Context, Value) {
- if (Value.Name !== 'Deaths') return;
- if (Context.Player.Team == null) return;
-    Context.Player.Team.Properties.Get('Deaths').Value--;
+// * За каждую смерть игрока, отнимаем смерть в команде. * //
+Room.Properties.OnPlayerProperty.Add(function (c,v) {
+ if (v.Name !== 'Deaths') return;
+ if (c.Player.Team == null) c.Player.Team.Properties.Get('Deaths').Value--;
 });
-Room.Properties.OnTeamProperty.Add(function (Context, Value) {
-  if (Value.Name !== 'Deaths') return;								    
-  if (Value.Value <= 0) SetEnd0fMatch();
+// * Если в команде, числа занулились - то завершаем матч. * //
+Room.Properties.OnTeamProperty.Add(function (c,v) {
+  if (v.Name !== 'Deaths') return;								    
+  if (v.Value == 0) SetEnd0fMatch();
 });
-	
+		
 // Переключение, таймеров:
 ScoresTimer.OnTimer.Add(function() {
   for (const Player of Room.Players.All) {
