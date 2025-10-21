@@ -131,13 +131,6 @@ p.Properties.Scores.Value += ScoresTIMER;
 ScoresTimer.Restart(ScoresTimer);
 });
 
-// * Функция, для подбора голосования - карт. * //
-function OnVoteResult(v) {
- if (v.Result === null) return;
-  Room.NewGame.RestartGame(v.Result);
-}
-Room.NewGameVote.OnResult.Add(OnVoteResult);
-
 // * Основной таймер, переключения игровых - режимов матча. * //
 MainTimer.OnTimer.Add(function () {
  switch (StateProp.Value) {
@@ -254,14 +247,22 @@ Room.Game.GameOver(Room.LeaderBoard.GetTeams());
 Room.Spawns.GetContext().Enable = false;
 Room.Spawns.GetContext().Despawn();
 }
-if (Room.GameMode.Parameters.GetBool('LoadRandomMap')) Room.Map.LoadRandomMap();
+
+// * Функция, для подбора голосования - карт. * //
+function OnVoteResult(v) {
+ if (v.Result === null) return;
+  Room.NewGame.RestartGame(v.Result);
+}
+Room.NewGameVote.OnResult.Add(OnVoteResult);
+	
 function START_VOTE() {
  Room.NewGameVote.Start({
 	 Variants: [{ MapId: 0 }],
 	 Timer: VoteTime,
  }, MAP_ROTATION ? 3 : 0);
 } 
-if (!Room.GameMode.Parameters.GetBool('MapRotation')) Room.Game.RestartGame();
+
+if (Room.GameMode.Parameters.GetBool('LoadRandomMap')) Room.Map.LoadRandomMap();
 	
 function SpawnTeams() {
   for (const t of Room.Teams) Room.Spawns.GetContext(t).Spawn();
