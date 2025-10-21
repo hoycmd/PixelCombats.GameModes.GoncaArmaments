@@ -208,8 +208,8 @@ function SetGameMode() {
 
  Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'Deaths' }; 
  Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'Deaths' };
- Room.Teams.Get('Red').Properties.Get('Deaths').Value = `Игроки: ${redCount}\nСчёт: ${maxDeaths}`;
- Room.Teams.Get('Blue').Properties.Get('Deaths').Value = `Игроки: ${blueCount}\nСчёт: ${maxDeaths}`;
+ Room.Teams.Get('Red').Properties.Get('Deaths').Value = maxDeaths;
+ Room.Teams.Get('Blue').Properties.Get('Deaths').Value = maxDeaths;
 	 
  Room.Spawns.GetContext().Despawn();
  Room.TeamsBalancer.BalanceTeams();	
