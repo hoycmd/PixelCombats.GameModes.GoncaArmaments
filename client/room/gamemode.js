@@ -28,7 +28,7 @@ const TextWinnersBlue = '\n<b><size=220><color=#0303a4>ß</color><color=#0b2cc0>
 	
 // * Имена констант, в разных - матчах. * //
 const WaitingStateValue = 'Waiting';
-const RazmincStateValue = 'Razminca';
+const RazmincaStateValue = 'Razminca';
 const GameStateValue = 'Game';
 const MockModeStateValue = 'MockMode';
 const End0fMatchStateValue = 'End0fMatch';	
