@@ -108,7 +108,10 @@ if (p.Properties.Kills.Value === 50) SetEnd0fMatch();
 
 // * Обрабатываем, счётчик смертей. * //
 Room.Damage.OnDeath.Add(function (p) {
- if (StateProp.Value == MockModeStateValue) return; Room.Spawns.GetContext(p).Spawn(); 
+ if (StateProp.Value == MockModeStateValue) 
+  Room.Spawns.GetContext(p).Spawn(); 
+ return;
+}
 ++p.Properties.Deaths.Value;
 });
 
@@ -151,7 +154,6 @@ case MockModeStateValue:
 case End0fMatchStateValue: 
   START_VOTE();
  if (!Room.GameMode.Parameters.GetBool('MapRotation')) RestartGame();
- if (Room.GameMode.Parameters.GetBool('LoadRandomMap')) LoadRandomMap();
  break;
 	}
 });
@@ -269,11 +271,7 @@ function START_VOTE() {
 function RestartGame() {
  Room.Game.RestartGame();
 }
-function LoadRandomMap() {
- Room.Map.LoadRandomMap();
-}
-	
-	
+		
 function SpawnTeams() {
   for (const t of Room.Teams) Room.Spawns.GetContext(t).Spawn();
 }
