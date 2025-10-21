@@ -528,6 +528,25 @@ if (Player.Team === null) continue; // В не команды, не спавни
 Room.Spawns.GetContext(BlueTeam).Spawn();
   }
 }
+
+function CreateNewTeam(TeamName, TeamDisplayName, TeamColor, TeamSpawnPointGroup, TeamBuildBlocksSet) {
+ Room.Teams.Add(TeamName, TeamDisplayName, TeamColor);
+let NewTeam = Room.Teams.Get(TeamName);
+ NewTeam.Spawns.SpawnPointsGroups.Add(TeamSpawnPointGroup);
+ NewTeam.Build.BlocksSet.Value = TeamBuildBlocksSet;
+return NewTeam;
+}
+function CreateNewArea(AreaName, AreaTags, AreaEnable, AreaOnEnter, AreaOnExit, AreaViewName, AreaViewColor, AreaViewEnable) {
+ let NewArea = Room.AreaPlayerTriggerService.Get(AreaName);
+  NewArea.Tags = AreaTags;
+  NewArea.Enable = AreaEnable;
+  NewArea.OnEnter.Add(AreaOnEnter);
+  NewArea.OnExit.Add(AreaOnExit);
+let NewAreaView = Room.AreaViewService.GetContext().Get(AreaViewName);
+  NewAreaView.Color = AreaViewColor;
+  NewAreaView.Tags = AreaTags;
+  NewAreaView.Enable = AreaViewEnable;
+}
 function GiveBanPlayer(p) {
 	if (!p) return;
 	if (!p.Team) return;
@@ -581,7 +600,6 @@ function GetPlayerInformation(p) {
 		AllBlocks: p.Build.BlocksSet.Value === Room.BuildBlocksSet.AllClear
         }
 }
-
 
 ScoresTimer.RestartLoop(IntervalTimer_SCORES);
 
