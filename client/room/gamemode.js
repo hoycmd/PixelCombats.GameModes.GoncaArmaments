@@ -112,8 +112,20 @@ Room.Damage.OnDeath.Add(function (p) {
  if (StateProp.Value != RazmincaStateValue) {
 ++p.Properties.Deaths.Value;
 p.Team.Properties.Get('Deaths').Value--;
- 
+   }
+});
 
+// * За каждую смерть игрока, отнимаем смерть в команде. * //
+Room.Properties.OnPlayerProperty.Add(function (Context, Value) {
+ if (Value.Name !== 'Deaths') return;
+ if (Context.Player.Team == null) return;
+    Context.Player.Team.Properties.Get('Deaths').Value--;
+// * Если в команде, числа занулились - то завершаем матч. * //
+Room.Properties.OnTeamProperty.Add(function (Context, Value) {
+  if (Value.Name !== 'Deaths') return;								    
+  if (Value.Value <= 0) SetEnd0fMatch();
+});
+ 
 // * Таймер выдачи очков, за время в матче. * //
 ScoresTimer.OnTimer.Add(function () {
 for (const p of Players.All) {
@@ -187,8 +199,8 @@ function SetGameMode() {
 
  Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'Deaths' }; 
  Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'Deaths' };
- Room.Teams.Get('Red').Properties.Get('Deaths').Value = maxDeaths;
- Room.Teams.Get('Blue').Properties.Get('Deaths').Value = maxDeaths;
+ Room.Teams.Get('Red').Properties.Get('Deaths').Value = MaxDeaths;
+ Room.Teams.Get('Blue').Properties.Get('Deaths').Value = MaxDeaths;
 	 
  Room.Spawns.GetContext().Despawn();
  Room.TeamsBalancer.BalanceTeams();	
