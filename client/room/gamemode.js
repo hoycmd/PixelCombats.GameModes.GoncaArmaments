@@ -116,11 +116,14 @@ Room.Damage.OnDeath.Add(function (p) {
 
 // * За каждую смерть игрока, отнимаем смерть в команде. * //
 Room.Properties.OnPlayerProperty.Add(function (c,v) {
- if (v.Name !== 'Deaths') if (c.Player.Team == null) c.Player.Team.Properties.Get('Deaths').Value--;
+ if (v.Name !== 'Deaths') return;
+ if (c.Player.Team == null) return;
+ c.Player.Team.Properties.Get('Deaths').Value--;
 });
 // * Если в команде, числа занулились - то завершаем матч. * //
 Room.Properties.OnTeamProperty.Add(function (c,v) {
-  if (v.Name !== 'Deaths') if (v.Value == 0) SetEnd0fMatch();
+  if (v.Name !== 'Deaths') return;
+  if (v.Value == 0) SetEnd0fMatch();
 });
 
 // * Таймер выдачи очков, за время в матче. * //
