@@ -63,7 +63,7 @@ Room.Teams.OnPlayerChangeTeam.Add(function (p) { p.Spawns.Spawn()});
 Room.LeaderBoard.PlayerLeaderBoardValues = [
   new Basic.DisplayValueHeader('Kills', '\nK', '\nK'),
   new Basic.DisplayValueHeader('Deaths', '\nD', '\nD'),
-  new Basic.DisplayValueHeader('Spawn', '\nSP', '\nSP'),
+  new Basic.DisplayValueHeader('Spawns', '\nSP', '\nSP'),
   new Basic.DisplayValueHeader('Scores', '\nSC', '\nSC'),
   new Basic.DisplayValueHeader('RoomID', '\nRID', '\nRID')
 ];
@@ -90,7 +90,6 @@ Room.Spawns.OnSpawn.Add(function (p) {
 
 // * Обрабатываем, счётчик киллов. * //
 Room.Damage.OnKill.Add(function (p,k) {
-if (StateProp.Value != RazmincaStateValue && StateProp.Value == MockModeStateValue && StateProp.Value == GameStateValue) {
  if (k.Team != null && k.Team != p.Team) { 
  ++p.Properties.Kills.Value;
  p.Properties.Scores.Value += ScoresKILL;
@@ -107,7 +106,6 @@ if (p.Properties.Kills.Value === 35) { p.Properties.Scores.Value += 40, p.PopUp(
 if (p.Properties.Kills.Value === 40) { p.contextedProperties.SkinType.Value = 2, p.PopUp('SKIN ZEK\nВы получили: SKIN ZEK!'); }
 if (p.Properties.Kills.Value === 45) { p.Properties.Kills.Value += 10, p.PopUp('10 KILL\nВы получили: 10 KILL!'); }
 if (p.Properties.Kills.Value === 50) SetEnd0fMatch();
-				   }
 });
 
 // * Обрабатываем, счётчик смертей. * //
