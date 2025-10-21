@@ -3,6 +3,8 @@ import * as Basic from 'pixel_combats/basic';
 import * as Room from 'pixel_combats/room';
 
 try {
+
+Room.PopupsEnable = true;
 	
 // * Константы таймеров и очков, команд. * //
 const GameModeTime = 1801;
@@ -109,10 +111,8 @@ if (p.Properties.Kills.Value === 50) SetEnd0fMatch();
 // * Обрабатываем, счётчик смертей. * //
 Room.Damage.OnDeath.Add(function (p) {
  if (StateProp.Value == MockModeStateValue) Room.Spawns.GetContext(p).Spawn(); return; 
- if (StateProp.Value != RazmincaStateValue) {
+ if (StateProp.Value != RazmincaStateValue) 
 ++p.Properties.Deaths.Value;
-p.Team.Properties.Get('Deaths').Value--;
-	}
 });
 
 // * За каждую смерть игрока, отнимаем смерть в команде. * //
