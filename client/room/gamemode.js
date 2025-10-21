@@ -148,6 +148,7 @@ case MockModeStateValue:
  break;
 case End0fMatchStateValue: 
   START_VOTE();
+ if (!Room.GameMode.Parameters.GetBool('MapRotation')) RestartGame();
  break;
 	}
 });
@@ -254,13 +255,17 @@ function OnVoteResult(v) {
   Room.NewGame.RestartGame(v.Result);
 }
 Room.NewGameVote.OnResult.Add(OnVoteResult);
-if (!Room.GameMode.Parameters.GetBool('MapRotation')) Room.Game.RestartGame();
+	
 function START_VOTE() {
  Room.NewGameVote.Start({
 	 Variants: [{ MapId: 0 }],
 	 Timer: VoteTime,
  }, MapRotation ? 3 : 0);
 } 
+
+function RestartGame() {
+ Room.Game.RestartGame();
+}
 	
 if (Room.GameMode.Parameters.GetBool('LoadRandomMap')) Room.Map.LoadRandomMap();
 	
