@@ -161,7 +161,6 @@ case End0fMatchStateValue:
 // * Дублируем первое, игровое состояние матча. * //
 SetWaitingMode();
 
-
 // * Состояние, игровых матчей. * //
 function SetWaitingMode() {
  StateProp.Value = WaitingStateValue;
@@ -189,97 +188,66 @@ function SetRazminca() {
  SpawnTeams();
 }
 function SetGameMode() {
- StateProp.Value = GameModeStateValue;
- Room.Ui.GetContext().Hint.Value = 'Матч начался.Победите, в этой схватке!';
-if (Room.GameMode.Parameters.GetBool('En')) Room.Ui.GetContext().Hint.Value = '\nMatch begun!';
- SpawnTeams();
+ StateProp.Value = GameStateValue;
+ Room.Ui.GetContext().Hint.Value = 'Матч начался.\nПобедите, в этом раунде!';
+
+ Room.Inventory.GetContext().Main.Value = false;
+ Room.Inventory.GetContext().Secondary.Value = false;
+ Room.Inventory.GetContext().Melee.Value = true;
+ Room.Inventory.GetContext().Explosive.Value = false;
+ Room.Inventory.GetContext().Build.Value = false;
+
+ Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'Deaths' }; 
+ Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'Deaths' };
+ Room.Teams.Get('Red').Properties.Get('Deaths').Value = maxDeaths;
+ Room.Teams.Get('Blue').Properties.Get('Deaths').Value = maxDeaths;
+
+ Room.Spawns.GetContext().Despawn();
+ Room.TeamsBalancer.BalanceTeams();	
  MainTimer.Restart(GameModeTime);
- Room.TeamsBalancer.BalanceTeams();
-
-var inventory = Room.Inventory.GetContext();
- inventory.Main.Value = false;
- inventory.Secondary.Value = false;
- inventory.Melee.Value = true;
- inventory.Explosive.Value = false;
- inventory.Build.Value = false;
-
-Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'Deaths' }; 
-Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'Deaths' };
- Room.Teams.Get('Red').Properties.Get('Deaths').Value = MaxDeaths;
-Room.Teams.Get('Blue').Properties.Get('Deaths').Value = MaxDeaths;
+ SpawnTeams();
 }
 function SetEnd0fMatch() {
- ScoresTimer.Stop(); 
+ScoresTimer.Stop(); 
 const leaderboard = Room.LeaderBoard.GetTeams();
 if (leaderboard[0].Weight !== leaderboard[1].Weight) {
-	// прикол матча в конце катки
-   SetMockMode(leaderboard[0].Team, leaderboard[1].Team);
-	// очки для победивших
-     for (const WinPlayer of leaderboard[0].Team.Players) {
-	WinPlayer.Properties.Scores.Value += Winner_SCORES;
-	WinPlayer.Properties.Kills.Value += 10;
-} 
-  }
-	else {
-		SetEnd0fMatch_EndMode();
-	}
+ SetMockMode(leaderboard[0].Team, leaderboard[1].Team);
+ for (const WinP of leaderboard[0].Team.Players) { WinP.Properties.Scores.Value += ScoresWINNER; } 
+ for (const LosP of leaberboard[1].Team.Players) { LosP.Properties.Scores.Value += ScoresLOOSER; }
+} else SetEnd0fMatch_EndMode();	
 }
 function SetMockMode(winners, loosers) {
- StateProp.Value = MockModeStateValue; // Задаём, название для - режима.
- MainTimer.Restart(MockModeTime); // Таймер, режима.
- ScoresTimer.Stop(); // Останавливаем таймер.
- Room.Ui.GetContext(winners).Hint.Value = '\nПобеда.'; // Подсказка, для - победивших.
- Room.Ui.GetContext(loosers).Hint.Value = '\nПоражение.'; // Подсказка, для - проигравших.
-if (Room.GameMode.Parameters.GetBool('End')) {
- Room.Ui.GetContext(winners).Hint.Value = '\nVictory, we punish - the losers!))';
-}
-if (Room.GameMode.Parameters.GetBool('End')) {
- Room.Ui.GetContext(loosers).Hint.Value = '\nWe lost, the winners - punish us!';
-}	
-  Room.contextedProperties.GetContext(loosers).SkinType.Value = 1;
-  Room.contextedProperties.GetContext(winners).SkinType.Value = 2;
-  Room.Spawns.GetContext(loosers).Spawn(); // Заспавнить проигравших, на базу.
-  Room.Spawns.GetContext(loosers).RespawnTime.Value = 0; // Нулевой спавн, для проигравших.
-	
-  Room.Inventory.GetContext(loosers).Main.Value = false;
-  Room.Inventory.GetContext(loosers).Secondary.Value = false;
-  Room.Inventory.GetContext(loosers).Melee.Value = false;
-  Room.Inventory.GetContext(loosers).Explosive.Value = false;
-  Room.Inventory.GetContext(loosers).Build.Value = false;
-  Room.Inventory.GetContext(winners).Main.Value = true;
-  Room.Inventory.GetContext(winners).MainInfinity.Value = true;
-  Room.Inventory.GetContext(winners).Secondary.Value = true;
-  Room.Inventory.GetContext(winners).SecondaryInfinity.Value = true;
-  Room.Inventory.GetContext(winners).Melee.Value = true;
-  Room.Inventory.GetContext(winners).Explosive.Value = true;
-  Room.Inventory.GetContext(winners).ExplosiveInfinity.Value = true;
-  Room.Inventory.GetContext(winners).Build.Value = true;
-  Room.Inventory.GetContext(winners).BuildInfinity.Value = true;
+ StateProp.Value = MockModeStateValue;  // * Дублируем, основное имя режиму. * //
+ MainTimer.Restart(MockModeTime);   // * Включаем основной таймер, перезагрузки режима. * //
+ ScoresTimer.Stop();   // * Остонавливаем таймер очков. * //
+ Room.Ui.GetContext(winners).Hint.Value = 'Победа.\nВы выиграли, в этой битве!';   // * Подска, для выигрывших раунд. * //
+ Room.Ui.GetContext(loosers).Hint.Value = 'Поражение.\nМы проиграли, этот матч!';    // * Подска, для проигравших матч. * //	
+ Room.contextedProperties.GetContext(winners).SkinType.Value = 2; // * Задаём обработанный скин, для выигрывших игроков. * //
+ Room.contextedProperties.GetContext(looders).SkinType.Value = 1; // * Задаём дублированный скин проигравших, игроков. * //
+ Room.Spawns.GetContext(loosers).Spawn(); // * Респавн, для лузеров. * //
+ Room.Spawns.GetContext(loosers).RespawnTime.Value = 0; // * Таймер респавна игроков, для проигравших. * //
 
-// Задаём, табы для loosers&&winners:
-if (winners.Team == BlueTeam) {
- redTeam.Properties.Get('TextLoosersRed').Value = TextLoosersRed;
- blueTeam.Properties.Get('TextWinnersBlue').Value = TextWinnersBlue;
- Room.Ui.GetContext(loosers).TeamProp1.Value = { Team: 'Red', Prop: 'TextLoosersRedLET' };
- Room.Ui.GetContext(winners).TeamProp2.Value = { Team: 'Blue', Prop: 'TextWinnersBlueLET' };
-}
+// * Обработчик инвентаря, для проигравших. * //
+ Room.Inventory.GetContext(loosers).Main.Value = false;
+ Room.Inventory.GetContext(loosers).Secondary.Value = false;
+ Room.Inventory.GetContext(loosers).Melee.Value = false;
+ Room.Inventory.GetContext(loosers).Explosive.Value = false;
+ Room.Inventory.GetContext(loosers).Build.Value = false;
 
-if (winners.Team == RedTeam) {
- redTeam.Properties.Get('TextWinnersRedLET').Value = TextWinnersRed;
- blueTeam.Properties.Get('TextLoosersBlueLET').Value = TextLoosersBlue;
- Room.Ui.GetContext(winners).TeamProp1.Value = { Team: 'Red', Prop: 'TextWinnersRedLET' };
- Room.Ui.GetContext(loosers).TeamProp2.Value = { Team: 'Blue', Prop: 'TextLoosersBlueLET' };
-  }
-MeleeTrigger.Enable = false;
- SecondaryTrigger.Enable = false;
- MainTrigger.Enable = false;
- Hp10Trigger.Enable = false;
- Hp100Trigger.Enable = false;
+// * Дублируем, инвентарь выигрывшим. * //
+ Room.Inventory.GetContext(winners).Main.Value = true;
+ Room.Inventory.GetContext(winners).MainInfinity.Value = true;
+ Room.Inventory.GetContext(winners).Secondary.Value = true;
+ Room.Inventory.GetContext(winners).SecondaryInfinity.Value = true;
+ Room.Inventory.GetContext(winners).Melee.Value = true;
+ Room.Inventory.GetContext(winners).Explosive.Value = true;
+ Room.Inventory.GetContext(winners).ExplosiveInfinity.Value = true;
+ Room.Inventory.GetContext(winners).Build.Value = true;
+ Room.Inventory.GetContext(winners).BuildInfinity.Value = true;
 }
 function SetEnd0fMatch_EndMode() {
 StateProp.Value = End0fMatchStateValue;
 Room.Ui.GetContext().Hint.Value = '<b>BY: ƬＮ丅 ｌivɆ (ᵒᶠᶠⁱᶜⁱᵃˡ)\nКонец, матча!</b>';
- if (Room.GameMode.Parameters.GetBool('End')) Room.Ui.GetContext().Hint.Value = '\n<b>The end of, the match!</b>';
 MainTimer.Restart(End0fMatchTime);
 Room.Game.GameOver(Room.LeaderBoard.GetTeams());
 Room.Spawns.GetContext().Enable = false;
@@ -290,7 +258,7 @@ function START_VOTE() {
 	 Variants: [{ MapId: 0 }],
 	 Timer: VoteTime,
  }, MAP_ROTATION ? 3 : 0);
-} 
+} else Room.Game.RestartGame();
 	
 function SpawnTeams() {
   for (const Player of Room.Players.All) {
