@@ -19,7 +19,7 @@ const ScoresKILL = 20;
 const ScoresINTERVALtime = 40;	
 	
 // * Константы, для табов - в разных прямоугольниках. * //
-const maxKills = 120;
+//const maxDeaths = Room.Players.MaxCount * 5;
 const TextBlue = '\n<b><size=220><color=#0d177c>ß</color><color=#03088c>l</color><color=#0607b0>ᴜ</color><color=#1621ae>E</color></size></b>';
 const TextRed = '\n<b><size=220><color=#962605>尺</color><color=#9a040c>ᴇ</color><color=#b8110b>D</color></size></b>';
 const TextLoosersBlue = '\n<b><size=220><color=#0303a4>ß</color><color=#0b2cc0>l</color><color=#0903af>ᴜ</color><color=#2a00de>E</color><color=#ce0206> </color><color=#0735bb>Ｇ</color><color=#1c15b5>ᴀ</color><color=#1b28d2>爪</color><color=#0e24b8>Ɇ</color><color=#d22c0d> </color><color=#0b06bc>Ｏ</color><color=#0021c3>ᴠ</color><color=#094ed2>E</color><color=#1c0be4>尺</color><color=#1234c5>!</color></size></b>';
@@ -198,10 +198,10 @@ function SetGameMode() {
  Room.Inventory.GetContext().Explosive.Value = false;
  Room.Inventory.GetContext().Build.Value = false;
 
- Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'Deaths' }; 
- Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'Deaths' };
- Room.Teams.Get('Red').Properties.Get('Kills').Value = maxKills;
- Room.Teams.Get('Blue').Properties.Get('Kills').Value = maxKills;
+ Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'Kills' }; 
+ Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'Kills' };
+ Room.Teams.Get('Red').Properties.Get('Kills').Value = 120;
+ Room.Teams.Get('Blue').Properties.Get('Kills').Value = 120;
 	 
  Room.Spawns.GetContext().Despawn();
  Room.TeamsBalancer.BalanceTeams();	
