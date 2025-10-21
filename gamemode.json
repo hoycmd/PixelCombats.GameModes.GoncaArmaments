@@ -1,6 +1,6 @@
 {
- "Name": "<b><color=Green>Ｇo̷ɴｋ₳</a> <i><a>ВоØр匕жＥнIя|</a></i> <color=Yellow>ᴮʸ:</a> <color=Red>ƬＮƬ ▶</a></b>",
- "Description": "<b><color=Green>Ｇo̷ɴｋ₳</a> <a>ВоØр匕жＥнIя</a>  <i><color=Yellow>- The winner is the team that scores more kills than the enemy team!</a> <color=Red>&& Побеждает та команда, которая набирёт, больше киллов, чем у вражеской команды!</a></i></b>",
+ "Name": "<b><color=#0095B6>Гонка вооружения</a></b>",
+ "Description": "<b>\nДве команды сражаются за победу, но за каждые 5 <color=#0095B6>киллов</a> выпадает оружие...</b>",
   "MapFilter": {
    "IsBlank": false,
   },
