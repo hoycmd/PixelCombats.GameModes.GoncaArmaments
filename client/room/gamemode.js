@@ -112,20 +112,20 @@ Room.Damage.OnDeath.Add(function (p) {
 
 // * За каждую смерть игрока, отнимаем смерть в команде. * //
 Room.Properties.OnPlayerProperty.Add(function (c,v) {
- if (v.Name !== 'Deaths') return;
- if (c.Player.Team == null) c.Player.Team.Properties.Get('Deaths').Value--;
+ if (v.Name !== 'Deaths') if (c.Player.Team == null) c.Player.Team.Properties.Get('Deaths').Value--;
 });
 // * Если в команде, числа занулились - то завершаем матч. * //
 Room.Properties.OnTeamProperty.Add(function (c,v) {
   if (v.Name !== 'Deaths') if (v.Value == 0) SetEnd0fMatch();
 });
-		
-// Переключение, таймеров:
-ScoresTimer.OnTimer.Add(function() {
-  for (const Player of Room.Players.All) {
-if (Player.Team == null) continue; 
-   Player.Properties.Scores.Value += Timer_SCORES;
+
+// * Таймер выдачи очков, за время в матче. * //
+ScoresTimer.OnTimer.Add(function () {
+for (const p of Players.All) {
+  if (p.Team == null) continue; 
+p.Properties.Scores.Value += ScoresTIMER;
 	}
+ScoresTimer.Restart(ScoresTimer);
 });
 
 globalThis.Room = Room;
