@@ -8,7 +8,7 @@ try {
 const GameModeTime = 1801;
 const WaitingPlayersTime = 10;
 const End0fMatchTime = 11;
-const RazmincaMatchTime = 51;
+const RazmincaTime = 51;
 const MockModeTime = 21;
 const ScoresTimer = 6;
 const ScoresTIMER = 5;
@@ -28,7 +28,7 @@ const TextWinnersBlue = '\n<b><size=220><color=#0303a4>ß</color><color=#0b2cc0>
 	
 // * Имена констант, в разных - матчах. * //
 const WaitingStateValue = 'Waiting';
-const RazmincMatchStateValue = 'RazmincaMatch';
+const RazmincStateValue = 'Razminca';
 const GameStateValue = 'Game';
 const MockModeStateValue = 'MockMode';
 const End0fMatchStateValue = 'End0fMatch';	
@@ -169,20 +169,20 @@ function SetWaitingMode() {
  Room.Ui.GetContext().Hint.Value = '<b>By: ƬＮ丅 ｌivɆ (ᵒᶠᶠⁱᶜⁱᵃˡ) \nОжидание, игроков...</b>';
  MainTimer.Restart(WaitingPlayersTime);
 }
-function SetRazmincaMatch() {
- StateProp.Value = RazmincaMatchStateValue;
+function SetRazminca() {
+ StateProp.Value = RazmincaStateValue;
  Room.Ui.GetContext().Hint.Value = '\nРазминка.Потренируйтесь, перед матчем!';
 if (Room.GameMode.Parameters.GetBool('En')) Room.Ui.GetContext().Hint.Value = '\nWarmup.';
  Room.Spawns.GetContext().Enable = true; 
  SpawnTeams();
- MainTimer.Restart(RazmincaMatchTime);
+ MainTimer.Restart(RazmincaTime);
  ScoresTimer.Stop();
 
-MeleeTrigger.Enable = true;
- SecondaryTrigger.Enable = true;
- MainTrigger.Enable = true;
- Hp10Trigger.Enable = true;
- Hp100Trigger.Enable = true;
+//MeleeTrigger.Enable = true;
+ //SecondaryTrigger.Enable = true;
+ //MainTrigger.Enable = true;
+// Hp10Trigger.Enable = true;
+// Hp100Trigger.Enable = true;
 	
 var inventory = Room.Inventory.GetContext();
  inventory.Main.Value = true;
