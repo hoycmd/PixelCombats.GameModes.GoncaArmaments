@@ -184,12 +184,6 @@ function SetRazminca() {
  redTeam.Properties.Get('Text').Value = TextRed;
  blueTeam.Properties.Get('Text').Value = TextBlue;
 
-//MeleeTrigger.Enable = true;
-//SecondaryTrigger.Enable = true;
-//MainTrigger.Enable = true;
-//Hp10Trigger.Enable = true;
-//Hp100Trigger.Enable = true;
-
  Room.Spawns.GetContext().Enable = true; 
  MainTimer.Restart(RazmincaTime);
  SpawnTeams();
