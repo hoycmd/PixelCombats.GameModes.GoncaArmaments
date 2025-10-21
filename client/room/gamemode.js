@@ -147,7 +147,7 @@ case WaitingStateValue:
 case RazmincaStateValue:
   SetGameMode();
  break;
-case GameModeStateValue:
+case GameStateValue:
   SetEnd0fMatch();
  break;
 case MockModeStateValue:
