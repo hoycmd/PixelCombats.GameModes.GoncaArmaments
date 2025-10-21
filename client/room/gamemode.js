@@ -8,7 +8,7 @@ try {
 const GameModeTime = 1801;
 const WaitingPlayersTime = 10;
 const End0fMatchTime = 11;
-const RazmincaTime = 51;
+const RazmincaMatchTime = 51;
 const MockModeTime = 21;
 const ScoresTimer = 6;
 const ScoresTIMER = 5;
@@ -18,7 +18,7 @@ const ScoresKILL = 20;
 const ScoresINTERVALtime = 40;	
 	
 // * Константы, для табов - в разных прямоугольниках. * //
-const maxDeaths = Players.MaxCount * ScoresTIMER;
+const maxDeaths = Room.Players.MaxCount * ScoresTIMER;
 const TextBlue = '\n<b><size=220><color=#0d177c>ß</color><color=#03088c>l</color><color=#0607b0>ᴜ</color><color=#1621ae>E</color></size></b>';
 const TextRed = '\n<b><size=220><color=#962605>尺</color><color=#9a040c>ᴇ</color><color=#b8110b>D</color></size></b>';
 const TextLoosersBlue = '\n<b><size=220><color=#0303a4>ß</color><color=#0b2cc0>l</color><color=#0903af>ᴜ</color><color=#2a00de>E</color><color=#ce0206> </color><color=#0735bb>Ｇ</color><color=#1c15b5>ᴀ</color><color=#1b28d2>爪</color><color=#0e24b8>Ɇ</color><color=#d22c0d> </color><color=#0b06bc>Ｏ</color><color=#0021c3>ᴠ</color><color=#094ed2>E</color><color=#1c0be4>尺</color><color=#1234c5>!</color></size></b>';
@@ -28,7 +28,7 @@ const TextWinnersBlue = '\n<b><size=220><color=#0303a4>ß</color><color=#0b2cc0>
 	
 // * Имена констант, в разных - матчах. * //
 const WaitingStateValue = 'Waiting';
-const RazmincaStateValue = 'Razminca';
+const RazmincMatchStateValue = 'RazmincaMatch';
 const GameStateValue = 'Game';
 const MockModeStateValue = 'MockMode';
 const End0fMatchStateValue = 'End0fMatch';	
@@ -130,11 +130,11 @@ p.Properties.Scores.Value += ScoresTIMER;
 ScoresTimer.Restart(ScoresTimer);
 });
 
-// Переключение, режимов:
-MainTimer.OnTimer.Add(function() {
+// * Основной таймер, переключения игровых - режимов матча. * //
+MainTimer.OnTimer.Add(function () {
  switch (StateProp.Value) {
 case WaitingStateValue:
-  SetRazminca();
+  SetRazmincaMatch();
  break;
 case RazmincaStateValue:
   SetGameMode();
@@ -151,6 +151,9 @@ case End0fMatchStateValue:
 	}
 });
 
+// * Дублируем первое, игровое состояние матча. * //
+SetWaitingMode();
+	
 globalThis.Room = Room;
 globalThis.Basic = Basic;
 
@@ -363,9 +366,6 @@ var Hp100Trigger = Room.AreaViewService.GetContext().Get('Hp100Trigger');
 Hp100Trigger.Tags = ['MaxHp100TriggerPlus'];
 Hp100Trigger.Color = new Basic.Color(0.5, 0, 0, 0);
 
-// 1 игровое, состояние:
-SetWaitingMode();
-
 // Ожидание, игры:
 function SetWaitingMode() {
  StateProp.Value = WaitingStateValue;
@@ -374,13 +374,13 @@ function SetWaitingMode() {
 if (Room.GameMode.Parameters.GetBool('En')) Room.Ui.GetContext().Hint.Value = '\n<b>Waiting, players...</b>';
  MainTimer.Restart(WaitingPlayersTime);
 }
-function SetRazminca() {
- StateProp.Value = RazmincaStateValue;
+function SetRazmincaMatch() {
+ StateProp.Value = RazmincaMatchStateValue;
  Room.Ui.GetContext().Hint.Value = '\nРазминка.Потренируйтесь, перед матчем!';
 if (Room.GameMode.Parameters.GetBool('En')) Room.Ui.GetContext().Hint.Value = '\nWarmup.';
  Room.Spawns.GetContext().Enable = true; 
  SpawnTeams();
- MainTimer.Restart(RazmincaTime);
+ MainTimer.Restart(RazmincaMatchTime);
  ScoresTimer.Stop();
 
 MeleeTrigger.Enable = true;
