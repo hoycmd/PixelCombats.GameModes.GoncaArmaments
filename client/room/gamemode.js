@@ -261,6 +261,7 @@ function START_VOTE() {
 	 Timer: VoteTime,
  }, MAP_ROTATION ? 3 : 0);
 } 
+if (!Room.GameMode.Parameters.GetBool('MapRotation')) Room.Game.RestartGame();
 	
 function SpawnTeams() {
   for (const t of Room.Teams) Room.Spawns.GetContext(t).Spawn();
