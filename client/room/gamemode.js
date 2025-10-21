@@ -171,12 +171,6 @@ function SetWaitingMode() {
 }
 function SetRazminca() {
  StateProp.Value = RazmincaStateValue;
-	
- Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'Text' }; 
- Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'Text' };
- redTeam.Properties.Get('Text').Value = TextRed;
- blueTeam.Properties.Get('Text').Value = TextBlue;
-
  Room.Ui.GetContext().Hint.Value = 'Разминка.\nПотренируйтесь, перед матчем!';
 
  Room.Inventory.GetContext().Main.Value = true;
@@ -184,6 +178,11 @@ function SetRazminca() {
  Room.Inventory.GetContext().Melee.Value = true;
  Room.Inventory.GetContext().Explosive.Value = true;
  Room.Inventory.GetContext().Build.Value = false;
+
+ Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'Text' }; 
+ Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'Text' };
+ Room.Teams.Get('Red').Properties.Get('Text').Value = TextRed;
+ Room.Teams.Get('Blue').Properties.Get('Text').Value = TextBlue;
 
  Room.Spawns.GetContext().Enable = true; 
  MainTimer.Restart(RazmincaTime);
