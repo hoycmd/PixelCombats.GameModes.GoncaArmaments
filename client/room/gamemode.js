@@ -83,8 +83,7 @@ Room.Spawns.OnSpawn.Add(function (p) { ++p.Properties.Spawns.Value; });
 
 // * Обрабатываем, счётчик киллов. * //
 Room.Damage.OnKill.Add(function (p,k) {
-if (StateProp.Value != RazmincaStateValue) { 
-if (StateProp.Value == MockModeStateValue) {
+if (StateProp.Value != RazmincaStateValue || StateProp.Value == MockModeStateValue) {
 if (p.id !== k.id) { ++p.Properties.Kills.Value;
  p.Properties.Scores.Value += ScoresKILL;
  p.Team.Properties.Get('Deaths').Value += 1;
@@ -96,10 +95,9 @@ if (p.Properties.Kills.Value === 20) { p.Inventory.MainInfinity.Value = true; }
 if (p.Properties.Kills.Value === 25) { p.contextedProperties.MaxHp.Value += 500, p.PopUp('500 HP\nВы получили: 500 HP!'); }
 if (p.Properties.Kills.Value === 30) { p.contextedProperties.MaxHp.Value += 1000, p.PopUp('1000 HP\nВы получили: 1000 HP!'); }
 if (p.Properties.Kills.Value === 35) { p.Properties.Scores.Value += 40, p.PopUp('40 SCORES\nВы получили: 40 SCORES!'); }
-if (p.Properties.Kills.Value === 40) { p.contextedProperties.SkinType.Value = 2 p.PopUp('SKIN ZEK\nВы получили: SKIN ZEK!'); }
+if (p.Properties.Kills.Value === 40) { p.contextedProperties.SkinType.Value = 2, p.PopUp('SKIN ZEK\nВы получили: SKIN ZEK!'); }
 if (p.Properties.Kills.Value === 45) { p.Properties.Kills.Value += 10, p.PopUp('10 KILL\nВы получили: 10 KILL!'); }
 if (p.Properties.Kills.Value === 50) SetEnd0fMatch();
-	}
 				   }
    }
 });
