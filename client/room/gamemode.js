@@ -10,6 +10,7 @@ const WaitingPlayersTime = 10;
 const End0fMatchTime = 11;
 const RazmincaTime = 51;
 const MockModeTime = 21;
+const VoteTime = 10;
 const ScoresTimer = 6;
 const ScoresTIMER = 5;
 const ScoresWINNER = 30;
@@ -253,6 +254,7 @@ Room.Game.GameOver(Room.LeaderBoard.GetTeams());
 Room.Spawns.GetContext().Enable = false;
 Room.Spawns.GetContext().Despawn();
 }
+if (Room.GameMode.Parameters.GetBool('LoadRandomMap')) Room.Map.LoadRandomMap();
 function START_VOTE() {
  Room.NewGameVote.Start({
 	 Variants: [{ MapId: 0 }],
