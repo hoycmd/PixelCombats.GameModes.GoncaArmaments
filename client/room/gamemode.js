@@ -111,7 +111,6 @@ Room.Damage.OnDeath.Add(function (p) {
  if (StateProp.Value == MockModeStateValue) Room.Spawns.GetContext(p).Spawn(); return; 
  if (StateProp.Value != RazmincaStateValue) {
 ++p.Properties.Deaths.Value;
-p.Team.Properties.Get('Deaths').Value--;
    }
 });
 
