@@ -290,6 +290,8 @@ function RestartGame() {
 function SpawnTeams() {
   for (const t of Room.Teams) Room.Spawns.GetContext(t).Spawn();
 }
+
+ScoresTimer.RestartLoop(ScoresINTERVALtime);
 	
 globalThis.Room = Room;
 globalThis.Basic = Basic;
@@ -574,8 +576,6 @@ function GetPlayerInformation(p) {
 		AllBlocks: p.Build.BlocksSet.Value === Room.BuildBlocksSet.AllClear
         }
 } 
-
-ScoresTimer.RestartLoop(ScoresINTERVALtime);
 
 } catch (e) {
         Room.Players.All.forEach(msg => {
