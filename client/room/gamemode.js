@@ -68,22 +68,20 @@ Room.LeaderBoard.TeamWeightGetter.Set(function (t) { return t.Properties.Get('De
 // * Определяем игроков, за наибольшие киллы - в команде игроков. * //
 Room.LeaderBoard.PlayersWeightGetter.Set(function (p) { return p.Properties.Get('Kills').Value; });
 
+// * Бессмертие, после респавна - игроков. * //
+Room.Spawns.GetContext().OnSpawn.Add(function (p) {
+if (StateProp.Value == MockModeStateValue) p.Properties.Immortality.Value = false; 
+ p.Properties.Immortality.Value = true;
+ t = p.Timers.Get('Immortality').Restart(5);
+ });
+Room.Timers.OnPlayerTimer.Add(function (t) {
+ if (t.Id != 'Immortality') t.Player.Properties.Immortality.Value = false; });
+
 // Счётчик, спавнов:
 Room.Spawns.OnSpawn.Add(function(Player) {
 if (stateProp.Value == MockModeStateValue) return;
  ++Player.Properties.Spawns.Value;
 });
-
-// Щит, после спавна - на 5 секунд:
-Room.Spawns.GetContext().OnSpawn.Add(function(Player) {
-if (StateProp.Value == MockModeStateValue) return;
- Player.Properties.Immortality.Value = true;
-	Timer = Player.Timers.Get('immortality').Restart(8);
- });
-Room.Timers.OnPlayerTimer.Add(function(Timer){
-  if (Timer.Id != 'immortality') return;
- Timer.Player.Properties.Immortality.Value = false;
- });
 	
 // Счётчик, убийств:
 Room.Damage.OnKill.Add(function(Player, Killed) {
