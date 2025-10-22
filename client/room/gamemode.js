@@ -69,6 +69,7 @@ if (Room.Players.All.length <= 1) {
 } 
 if (Room.Players.All.length >= 1) {
   SetWaitingMode();
+  }
 }
  });
 // * Респавним игрока - после входа в команду. * //
