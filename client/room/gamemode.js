@@ -63,6 +63,11 @@ Room.Ui.GetContext().MainTimerId.Value = MainTimer.Id;   // * Индификат
 Room.Teams.OnRequestJoinTeam.Add(function (p,t) { 
  t.Add(p); 
 p.Properties.Get('RoomID').Value = p.IdInRoom;
+if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
+if (Room.Players.All.length <= 1) {
+ Room.Ui.GetContext().Hint.Value = '\nДля начала, необходимо кол-во игроков: 2';
+  } else SetWaitingMode();
+}
  });
 // * Респавним игрока - после входа в команду. * //
 Room.Teams.OnPlayerChangeTeam.Add(function (p) { p.Spawns.Spawn()});
@@ -148,14 +153,11 @@ ScoresTimer.Restart(ScoresTimer);
 // * Основной таймер, переключения игровых - режимов матча. * //
 MainTimer.OnTimer.Add(function () {
  switch (StateProp.Value) {
+if (!Room.GameMode.Parameters.GetBool('Waiting2Player')) {
 case WaitingStateValue:
-if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
-if (Room.Players.All.length <= 1) {
- Room.Ui.GetContext().Hint.Value = '\nДля начала, необходимо кол-во игроков: 2';
-  } else SetRazmincaMatch();
-}
-SetRazmincaMatch();
+ SetRazmincaMatch();
 break;
+}
 case RazmincaMatchStateValue:
   SetGameMode();
  break;
