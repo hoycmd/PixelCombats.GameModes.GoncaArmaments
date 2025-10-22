@@ -78,8 +78,7 @@ Room.LeaderBoard.TeamWeightGetter.Set(function (t) { return t.Properties.Get('De
 Room.LeaderBoard.PlayersWeightGetter.Set(function (p) { return p.Properties.Get('Kills').Value; });
 
 // * Бессмертие, после респавна - игроков. * //
-Room.Spawns.GetContext().OnSpawn.Add(function (p) {
-if (StateProp.Value == MockModeStateValue) p.Properties.Immortality.Value = false; 
+Room.Spawns.GetContext().OnSpawn.Add(function (p) { 
  p.Properties.Immortality.Value = true;
  t = p.Timers.Get('Immortality').Restart(5);
 });
@@ -147,9 +146,20 @@ ScoresTimer.Restart(ScoresTimer);
 MainTimer.OnTimer.Add(function () {
  switch (StateProp.Value) {
 case WaitingStateValue:
-  SetRazminca();
+if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
+if (Room.Players.All.length <= 1) {
+ Room.Ui.GetContext().Hint.Value = 'Нужен хотябы, 2 игрок для матча!';
+ SetWaitingMode();
+if (Room.Players.All.length >= 1) {
+  SetRazmincaMatch();
  break;
-case RazmincaStateValue:
+  }
+}
+if (!Room.GameMode.Parameters.GetBool('Waiting1Player')) {
+ SetRazmincaMatch();
+  break;
+}
+case RazmincaMatchStateValue:
   SetGameMode();
  break;
 case GameStateValue:
@@ -178,8 +188,8 @@ function SetWaitingMode() {
  Room.Ui.GetContext().Hint.Value = '<b>By: ƬＮ丅 ｌivɆ (ᵒᶠᶠⁱᶜⁱᵃˡ) \nОжидание, игроков...</b>';
  MainTimer.Restart(WaitingPlayersTime);
 }
-function SetRazminca() {
- StateProp.Value = RazmincaStateValue;
+function SetRazmincaMatch() {
+ StateProp.Value = RazmincaMatchStateValue;
  Room.Ui.GetContext().Hint.Value = 'Разминка.\nПотренируйтесь, перед матчем!';
 
  Room.Inventory.GetContext().Main.Value = true;
@@ -194,13 +204,13 @@ function SetRazminca() {
  Room.Teams.Get('Blue').Properties.Get('Text').Value = TextBlue;
 
  Room.Spawns.GetContext().Enable = true; 
- MainTimer.Restart(RazmincaTime);
+ MainTimer.Restart(RazmincaMatchTime);
  SpawnTeams();
 }
 function SetGameMode() {
  StateProp.Value = GameStateValue;
  Room.Ui.GetContext().Hint.Value = 'Матч начался.\nПобедите, в этом раунде!';
-
+  	
  Room.Inventory.GetContext().Main.Value = false;
  Room.Inventory.GetContext().Secondary.Value = false;
  Room.Inventory.GetContext().Melee.Value = true;
