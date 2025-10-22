@@ -16,25 +16,43 @@
    "Bool": [
       {
         "Name": "LoosenBlocks",
-        "DisplayName": "<b><color=Green>Ｇo̷ɴｋ₳</a> <a>ВоØр匕жＥнIя|</a> <i><color=Yellow>- Weak blocks</a> <color=Red>&& Слабые блоки</a> <a>▶</a></i></b>"
+        "DisplayName": "<b><color=#0095B6>Слабые</a> блоки/b>"
+      },
+      {
+       "Name": "PartialDeserction",
+        "DisplayName": "<b><color=#0095B6>Частичные</a> блоки</b>"
       },
       {
         "Name": "MapRotation",
-        "DisplayName": "<b><color=Green>Ｇo̷ɴｋ₳</a> <a>ВоØр匕жＥнIя|</a> <i><color=Yellow>- Rotation.Smena map.</a> <color=Red>&& Ротация.Смена карт.</a> <a>▶</a></i></b>"
-      },
-      {
-        "Name": "PartialDesruction",
-        "DisplayName": "<b><color=Green>Ｇo̷ɴｋ₳</a> <a>ВоØр匕жＥнIя|</a> <i><color=Yellow>- Partial destruction</a> <color=Red>&& Частичное разрушение</a> <a>▶</a></i></b>"
+        "DisplayName": "<b><color=#0095B6>Смена</a> карт</b>"
       },
       {
        "Name": "FriendlyFire",
-       "DisplayName": "<b><color=Green>Ｇo̷ɴｋ₳</a> <a>ВоØр匕жＥнIя|</a> <i><color=Yellow>- Damage po swoim</a> <color=Red>&& Урон по своим</a> <a>▶</a></i></b>"  
-      },
+       "DisplayName": "<b><color=#0095B6>Френдли</a> фаер</b>"  
+        },
+      ], 
+       "Dropdown": [
       {
-       "Name": "LoadRandomMap",
-       "DisplayName": "<b><color=Green>Ｇo̷ɴｋ₳</a> <a>ВоØр匕жＥнIя|</a> <i><color=Yellow>- Map loadrandom</a> <color=Red>&& загрузка рандомной карты</a> <a>▶</a></i></b>"
-            }
-       ]
+        "Name": "Length",
+        "DisplayName": "<b><color=#0095B6>Длинна матча:</a></b>",
+        "Default": "Min20MatchTime",
+        "Order": 6,
+        "Variants": [
+          {
+            "Name": "Min30MatchTime",
+            "DisplayName": "<b>30 Mimut</b>"
+          },
+          {
+            "Name": "Min20MatchTime",
+            "DisplayName": "<b>20 Minut</b>"
+          },
+          {
+            "Name": "Hour1MatchTime",
+            "DisplayName": "<b>1 Hour</b>"
+          }
+        ]
+      }
+    ]
    }
 }
                                    
