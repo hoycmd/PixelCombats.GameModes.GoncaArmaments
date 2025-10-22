@@ -153,11 +153,6 @@ if (Room.Players.All.length <= 1) {
 if (Room.Players.All.length >= 1) {
   SetRazmincaMatch();
  break;
-  }
-}
-if (!Room.GameMode.Parameters.GetBool('Waiting1Player')) {
- SetRazmincaMatch();
-  break;
 }
 case RazmincaMatchStateValue:
   SetGameMode();
