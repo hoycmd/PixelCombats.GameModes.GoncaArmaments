@@ -146,16 +146,6 @@ ScoresTimer.Restart(ScoresTimer);
 MainTimer.OnTimer.Add(function () {
  switch (StateProp.Value) {
 case WaitingStateValue:
-if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
-if (Room.Players.All.length <= 3) {
- Room.Ui.GetContext().Hint.Value = 'Нужен хотябы, 3 игрока для матча!';
- SetWaitingMode();
-}
-if (Room.Players.All.length >= 2) {
-  SetRazmincaMatch();
-  }
-}
-if (!Room.GameMode.Parameters.GetBool('Waiting2Player')) 
  SetRazmincaMatch();
 break;
 case RazmincaMatchStateValue:
@@ -183,6 +173,15 @@ SetWaitingMode();
 // * Состояние, игровых матчей. * //
 function SetWaitingMode() {
  StateProp.Value = WaitingStateValue;
+if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
+if (Room.Players.All.length == 1) {
+ Room.Ui.GetContext().Hint.Value = 'Нужен хотябы, 3 игрока для матча!';
+ SetWaitingMode();
+}
+if (Room.Players.All.length == 2) {
+  SetRazmincaMatch();
+  }
+}
  Room.Spawns.GetContext().Enable = false;
  Room.Ui.GetContext().Hint.Value = '<b>By: ƬＮ丅 ｌivɆ (ᵒᶠᶠⁱᶜⁱᵃˡ) \nОжидание, игроков...</b>';
  MainTimer.Restart(WaitingPlayersTime);
