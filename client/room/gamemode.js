@@ -70,6 +70,7 @@ if (Room.Players.All.length == 1) {
 }
 if (Room.Players.All.length == 2) {
   SetWaitingMode();
+Room.Spawns.GetContext().Enable = true;
   }
 }
  });
@@ -244,15 +245,6 @@ if (leaderboard[0].Weight !== leaderboard[1].Weight) {
  for (const WinP of leaderboard[0].Team.Players) { WinP.Properties.Scores.Value += ScoresWINNER; } 
  for (const LosP of leaberboard[1].Team.Players) { LosP.Properties.Scores.Value += ScoresLOOSER; }
 } else { SetEnd0fMatch_EndMode(); }
- Room.Inventory.GetContext().Main.Value = true;
- Room.Inventory.GetContext().MainInfinity.Value = true;
- Room.Inventory.GetContext().Secondary.Value = true;
- Room.Inventory.GetContext().Secondary.Value = true;
- Room.Inventory.GetContext().Melee.Value = true;
- Room.Inventory.GetContext().Explosive.Value = true;
- Room.Inventory.GetContext().ExplosiveInfinity.Value = true;
- Room.Inventory.GetContext().Build.Value = true;	
- Room.Inventory.GetContext().BuildInfinity.Value = true;
 }
 function SetMockMode(winners, loosers) {
  StateProp.Value = MockModeStateValue;  // * Дублируем, основное имя режиму. * //
@@ -264,7 +256,16 @@ function SetMockMode(winners, loosers) {
  loosers.contextedProperties.SkinType.Value = 1; // * Задаём дублированный скин проигравших, игроков. * //
  Room.Spawns.GetContext(loosers).Spawn(); // * Респавн, для лузеров. * //
  Room.Spawns.GetContext(loosers).RespawnTime.Value = 0; // * Таймер респавна игроков, для проигравших. * //
-
+ Room.Inventory.GetContext().Main.Value = true;
+ Room.Inventory.GetContext().MainInfinity.Value = true;
+ Room.Inventory.GetContext().Secondary.Value = true;
+ Room.Inventory.GetContext().Secondary.Value = true;
+ Room.Inventory.GetContext().Melee.Value = true;
+ Room.Inventory.GetContext().Explosive.Value = true;
+ Room.Inventory.GetContext().ExplosiveInfinity.Value = true;
+ Room.Inventory.GetContext().Build.Value = true;	
+ Room.Inventory.GetContext().BuildInfinity.Value = true;
+	
 // * Обработчик инвентаря, для проигравших. * //
  Room.Inventory.GetContext(loosers).Main.Value = false;
  Room.Inventory.GetContext(loosers).Secondary.Value = false;
