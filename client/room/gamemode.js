@@ -152,16 +152,12 @@ if (Room.Players.All.length <= 3) {
  SetWaitingMode();
 }
 if (Room.Players.All.length >= 2) {
-	case WaitingStateValue:
   SetRazmincaMatch();
- break;
   }
 }
-if (!Room.GameMode.Parameters.GetBool('Waiting2Player')) {
-	case WaitingStateValue:
+if (!Room.GameMode.Parameters.GetBool('Waiting2Player')) 
  SetRazmincaMatch();
- break;
-}
+break;
 case RazmincaMatchStateValue:
   SetGameMode();
  break;
