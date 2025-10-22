@@ -65,8 +65,10 @@ Room.Teams.OnRequestJoinTeam.Add(function (p,t) {
 p.Properties.Get('RoomID').Value = p.IdInRoom;
 if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
 if (Room.Players.All.length <= 1) {
- Room.Ui.GetContext().Hint.Value = '\nДля начала, необходимо кол-во игроков: 2';
-  } else SetWaitingMode();
+ Room.Ui.GetContext().Hint.Value = '<b>\nДля начала, необходимо кол-во игроков: 2</b>';
+} 
+if (Room.Players.All.length >= 1) {
+  SetWaitingMode();
 }
  });
 // * Респавним игрока - после входа в команду. * //
