@@ -43,6 +43,10 @@ const ScoresTimer = Room.Timers.GetContext().Get('Scores');
 
 // * Время основой битвы, матча. * //
 const GameModeTime = {
+ 'Min30MatchTime': 1801,
+ 'Hour1MatchTime': 3601,
+ 'Min20MatchTime': 1201
+}
  
 // * Создаем, первеночальные команды. * //
 const RedTeam = CreateNewTeam('Red', '<b><size=30><color=#962605>尺</color><color=#9a040c>ᴇ</color><color=#b8110b>D</color></size></b>\n<size=89>ГОНКА ВООРУЖЕНИЯ by: TNT!</size>', new Basic.Color(125/255, 0, 0, 0), 2, Room.BuildBlocksSet.Red);
