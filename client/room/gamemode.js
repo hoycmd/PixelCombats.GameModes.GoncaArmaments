@@ -65,11 +65,12 @@ Room.Teams.OnRequestJoinTeam.Add(function (p,t) {
 p.Properties.Get('RoomID').Value = p.IdInRoom;
 if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
 if (Room.Players.All.length == 1) {
- Room.Ui.GetContext().Hint.Value = 'Нужен хотябы, 3 игрока для матча!';
+ Room.Ui.GetContext().Hint.Value = 'Нужен хотябы 2 игрок, для начала матча!';
  Room.Spawns.GetContext().Enable = false;
+ Room.Spawns.GetContext().Despawn();
 }
 if (Room.Players.All.length == 2) {
-  SetRazmincaMatch();
+  SetWaitingMode();
   }
 }
  });
