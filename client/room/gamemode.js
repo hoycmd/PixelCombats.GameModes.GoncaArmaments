@@ -153,11 +153,9 @@ ScoresTimer.Restart(ScoresTimer);
 // * Основной таймер, переключения игровых - режимов матча. * //
 MainTimer.OnTimer.Add(function () {
  switch (StateProp.Value) {
-if (!Room.GameMode.Parameters.GetBool('Waiting2Player')) {
 case WaitingStateValue:
  SetRazmincaMatch();
 break;
-}
 case RazmincaMatchStateValue:
   SetGameMode();
  break;
