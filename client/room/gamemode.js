@@ -60,7 +60,19 @@ Room.Damage.GetContext().GranadeTouchExplosion.Value = true;    // * Повре�
 Room.Ui.GetContext().MainTimerId.Value = MainTimer.Id;   // * Индификатор, основного таймера. * //
 
 // * Разрешаем игрокам, заходить в команду - по запросу. * //
-Room.Teams.OnRequestJoinTeam.Add(function (p,t) { t.Add(p); p.Properties.Get('RoomID').Value = p.IdInRoom; });
+Room.Teams.OnRequestJoinTeam.Add(function (p,t) { 
+ t.Add(p); 
+p.Properties.Get('RoomID').Value = p.IdInRoom;
+if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
+if (Room.Players.All.length == 1) {
+ Room.Ui.GetContext().Hint.Value = 'Нужен хотябы, 3 игрока для матча!';
+ Room.Spawns.GetContext().Enable = false;
+}
+if (Room.Players.All.length == 2) {
+  SetRazmincaMatch();
+  }
+}
+ });
 // * Респавним игрока - после входа в команду. * //
 Room.Teams.OnPlayerChangeTeam.Add(function (p) { p.Spawns.Spawn()});
 	
@@ -173,15 +185,6 @@ SetWaitingMode();
 // * Состояние, игровых матчей. * //
 function SetWaitingMode() {
  StateProp.Value = WaitingStateValue;
-if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
-if (Room.Players.All.length == 1) {
- Room.Ui.GetContext().Hint.Value = 'Нужен хотябы, 3 игрока для матча!';
- SetWaitingMode();
-}
-if (Room.Players.All.length == 2) {
-  SetRazmincaMatch();
-  }
-}
  Room.Spawns.GetContext().Enable = false;
  Room.Ui.GetContext().Hint.Value = '<b>By: ƬＮ丅 ｌivɆ (ᵒᶠᶠⁱᶜⁱᵃˡ) \nОжидание, игроков...</b>';
  MainTimer.Restart(WaitingPlayersTime);
