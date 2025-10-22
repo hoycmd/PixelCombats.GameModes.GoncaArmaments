@@ -67,7 +67,6 @@ if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
 if (Room.Players.All.length == 1) {
  Room.Ui.GetContext().Hint.Value = 'Нужен хотябы 2 игрок, для начала матча!';
  Room.Spawns.GetContext().Enable = false;
- Room.Spawns.GetContext().Despawn();
 }
 if (Room.Players.All.length == 2) {
   SetWaitingMode();
