@@ -6,7 +6,6 @@ try {
 Room.room.PopupsEnable = true;
 
 // * Константы таймеров и очков, команд. * //
-const GameModeTime = 1801;
 const CrucialMatchTime = 31;
 const WaitingPlayersTime = 10;
 const End0fMatchTime = 11;
@@ -41,7 +40,10 @@ const End0fMatchStateValue = 'End0fMatch';
 const StateProp = Room.Properties.GetContext().Get('State');
 const MainTimer = Room.Timers.GetContext().Get('Main');
 const ScoresTimer = Room.Timers.GetContext().Get('Scores');
-	
+
+// * Время основой битвы, матча. * //
+const GameModeTime = {
+ 
 // * Создаем, первеночальные команды. * //
 const RedTeam = CreateNewTeam('Red', '<b><size=30><color=#962605>尺</color><color=#9a040c>ᴇ</color><color=#b8110b>D</color></size></b>\n<size=89>ГОНКА ВООРУЖЕНИЯ by: TNT!</size>', new Basic.Color(125/255, 0, 0, 0), 2, Room.BuildBlocksSet.Red);
 const BlueTeam = CreateNewTeam('Blue', '<b><size=30><color=#0d177c>ß</color><color=#03088c>l</color><color=#0607b0>ᴜ</color><color=#1621ae>E</color></size></b>\n<size=89>ГОНКА ВООРУЖЕНИЯ by: TNT!</size>', new Basic.Color(0, 0, 125/255, 0), 1, Room.BuildBlocksSet.Blue);
