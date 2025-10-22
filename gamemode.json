@@ -16,7 +16,7 @@
    "Bool": [
       {
         "Name": "LoosenBlocks",
-        "DisplayName": "<b><color=#0095B6>Слабые</a> блоки/b>"
+        "DisplayName": "<b><color=#0095B6>Слабые</a> блоки</a></b>"
       },
       {
        "Name": "PartialDeserction",
@@ -34,7 +34,7 @@
        "Dropdown": [
       {
         "Name": "Length",
-        "DisplayName": "<b><color=#0095B6>Длинна матча:</a></b>",
+        "DisplayName": "<b><color=#0095B6>Длинна</a> матча:</b>",
         "Default": "Min20MatchTime",
         "Order": 6,
         "Variants": [
