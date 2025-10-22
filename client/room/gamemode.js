@@ -63,16 +63,6 @@ Room.Ui.GetContext().MainTimerId.Value = MainTimer.Id;   // * Индификат
 Room.Teams.OnRequestJoinTeam.Add(function (p,t) { 
  t.Add(p); 
 p.Properties.Get('RoomID').Value = p.IdInRoom;
-if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
-if (Room.Players.All.length === 1) {
- Room.Ui.GetContext().Hint.Value = '<b>\nДля начала, необходимо кол-во игроков: 2</b>';
- Room.Spawns.GetContext().Enable = false;
-}
-if (Room.Players.All.length >= 1) {
-  SetWaitingMode();
-Room.Spawns.GetContext().Enable = true;
-  }
-}
  });
 // * Респавним игрока - после входа в команду. * //
 Room.Teams.OnPlayerChangeTeam.Add(function (p) { p.Spawns.Spawn()});
@@ -194,6 +184,16 @@ function SetRazmincaMatch() {
  StateProp.Value = RazmincaMatchStateValue;
  Room.Ui.GetContext().Hint.Value = 'Разминка.\nПотренируйтесь, перед матчем!';
 
+if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
+if (Room.Players.All.length <= 1) {
+ Room.Ui.GetContext().Hint.Value = '\nДля начала, необходимо кол-во игроков: 2';
+ MainTimer.Stop();
+  }
+if (Room.Players.All.length >= 1) {
+ SetRazmincaMatch();
+ }
+}
+	
  Room.Inventory.GetContext().Main.Value = true;
  Room.Inventory.GetContext().Secondary.Value = true;
  Room.Inventory.GetContext().Melee.Value = true;
