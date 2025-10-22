@@ -5,7 +5,7 @@ import * as Room from 'pixel_combats/room';
 const length = Room.GameMode.Parameters.GetString('GameLength');
 
 // * Длинна, матча. * //
-export function GameModeMtchTime() {
+export function GameModeMatchTime() {
     switch (length) {
         case 'Min30MatchTime': return 1801;
         case 'Hour1MatchTime': return 3601; 
