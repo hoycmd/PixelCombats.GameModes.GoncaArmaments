@@ -251,19 +251,22 @@ function SetMockMode(winners, loosers) {
  ScoresTimer.Stop();   // * Остонавливаем таймер очков. * //
  Room.Ui.GetContext(winners).Hint.Value = 'Победа.\nВы выиграли, в этой битве!';   // * Подска, для выигрывших раунд. * //
  Room.Ui.GetContext(loosers).Hint.Value = 'Поражение.\nМы проиграли, этот матч!';    // * Подска, для проигравших матч. * //	
- winners.contextedProperties.SkinType.Value = 2; // * Задаём обработанный скин, для выигрывших игроков. * //
- loosers.contextedProperties.SkinType.Value = 1; // * Задаём дублированный скин проигравших, игроков. * //
  Room.Spawns.GetContext(loosers).Spawn(); // * Респавн, для лузеров. * //
  Room.Spawns.GetContext(loosers).RespawnTime.Value = 0; // * Таймер респавна игроков, для проигравших. * //
- Room.Inventory.GetContext().Main.Value = true;
- Room.Inventory.GetContext().MainInfinity.Value = true;
- Room.Inventory.GetContext().Secondary.Value = true;
- Room.Inventory.GetContext().Secondary.Value = true;
- Room.Inventory.GetContext().Melee.Value = true;
- Room.Inventory.GetContext().Explosive.Value = true;
- Room.Inventory.GetContext().ExplosiveInfinity.Value = true;
- Room.Inventory.GetContext().Build.Value = true;	
- Room.Inventory.GetContext().BuildInfinity.Value = true;
+ Room.Inventory.GetContext().Main.Value = false;
+ Room.Inventory.GetContext().MainInfinity.Value = false;
+ Room.Inventory.GetContext().Secondary.Value = false;
+ Room.Inventory.GetContext().Secondary.Value = false;
+ Room.Inventory.GetContext().Melee.Value = false;
+ Room.Inventory.GetContext().Explosive.Value = false;
+ Room.Inventory.GetContext().ExplosiveInfinity.Value = false;
+ Room.Inventory.GetContext().Build.Value = false;	
+ Room.Inventory.GetContext().BuildInfinity.Value = false;
+ winners.ContextedProperties.SkinType.Value = 2; // * Задаём обработанный скин, для выигрывших игроков. * //
+ loosers.ContextedProperties.SkinType.Value = 1; // * Задаём дублированный скин проигравших, игроков. * //
+ Room.Players.All.forEach(p => {
+  p.Properties.Immortality.Value = false;
+ });
 	
 // * Обработчик инвентаря, для проигравших. * //
  Room.Inventory.GetContext(loosers).Main.Value = false;
