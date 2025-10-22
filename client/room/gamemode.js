@@ -10,7 +10,7 @@ Room.room.PopupsEnable = true;
 const CrucialMatchTime = 31;
 const WaitingPlayersTime = 10;
 const End0fMatchTime = 11;
-const RazmincaTime = 51;
+const RazmincaMatchTime = 51;
 const MockModeTime = 21;
 const VoteTime = 10;
 const ScoresTimer = 6;
@@ -32,7 +32,7 @@ const TextWinnersBlue = '\n<b><size=220><color=#0303a4>ß</color><color=#0b2cc0>
 // * Имена констант, в разных - матчах. * //
 const WaitingStateValue = 'Waiting';
 const CrucialMatchStateValue = 'CrucialMatch';
-const RazmincaStateValue = 'Razminca';
+const RazmincaMatchStateValue = 'RazmincaMatch';
 const GameStateValue = 'Game';
 const MockModeStateValue = 'MockMode';
 const End0fMatchStateValue = 'End0fMatch';	
@@ -146,7 +146,7 @@ ScoresTimer.Restart(ScoresTimer);
 MainTimer.OnTimer.Add(function () {
  switch (StateProp.Value) {
 case WaitingStateValue:
-if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
+ if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
 if (Room.Players.All.length <= 1) {
  Room.Ui.GetContext().Hint.Value = 'Нужен хотябы, 2 игрок для матча!';
  SetWaitingMode();
