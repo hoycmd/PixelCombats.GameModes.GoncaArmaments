@@ -149,7 +149,12 @@ ScoresTimer.Restart(ScoresTimer);
 MainTimer.OnTimer.Add(function () {
  switch (StateProp.Value) {
 case WaitingStateValue:
- SetRazmincaMatch();
+if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
+if (Room.Players.All.length <= 1) {
+ Room.Ui.GetContext().Hint.Value = '\nДля начала, необходимо кол-во игроков: 2';
+  } else SetRazmincaMatch();
+}
+SetRazmincaMatch();
 break;
 case RazmincaMatchStateValue:
   SetGameMode();
@@ -184,16 +189,6 @@ function SetRazmincaMatch() {
  StateProp.Value = RazmincaMatchStateValue;
  Room.Ui.GetContext().Hint.Value = 'Разминка.\nПотренируйтесь, перед матчем!';
 
-if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
-if (Room.Players.All.length <= 1) {
- Room.Ui.GetContext().Hint.Value = '\nДля начала, необходимо кол-во игроков: 2';
- MainTimer.Stop();
-  }
-if (Room.Players.All.length >= 1) {
- SetRazmincaMatch();
- }
-}
-	
  Room.Inventory.GetContext().Main.Value = true;
  Room.Inventory.GetContext().Secondary.Value = true;
  Room.Inventory.GetContext().Melee.Value = true;
