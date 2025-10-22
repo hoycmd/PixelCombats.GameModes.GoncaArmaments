@@ -64,11 +64,11 @@ Room.Teams.OnRequestJoinTeam.Add(function (p,t) {
  t.Add(p); 
 p.Properties.Get('RoomID').Value = p.IdInRoom;
 if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
-if (Room.Players.All.length == 1) {
- Room.Ui.GetContext().Hint.Value = 'Нужен хотябы 2 игрок, для начала матча!';
+if (Room.Players.All.length === 1) {
+ Room.Ui.GetContext().Hint.Value = '<b>\nДля начала, необходимо кол-во игроков: 2</b>';
  Room.Spawns.GetContext().Enable = false;
 }
-if (Room.Players.All.length == 2) {
+if (Room.Players.All.length >= 1) {
   SetWaitingMode();
 Room.Spawns.GetContext().Enable = true;
   }
