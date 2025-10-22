@@ -146,13 +146,15 @@ ScoresTimer.Restart(ScoresTimer);
 MainTimer.OnTimer.Add(function () {
  switch (StateProp.Value) {
 case WaitingStateValue:
- if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
+if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
 if (Room.Players.All.length <= 1) {
  Room.Ui.GetContext().Hint.Value = 'Нужен хотябы, 2 игрок для матча!';
  SetWaitingMode();
+}
 if (Room.Players.All.length >= 1) {
   SetRazmincaMatch();
  break;
+  }
 }
 case RazmincaMatchStateValue:
   SetGameMode();
