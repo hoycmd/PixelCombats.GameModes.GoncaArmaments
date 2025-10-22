@@ -107,8 +107,8 @@ if (p.Properties.Kills.Value === 5) { p.inventory.Secondary.Value = true, p.inve
 if (p.Properties.Kills.Value === 10) { p.inventory.Secondary.Value = false, p.inventory.Explosive.Value = true, p.inventory.ExplosiveInfinity.Value = true; }
 if (p.Properties.Kills.Value === 15) { p.inventory.Explosive.Value = false, p.inventory.Main.Value = true; }
 if (p.Properties.Kills.Value === 20) { p.inventory.MainInfinity.Value = true; }
-if (p.Properties.Kills.Value === 25) { p.contextedProperties.MaxHp.Value += 500, p.PopUp('500 HP\nВы получили: 500 HP!'); }
-if (p.Properties.Kills.Value === 30) { p.contextedProperties.MaxHp.Value += 1000, p.PopUp('1000 HP\nВы получили: 1000 HP!'); }
+if (p.Properties.Kills.Value === 25) { p.contextedProperties.MaxHp.Value = 500, p.PopUp('500 HP\nВы получили: 500 HP!'); }
+if (p.Properties.Kills.Value === 30) { p.contextedProperties.MaxHp.Value = 1000, p.PopUp('1000 HP\nВы получили: 1000 HP!'); }
 if (p.Properties.Kills.Value === 35) { p.Properties.Scores.Value += 40, p.PopUp('40 SCORES\nВы получили: 40 SCORES!'); }
 if (p.Properties.Kills.Value === 40) { p.contextedProperties.SkinType.Value = 2, p.PopUp('SKIN ZEK\nВы получили: SKIN ZEK!'); }
 if (p.Properties.Kills.Value === 45) { p.Properties.Kills.Value += 10, p.PopUp('10 KILL\nВы получили: 10 KILL!'); }
