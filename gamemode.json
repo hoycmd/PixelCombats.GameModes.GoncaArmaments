@@ -27,6 +27,10 @@
         "DisplayName": "<b><color=#0095B6>Смена</a> карт</b>"
       },
       {
+       "Name": "Waiting2Player",
+       "DisplayName": "<b><color=#0095B6>Ожидание</a> 2 игрока</b>"
+      },
+      {
        "Name": "FriendlyFire",
        "DisplayName": "<b><color=#0095B6>Френдли</a> фаер</b>"  
         },
