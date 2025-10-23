@@ -241,13 +241,11 @@ ScoresTimer.Stop();
 const leaderboard = Room.LeaderBoard.GetTeams();
 if (leaderboard[0].Weight !== leaderboard[1].Weight) {
  SetMockMode(leaderboard[0].Team, leaderboard[1].Team);
- for (const WinP of leaderboard[0].Player.Team) {
+ for (const WinP of leaderboard[0].Team.Players) {
 	 WinP.Properties.Scores.Value += ScoresWINNER; 
  } 
- for (const LosP of leaberboard[1].Player.Team) { 
+ for (const LosP of leaberboard[1].Team.Players) { 
 	 LosP.Properties.Scores.Value += ScoresLOOSER;
-	 if (LosP == RedTeam) UiRedLos();
-	 if (LosP == BlueTeam) UiBlueLos();
    }
 } else { SetEnd0fMatch_EndMode(); }
 }
@@ -273,6 +271,11 @@ function SetMockMode(winners, loosers) {
  Room.Players.All.forEach(p => {
   p.Properties.Immortality.Value = false;
  });
+
+Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'DEf' }; 
+Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'DEf' };
+RedTeam.Properties.Get('DEf').Value = TextLoosersRed;
+BlueTeam.Properties.Get('DEf').Value = TextWinnersBlue;
 	
 // * Обработчик инвентаря, для проигравших. * //
  Room.Inventory.GetContext(loosers).Main.Value = false;
@@ -552,12 +555,6 @@ let NewAreaView = Room.AreaViewService.GetContext().Get(AreaViewName);
   NewAreaView.Color = AreaViewColor;
   NewAreaView.Tags = AreaTags;
   NewAreaView.Enable = AreaViewEnable;
-}
-function UiRedLos() {
-  Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'DEf' }; 
-  Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'DEf' };
-  RedTeam.Properties.Get('DEf').Value = TextLoosersRed;
-  BlueTeam.Properties.Get('DEf').Value = TextWinnersBlue;
 }
 function UiBlueLos() {
   Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'DEf' }; 
