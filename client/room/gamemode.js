@@ -243,12 +243,12 @@ if (leaderboard[0].Weight !== leaderboard[1].Weight) {
  SetMockMode(leaderboard[0].Team, leaderboard[1].Team);
  for (const WinP of leaderboard[0].Team.Players) {
 	 WinP.Properties.Scores.Value += ScoresWINNER; 
-	 WinP.Properties.Get('WIN').Value = true;
  } 
  for (const LosP of leaberboard[1].Team.Players) { 
 	 LosP.Properties.Scores.Value += ScoresLOOSER;
-     LosP.Properties.Get('LOS').Value = true;
    }
+if (RedTeam.Properties.Get('Deaths').Value <= 10) { UiRedLos(); }
+if (BlueTeam.Properties.Get('Deaths').Value <= 10) { UiBlueLos(); }
 } else { SetEnd0fMatch_EndMode(); }
 }
 function SetMockMode(winners, loosers) {
@@ -291,19 +291,6 @@ function SetMockMode(winners, loosers) {
  Room.Inventory.GetContext(winners).ExplosiveInfinity.Value = true;
  Room.Inventory.GetContext(winners).Build.Value = true;
  Room.Inventory.GetContext(winners).BuildInfinity.Value = true;
-
-if (loosers.Team == BlueTeam) {
-  Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'TextLoosersRedT' }; 
-  Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'TextWinnersBlueT' };
-  Room.Teams.Get('Red').Properties.Get('TextLoosersRedT').Value = TextLoosersRed;
-  Room.Teams.Get('Blue').Properties.Get('TetWinnersBlueT').Value = TextWinnersBlue;
-}
- if (loosers.Team == RedTeam) {
-  Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'TextWinnersRedB' }; 
-  Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'TextLoosersBlueB' };
-  Room.Teams.Get('Red').Properties.Get('TextWinnersRedB').Value = TextWinnersRed;
-  Room.Teams.Get('Blue').Properties.Get('TextLoosersBlueB').Value = TextLoosersBlue;
- }
 }	  
  function SetEnd0fMatch_EndMode() {
 StateProp.Value = End0fMatchStateValue;
@@ -565,6 +552,18 @@ let NewAreaView = Room.AreaViewService.GetContext().Get(AreaViewName);
   NewAreaView.Color = AreaViewColor;
   NewAreaView.Tags = AreaTags;
   NewAreaView.Enable = AreaViewEnable;
+}
+function UiRedLos() {
+  Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'DEf' }; 
+  Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'DEf' };
+  RedTeam.Properties.Get('DEf').Value = TextLoosersRed;
+  BlueTeam.Properties.Get('DEf').Value = TextWinnersBlue;
+}
+function UiBlueLos() {
+  Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'DEf' }; 
+  Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'DEf' };
+  RedTeam.Properties.Get('DEf').Value = TextWinnersRed;
+  BlueTeam.Properties.Get('DEf').Value = TextLoosersBlue;
 }
 function GiveBanPlayer(p) {
 	if (!p) return;
