@@ -131,6 +131,7 @@ Room.Damage.OnDeath.Add(function (p) {
  return;
 }
 ++p.Properties.Deaths.Value;
+ p.Team.Properties.Get('Deaths').Value += 1;
 });
 
 // * За каждую смерть игрока, отнимаем смерть в команде. * //
