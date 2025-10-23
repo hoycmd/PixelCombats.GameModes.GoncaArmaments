@@ -274,12 +274,15 @@ function SetMockMode(winners, loosers) {
 
 Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'DEf' }; 
 Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'DEf' };
- if (RedTeam.Properties.Get('Deaths').Value <= 3) {
+ if (RedTeam.Properties.Get('Deaths').Value <= 1) {
 RedTeam.Properties.Get('DEf').Value = TextLoosersRed;
- }
- if (BlueTeam.Properties.Get('Deaths').Value <= 3) {
 BlueTeam.Properties.Get('DEf').Value = TextWinnersBlue;
  }
+ if (BlueTeam.Properties.Get('Deaths').Value <= 1) {
+BlueTeam.Properties.Get('DEf').Value = TextLoosersBlue;
+RedTeam.Properties.Get('DEf').Value = TextWinnersRed;
+ }
+	
 	
 // * Обработчик инвентаря, для проигравших. * //
  Room.Inventory.GetContext(loosers).Main.Value = false;
