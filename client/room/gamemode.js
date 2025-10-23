@@ -272,11 +272,11 @@ function SetMockMode(winners, loosers) {
   p.Properties.Immortality.Value = false;
  });
 
- if (RedTeam.Properties.Get('Deaths').Value <= maxDeaths) {
+ if (BlueTeam.Properties.Get('Deaths').Value >= maxDeaths) {
 Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'DEf' }; 
 Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'DEf' };
-RedTeam.Properties.Get('DEf').Value = TextLoosersRed;
 BlueTeam.Properties.Get('DEf').Value = TextWinnersBlue;
+RedTeam.Properties.Get('DEf').Value = TextLoosersRed;
  }
  if (BlueTeam.Properties.Get('Deaths').Value <= maxDeaths) {
 Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'DEf' }; 
