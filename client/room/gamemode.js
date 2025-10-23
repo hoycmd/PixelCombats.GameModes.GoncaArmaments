@@ -236,6 +236,9 @@ function SetCrucialMatch() {
  MainTimer.Restart(CrucialMatchTime);
  SpawnTeams(); 
 }
+
+
+
 function SetEnd0fMatch() {
 ScoresTimer.Stop(); 
 const leaderboard = Room.LeaderBoard.GetTeams();
