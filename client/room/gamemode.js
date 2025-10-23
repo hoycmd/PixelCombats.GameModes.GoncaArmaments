@@ -241,13 +241,13 @@ ScoresTimer.Stop();
 const leaderboard = Room.LeaderBoard.GetTeams();
 if (leaderboard[0].Weight !== leaderboard[1].Weight) {
  SetMockMode(leaderboard[0].Team, leaderboard[1].Team);
- for (const WinP of leaderboard[0].Team.Players) {
+ for (const WinP of leaderboard[0].Player.Team) {
 	 WinP.Properties.Scores.Value += ScoresWINNER; 
  } 
- for (const LosP of leaberboard[1].Team.Players) { 
+ for (const LosP of leaberboard[1].Player.Team) { 
 	 LosP.Properties.Scores.Value += ScoresLOOSER;
-	 if (LosP.Team == RedTeam) UiRedLos();
-	 if (LosP.Team == BlueTeam) UiBlueLos();
+	 if (LosP == RedTeam) UiRedLos();
+	 if (LosP == BlueTeam) UiBlueLos();
    }
 } else { SetEnd0fMatch_EndMode(); }
 }
