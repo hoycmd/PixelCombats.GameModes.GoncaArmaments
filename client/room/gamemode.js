@@ -246,9 +246,9 @@ if (leaderboard[0].Weight !== leaderboard[1].Weight) {
  } 
  for (const LosP of leaberboard[1].Team.Players) { 
 	 LosP.Properties.Scores.Value += ScoresLOOSER;
+	 if (LosP.Team == RedTeam) UiRedLos();
+	 if (LosP.Team == BlueTeam) UiBlueLos();
    }
-if (RedTeam.Properties.Get('Deaths').Value <= 10) { UiRedLos(); }
-if (BlueTeam.Properties.Get('Deaths').Value <= 10) { UiBlueLos(); }
 } else { SetEnd0fMatch_EndMode(); }
 }
 function SetMockMode(winners, loosers) {
