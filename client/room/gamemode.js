@@ -293,16 +293,16 @@ function SetMockMode(winners, loosers) {
  Room.Inventory.GetContext(winners).BuildInfinity.Value = true;
 
 if (loosers.Team == BlueTeam) {
-  Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: TextLoosersRed }; 
-  Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: TextWinnersBlue };
-  Room.Teams.Get('Red').Properties.Get('TextLoosersRed').Value = TextLoosersRed;
-  Room.Teams.Get('Blue').Properties.Get('TetWinnersBlue').Value = TextWinnersBlue;
+  Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'TextLoosersRedT' }; 
+  Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'TextWinnersBlueT' };
+  Room.Teams.Get('Red').Properties.Get('TextLoosersRedT').Value = TextLoosersRed;
+  Room.Teams.Get('Blue').Properties.Get('TetWinnersBlueT').Value = TextWinnersBlue;
 }
  if (loosers.Team == RedTeam) {
-  Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: TextWinnersRed }; 
-  Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: TextLoosersBlue };
-  Room.Teams.Get('Red').Properties.Get('Deaths').Value = TextWinnersRed;
-  Room.Teams.Get('Blue').Properties.Get('Deaths').Value = TextLoosersBlue;
+  Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'TextWinnersRedB' }; 
+  Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'TextLoosersBlueB' };
+  Room.Teams.Get('Red').Properties.Get('TextWinnersRedB').Value = TextWinnersRed;
+  Room.Teams.Get('Blue').Properties.Get('TextLoosersBlueB').Value = TextLoosersBlue;
  }
 }	  
  function SetEnd0fMatch_EndMode() {
