@@ -201,8 +201,8 @@ function SetRazmincaMatch() {
 
  Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'Text' }; 
  Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'Text' };
- Room.Teams.Get('Red').Properties.Get('Text').Value = TextRed;
- Room.Teams.Get('Blue').Properties.Get('Text').Value = TextBlue;
+ RedTeam.Properties.Get('Text').Value = TextRed;
+ BlueTeam.Properties.Get('Text').Value = TextBlue;
 
  Room.Spawns.GetContext().Enable = true; 
  MainTimer.Restart(RazmincaMatchTime);
@@ -253,15 +253,15 @@ function SetMockMode(winners, loosers) {
  Room.Ui.GetContext(loosers).Hint.Value = 'Поражение.\nМы проиграли, этот матч!';    // * Подска, для проигравших матч. * //	
  Room.Spawns.GetContext(loosers).Spawn(); // * Респавн, для лузеров. * //
  Room.Spawns.GetContext(loosers).RespawnTime.Value = 0; // * Таймер респавна игроков, для проигравших. * //
- Room.Inventory.GetContext().Main.Value = false;
- Room.Inventory.GetContext().MainInfinity.Value = false;
- Room.Inventory.GetContext().Secondary.Value = false;
- Room.Inventory.GetContext().Secondary.Value = false;
- Room.Inventory.GetContext().Melee.Value = false;
- Room.Inventory.GetContext().Explosive.Value = false;
- Room.Inventory.GetContext().ExplosiveInfinity.Value = false;
- Room.Inventory.GetContext().Build.Value = false;	
- Room.Inventory.GetContext().BuildInfinity.Value = false;
+ Room.Inventory.GetContext().Main.Value = true;
+ Room.Inventory.GetContext().MainInfinity.Value = true;
+ Room.Inventory.GetContext().Secondary.Value = true;
+ Room.Inventory.GetContext().Secondary.Value = true;
+ Room.Inventory.GetContext().Melee.Value = true;
+ Room.Inventory.GetContext().Explosive.Value = true;
+ Room.Inventory.GetContext().ExplosiveInfinity.Value = true;
+ Room.Inventory.GetContext().Build.Value = true;	
+ Room.Inventory.GetContext().BuildInfinity.Value = true;
  winners.ContextedProperties.SkinType.Value = 2; // * Задаём обработанный скин, для выигрывших игроков. * //
  loosers.ContextedProperties.SkinType.Value = 1; // * Задаём дублированный скин проигравших, игроков. * //
  Room.Players.All.forEach(p => {
@@ -286,13 +286,13 @@ function SetMockMode(winners, loosers) {
  Room.Inventory.GetContext(winners).Build.Value = true;
  Room.Inventory.GetContext(winners).BuildInfinity.Value = true;
 
- if (RedTeam.Properties.Get('Deaths').Value <= 0) {
+ if (loosers.Properties.Get('Deaths').Value <= 0) {
   Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: TextLoosersRed }; 
   Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: TextWinnersBlue };
   Room.Teams.Get('Red').Properties.Get('Deaths').Value = TextLoosersRed;
   Room.Teams.Get('Blue').Properties.Get('Deaths').Value = TextWinnersBlue;
  }
- if (RedTeam.Properties.Get('Deaths').Value >= 0) {
+ if (winners.Properties.Get('Deaths').Value >= 0) {
   Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: TextWinnersRed }; 
   Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: TextLoosersBlue };
   Room.Teams.Get('Red').Properties.Get('Deaths').Value = TextWinnersRed;
