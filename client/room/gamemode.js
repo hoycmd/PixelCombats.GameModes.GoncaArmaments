@@ -241,8 +241,14 @@ ScoresTimer.Stop();
 const leaderboard = Room.LeaderBoard.GetTeams();
 if (leaderboard[0].Weight !== leaderboard[1].Weight) {
  SetMockMode(leaderboard[0].Team, leaderboard[1].Team);
- for (const WinP of leaderboard[0].Team.Players) { WinP.Properties.Scores.Value += ScoresWINNER; } 
- for (const LosP of leaberboard[1].Team.Players) { LosP.Properties.Scores.Value += ScoresLOOSER; }
+ for (const WinP of leaderboard[0].Team.Players) {
+	 WinP.Properties.Scores.Value += ScoresWINNER; 
+	 WinP.Properties.Get('WIN').Value = true;
+ } 
+ for (const LosP of leaberboard[1].Team.Players) { 
+	 LosP.Properties.Scores.Value += ScoresLOOSER;
+     LosP.Properties.Get('LOS').Value = true;
+   }
 } else { SetEnd0fMatch_EndMode(); }
 }
 function SetMockMode(winners, loosers) {
@@ -286,13 +292,13 @@ function SetMockMode(winners, loosers) {
  Room.Inventory.GetContext(winners).Build.Value = true;
  Room.Inventory.GetContext(winners).BuildInfinity.Value = true;
 
- if (loosers.Properties.Get('Deaths').Value <= 0) {
+if (loosers.Team == BlueTeam) {
   Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: TextLoosersRed }; 
   Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: TextWinnersBlue };
-  Room.Teams.Get('Red').Properties.Get('Deaths').Value = TextLoosersRed;
-  Room.Teams.Get('Blue').Properties.Get('Deaths').Value = TextWinnersBlue;
- }
- if (winners.Properties.Get('Deaths').Value >= 0) {
+  Room.Teams.Get('Red').Properties.Get('TextLoosersRed').Value = TextLoosersRed;
+  Room.Teams.Get('Blue').Properties.Get('TetWinnersBlue').Value = TextWinnersBlue;
+}
+ if (loosers.Team == RedTeam) {
   Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: TextWinnersRed }; 
   Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: TextLoosersBlue };
   Room.Teams.Get('Red').Properties.Get('Deaths').Value = TextWinnersRed;
