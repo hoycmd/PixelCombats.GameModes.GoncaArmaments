@@ -260,21 +260,21 @@ function SetMockMode(winners, loosers) {
  Room.Ui.GetContext(loosers).Hint.Value = 'Поражение.\nМы проиграли, этот матч!';    // * Подска, для проигравших матч. * //	
  Room.Spawns.GetContext(loosers).Spawn(); // * Респавн, для лузеров. * //
  Room.Spawns.GetContext(loosers).RespawnTime.Value = 0; // * Таймер респавна игроков, для проигравших. * //
- Room.Inventory.GetContext().Main.Value = true;
- Room.Inventory.GetContext().MainInfinity.Value = true;
- Room.Inventory.GetContext().Secondary.Value = true;
- Room.Inventory.GetContext().Secondary.Value = true;
- Room.Inventory.GetContext().Melee.Value = true;
- Room.Inventory.GetContext().Explosive.Value = true;
- Room.Inventory.GetContext().ExplosiveInfinity.Value = true;
- Room.Inventory.GetContext().Build.Value = true;	
- Room.Inventory.GetContext().BuildInfinity.Value = true;
+for (const p of Room.Players.All) {
+ p.inventory.Main.Value = true;
+ p.inventory.MainInfinity.Value = true;
+ p.inventory.Secondary.Value = true;
+ p.inventory.Secondary.Value = true;
+ p.inventory.Melee.Value = true;
+ p.inventory.Explosive.Value = true;
+ p.inventory.ExplosiveInfinity.Value = true;
+ p.inventory.Build.Value = true;	
+ p.inventory.BuildInfinity.Value = true;
+ p.Properties.Immortality.Value = false;	
+}
  winners.ContextedProperties.SkinType.Value = 2; // * Задаём обработанный скин, для выигрывших игроков. * //
  loosers.ContextedProperties.SkinType.Value = 1; // * Задаём дублированный скин проигравших, игроков. * //
- Room.Players.All.forEach(p => {
-  p.Properties.Immortality.Value = false;
- });
-
+	
  if (RedTeam.Properties.Get('Deaths').Value <= maxDeaths && BlueTeam.Properties.Get('Deaths').Value >= maxDeaths && BlueTeam.Properties.Get('Deaths').Value == maxDeaths) {
 Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'DEf' }; 
 Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'DEf' };
