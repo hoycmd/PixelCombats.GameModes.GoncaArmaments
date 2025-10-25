@@ -244,7 +244,7 @@ function SetCrucialMatch() {
  MainTimer.Restart(CrucialMatchTime);
  SpawnTeams(); 
 }
-function SetEnd0fMatch() {
+function SetEnd0fMatch(p) {
 ScoresTimer.Stop(); 
 const leaderboard = Room.LeaderBoard.GetTeams();
 if (leaderboard[0].Weight !== leaderboard[1].Weight) {
@@ -255,6 +255,15 @@ if (leaderboard[0].Weight !== leaderboard[1].Weight) {
  for (const LosP of leaberboard[1].Team.Players) { 
 	 LosP.Properties.Scores.Value += ScoresLOOSER;
    }
+ p.inventory.Main.Value = false;
+ p.inventory.MainInfinity.Value = false;
+ p.inventory.Secondary.Value = false;
+ p.inventory.Secondary.Value = false;
+ p.inventory.Melee.Value = false;
+ p.inventory.Explosive.Value = false;
+ p.inventory.ExplosiveInfinity.Value = false;
+ p.inventory.Build.Value = false;	
+ p.inventory.BuildInfinity.Value = false;
 } else { SetEnd0fMatch_EndMode(); }
 }
 function SetMockMode(winners, loosers) {
@@ -265,17 +274,6 @@ function SetMockMode(winners, loosers) {
  Room.Ui.GetContext(loosers).Hint.Value = 'Поражение.\nМы проиграли, этот матч!';    // * Подска, для проигравших матч. * //	
  Room.Spawns.GetContext(loosers).Spawn(); // * Респавн, для лузеров. * //
  Room.Spawns.GetContext(loosers).RespawnTime.Value = 0; // * Таймер респавна игроков, для проигравших. * //
-for (const p of Room.Players.All) {
- p.inventory.Main.Value = true;
- p.inventory.MainInfinity.Value = true;
- p.inventory.Secondary.Value = true;
- p.inventory.Secondary.Value = true;
- p.inventory.Melee.Value = true;
- p.inventory.Explosive.Value = true;
- p.inventory.ExplosiveInfinity.Value = true;
- p.inventory.Build.Value = true;	
- p.inventory.BuildInfinity.Value = true;
-}
  winners.ContextedProperties.SkinType.Value = 2; // * Задаём обработанный скин, для выигрывших игроков. * //
  loosers.ContextedProperties.SkinType.Value = 1; // * Задаём дублированный скин проигравших, игроков. * //
 	
