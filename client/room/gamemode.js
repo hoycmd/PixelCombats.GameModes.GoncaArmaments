@@ -64,12 +64,16 @@ Room.Teams.OnRequestJoinTeam.Add(function (p,t) {
  t.Add(p); 
 p.Properties.Get('RoomID').Value = p.IdInRoom;
 if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
-if (Room.Players.All.length == 1) {
+if (Room.Players.All.length === 1) {
  Room.Ui.GetContext().Hint.Value = '<b>\nДля начала, необходимо кол-во игроков: 2</b>';
  MainTimer.Stop();
+return;
 } 
-if (Room.Players.All.length == 2) {
-  SetWaitingMode();
+if (Room.Players.All.length === 2) {
+ Room.Ui.GetContext().Hint.Value = '<b>\nКол-во игроков (2) набрато, запускаем игру...</b>';
+ MainTimer.Restart(5);
+ SetWaitingMode();
+  return;
   }
 }
  });
