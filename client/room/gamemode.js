@@ -183,9 +183,7 @@ case End0fMatchStateValue:
 
 // * Дублируем первое, игровое состояние матча. * //
 SetWaitingMode();
- if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
-SetWaitingPlayers();
- }
+if (Room.GameMode.Parameters.GetBool('Waiting2Player')) { SetWaitingPlayers();}
 	
 // * Состояние, игровых матчей. * //
 function SetWaitingPlayers() {
