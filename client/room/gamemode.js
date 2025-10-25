@@ -453,6 +453,8 @@ Room.Chat.OnMessage.Add(function(Message) {
 		ArgumentativePlayer.inventory.Explosive.Value = false;
 		ArgumentativePlayer.inventory.Build.Value = false;
 		MessageSender.PopUp(`Команда: \'${MessageText}\' была выполнена успешно.`);
+	}
+});
 	
 function CreateNewTeam(TeamName, TeamDisplayName, TeamColor, TeamSpawnPointGroup, TeamBuildBlocksSet) {
  Room.Teams.Add(TeamName, TeamDisplayName, TeamColor);
@@ -460,17 +462,6 @@ let NewTeam = Room.Teams.Get(TeamName);
  NewTeam.Spawns.SpawnPointsGroups.Add(TeamSpawnPointGroup);
  NewTeam.Build.BlocksSet.Value = TeamBuildBlocksSet;
 return NewTeam;
-}
-function CreateNewArea(AreaName, AreaTags, AreaEnable, AreaOnEnter, AreaOnExit, AreaViewName, AreaViewColor, AreaViewEnable) {
- let NewArea = Room.AreaPlayerTriggerService.Get(AreaName);
-  NewArea.Tags = AreaTags;
-  NewArea.Enable = AreaEnable;
-  NewArea.OnEnter.Add(AreaOnEnter);
-  NewArea.OnExit.Add(AreaOnExit);
-let NewAreaView = Room.AreaViewService.GetContext().Get(AreaViewName);
-  NewAreaView.Color = AreaViewColor;
-  NewAreaView.Tags = AreaTags;
-  NewAreaView.Enable = AreaViewEnable;
 }
 function UiBlueLos() {
   Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'DEf' }; 
