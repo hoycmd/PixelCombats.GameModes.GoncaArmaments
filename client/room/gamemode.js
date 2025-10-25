@@ -108,6 +108,7 @@ Room.Spawns.OnSpawn.Add(function (p) {
 
 // * Обрабатываем, счётчик киллов. * //
 Room.Damage.OnKill.Add(function (p,k) {
+ if (StateProp.Value != MockModeStateValue && StateProp.Value != RazmincaMatchStateValue) {
  if (k.Team != null && k.Team != p.Team) { 
  ++p.Properties.Kills.Value;
  p.Properties.Scores.Value += ScoresKILL;
@@ -124,15 +125,18 @@ if (p.Properties.Kills.Value === 35) { p.Properties.Scores.Value += 40, p.PopUp(
 if (p.Properties.Kills.Value === 40) { p.contextedProperties.SkinType.Value = 2, p.PopUp('SKIN ZEK\nВы получили: SKIN ZEK!'); }
 if (p.Properties.Kills.Value === 45) { p.Properties.Kills.Value += 10, p.PopUp('10 KILL\nВы получили: 10 KILL!'); }
 if (p.Properties.Kills.Value === 50) SetEnd0fMatch();
+ }
 });
 
 // * Обрабатываем, счётчик смертей. * //
 Room.Damage.OnDeath.Add(function (p) {
+if (StateProp.Value != RazmincaMatchStateValue) {
  if (StateProp.Value == MockModeStateValue) {
   Room.Spawns.GetContext(p).Spawn(); 
  return;
 }
 ++p.Properties.Deaths.Value;
+}
 });
 
 // * За каждую смерть игрока, отнимаем смерть в команде. * //
@@ -149,7 +153,7 @@ Room.Properties.OnTeamProperty.Add(function (c,v) {
 
 // * Таймер выдачи очков, за время в матче. * //
 ScoresTimer.OnTimer.Add(function () {
-for (const p of Players.All) {
+for (const p of Room.Players.All) {
   if (p.Team == null) continue; 
 p.Properties.Scores.Value += ScoresTIMER;
 	}
@@ -262,7 +266,7 @@ function SetMockMode(winners, loosers) {
  Room.Ui.GetContext(loosers).Hint.Value = 'Поражение.\nМы проиграли, этот матч!';    // * Подска, для проигравших матч. * //	
  Room.Spawns.GetContext(loosers).Spawn(); // * Респавн, для лузеров. * //
  Room.Spawns.GetContext(loosers).RespawnTime.Value = 0; // * Таймер респавна игроков, для проигравших. * //
- Room.Inventory.GetContext().Main.Value = true;
+ Room.nventory.GetContext().Main.Value = true;
  Room.Inventory.GetContext().MainInfinity.Value = true;
  Room.Inventory.GetContext().Secondary.Value = true;
  Room.Inventory.GetContext().Secondary.Value = true;
@@ -273,9 +277,6 @@ function SetMockMode(winners, loosers) {
  Room.Inventory.GetContext().BuildInfinity.Value = true;
  winners.ContextedProperties.SkinType.Value = 2; // * Задаём обработанный скин, для выигрывших игроков. * //
  loosers.ContextedProperties.SkinType.Value = 1; // * Задаём дублированный скин проигравших, игроков. * //
- Room.Players.All.forEach(p => {
-  p.Properties.Immortality.Value = false;
- });
 
  if (RedTeam.Properties.Get('Deaths').Value <= maxDeaths && BlueTeam.Properties.Get('Deaths').Value >= maxDeaths && BlueTeam.Properties.Get('Deaths').Value == maxDeaths) {
 Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'DEf' }; 
