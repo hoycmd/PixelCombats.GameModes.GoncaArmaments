@@ -16,7 +16,7 @@
    "Bool": [
       {
         "Name": "LoosenBlocks",
-        "DisplayName": "<b><color=#0095B6>Слабые</a> блоки</b>"
+        "DisplayName": "\n<b><color=#0095B6>Слабые</a> блоки</b>"
       },
       {
        "Name": "PartialDeserction",
@@ -29,6 +29,10 @@
       {
        "Name": "Waiting2Player",
        "DisplayName": "<b><color=#0095B6>Ожидание</a> 2 игрока</b>"
+      },
+      {
+       "Name": "MaxPlayers",
+       "DisplayName": "<b><color=#0095B6>Показывать макс игроков</a> в табе</b>"
       },
       {
        "Name": "FriendlyFire",
