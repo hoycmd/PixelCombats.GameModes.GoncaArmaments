@@ -64,7 +64,14 @@ Room.Teams.OnRequestJoinTeam.Add(function (p,t) {
  t.Add(p); 
 p.Properties.Get('RoomID').Value = p.IdInRoom;
 if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
- Wait();
+ if (Room.Players.All.length === 1) {
+ Room.Ui.GetContext().Hint.Value = '<b>\nДля начала, необходимо кол-во игроков: 2</b>';
+ MainTimer.Stop();
+} 
+if (Room.Players.All.length === 2) {
+ Room.Ui.GetContext().Hint.Value = '<b>\nКол-во игроков (2) набрато, запускаем игру...</b>';
+ MainTimer.Restart(5);
+ SetWaitingMode();
 }
  });
 // * Респавним игрока - после входа в команду. * //
@@ -582,18 +589,6 @@ function RemoveBanPlayer(p) {
 	p.Properties.Get('Ban').Value = false;
 	if (ImportantPlayersIDs.Bans.includes(p.id)) ImportantPlayersIDs.Bans.splice(ImportantPlayersIDs.Bans.indexOf(p.id), 1);
 }
-function Wait() {
-if (Room.Players.All.length === 1) {
- Room.Ui.GetContext().Hint.Value = '<b>\nДля начала, необходимо кол-во игроков: 2</b>';
- MainTimer.Stop();
-return;
-} 
-if (Room.Players.All.length === 2) {
- Room.Ui.GetContext().Hint.Value = '<b>\nКол-во игроков (2) набрато, запускаем игру...</b>';
- MainTimer.Restart(5);
- SetWaitingMode();
-  return;
-  }
 function GetPlayerInformation(p) {
 	if (!p) return;
         return {
