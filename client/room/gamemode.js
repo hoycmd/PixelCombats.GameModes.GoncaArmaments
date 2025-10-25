@@ -183,16 +183,18 @@ case End0fMatchStateValue:
 
 // * Дублируем первое, игровое состояние матча. * //
 SetWaitingMode();
-if (Room.GameMode.Parameters.GetBool('Waiting2Player')) { SetWaitingPlayers();}
+if (Room.GameMode.Parameters.GetBool('Waiting2Player')) { 
+ SetWaitingPlayers();
+}												
 	
 // * Состояние, игровых матчей. * //
 function SetWaitingPlayers() {
- if (Room.Players.All.length == 1) {
+ if (Room.Players.All.length == 1 && Room.Players.All.length <= 0) {
  Room.Ui.GetContext().Hint.Value = '<b>\nДля начала, необходимо кол-во игроков: 2</b>';
  Room.Spawns.GetContext().Enable = false;
  MainTimer.Stop();
 } 
-if (Room.Players.All.length >= 1) {
+if (Room.Players.All.length >= 1 && Room.Players.All.length == 2) {
  SetWaitingMode();
   }
 }
