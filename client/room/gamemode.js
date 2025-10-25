@@ -33,7 +33,6 @@ const TextWinnersBlue = '\n<b><size=220><color=#0303a4>ß</color><color=#0b2cc0>
 	
 // * Имена констант, в разных - матчах. * //
 const WaitingStateValue = 'Waiting';
-const WaitingPlayersStateValue = 'WaitingPlayers';
 const CrucialMatchStateValue = 'CrucialMatch';
 const RazmincaMatchStateValue = 'RazmincaMatch';
 const GameStateValue = 'Game';
@@ -183,15 +182,11 @@ case End0fMatchStateValue:
 });
 
 // * Дублируем первое, игровое состояние матча. * //
-if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
-  SetWaitingPlayers();
-}
-if (!Room.GameMode.Parameters.GetBool('Waiting2Player')) SetWaitingMode();
+if (Room.GameMode.Parameters.GetBool('Waiting2Player')) SetWaitingPlayers();
+SetWaitingMode();
 	
 // * Состояние, игровых матчей. * //
-if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
 function SetWaitingPlayers() {
-StateProp.Value = WaitingPlayersStateValue;
 if (Room.Players.All.length === 1) {
  Room.Ui.GetContext().Hint.Value = '<b>\nДля начала, необходимо кол-во игроков: 2</b>';
  Room.Spawns.GetContext().Enable = false;
@@ -199,8 +194,7 @@ if (Room.Players.All.length === 1) {
 }
 if (Room.Players.All.length === 2) {
  SetWaitingMode();
-                   }
-         }
+  }
 }
 function, SetWaitingMode() {
  StateProp.Value = WaitingStateValue;
