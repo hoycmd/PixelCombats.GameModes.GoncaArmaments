@@ -1,6 +1,5 @@
-// Импорты:
-import * as Basic from 'pixel_combats/basic';
-import * as Room from 'pixel_combats/room';
+import { Players, Inventory, BuildBlocksSet, LeaberBoard, Properties, ContextedProperties, Teams, Timers, Chat, Spawns, Build, Map, NewGame, NewGameVote, AreaViewService, AreaPlayerTriggerService } from 'pixel_combats/basic';
+import  { DisplayValueHeader, Color } from 'pixel_combats/basic';
 import * as default_timer from './default_timer.js';
 
 try {
