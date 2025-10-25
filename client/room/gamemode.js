@@ -15,7 +15,7 @@ const End0fMatchTime = 11;
 const RazmincaMatchTime = 51;
 const MockModeTime = 21;
 const VoteTime = 10;
-const ScoresTimer = 6;
+const ScoresTimerTime = 6;
 const ScoresTIMER = 5;
 const ScoresWINNER = 30;
 const ScoresLOOSER = 10;
@@ -63,19 +63,19 @@ Room.Ui.GetContext().MainTimerId.Value = MainTimer.Id;   // * Индификат
 
 // * Разрешаем игрокам, заходить в команду - по запросу. * //
 Room.Teams.OnRequestJoinTeam.Add(function (p,t) { 
- t.Add(p); 
-p.Properties.Get('RoomID').Value = p.IdInRoom;
- });
+	t.Add(p); 
+	p.Properties.Get('RoomID').Value = p.IdInRoom;
+});
 // * Респавним игрока - после входа в команду. * //
 Room.Teams.OnPlayerChangeTeam.Add(function (p) { p.Spawns.Spawn()});
 	
 // * Задаём значения в лидерборде, которые обязательно нужно вводить в таблицу. * //
 Room.LeaderBoard.PlayerLeaderBoardValues = [
-  new Basic.DisplayValueHeader('Kills', '\nK', '\nK'),
-  new Basic.DisplayValueHeader('Deaths', '\nD', '\nD'),
-  new Basic.DisplayValueHeader('Spawns', '\nSP', '\nSP'),
-  new Basic.DisplayValueHeader('Scores', '\nSC', '\nSC'),
-  new Basic.DisplayValueHeader('RoomID', '\nRID', '\nRID')
+	new Basic.DisplayValueHeader('Kills', '\nK', '\nK'),
+	new Basic.DisplayValueHeader('Deaths', '\nD', '\nD'),
+	new Basic.DisplayValueHeader('Spawns', '\nSP', '\nSP'),
+	new Basic.DisplayValueHeader('Scores', '\nSC', '\nSC'),
+	new Basic.DisplayValueHeader('RoomID', '\nRID', '\nRID')
 ];
 // * Дублируем команды, за самые наилучшие смерти - в команде игрока. * //
 Room.LeaderBoard.TeamWeightGetter.Set(function (t) { return t.Properties.Get('Deaths').Value; });
@@ -85,8 +85,8 @@ Room.LeaderBoard.PlayersWeightGetter.Set(function (p) { return p.Properties.Get(
 // * Бессмертие, после респавна - игроков. * //
 Room.Spawns.GetContext().OnSpawn.Add(function (p) { 
 if (StateProp.Value == MockModeStateValue) {
- p.Properties.Immortality.Value = false;
- return;
+	p.Properties.Immortality.Value = false;
+	return;
 }
  p.Properties.Immortality.Value = true;
  t = p.Timers.Get('Immortality').Restart(5);
@@ -153,7 +153,7 @@ for (const p of Room.Players.All) {
   if (p.Team == null) continue; 
 p.Properties.Scores.Value += ScoresTIMER;
 	}
-ScoresTimer.Restart(ScoresTimer);
+ScoresTimer.Restart(ScoresTimerTime);
 });
 
 // * Основной таймер, переключения игровых - режимов матча. * //
@@ -163,11 +163,10 @@ case WaitingStateValue:
 if (Room.GameMode.Parameters.GetBool('Waiting2Player') && Room.Players.All.length < 2) {
 Room.Players.All.forEach(p => {
 	p.Ui.Hint.Value = '';
-	p.Ui.Hint.Value = 'Жди второго игрока!';
+	p.Ui.Hint.Value = '<b>\nДля начала, необходимо кол-во игроков: 2.</b>';
 });
-SetWaitingPlayers();
-}
- SetRazmincaMatch();
+SetWaitingMode();
+} else SetRazmincaMatch();
 break;
 case RazmincaMatchStateValue:
   SetGameMode();
@@ -192,16 +191,6 @@ case End0fMatchStateValue:
 SetWaitingMode();
 
 // * Состояние, игровых матчей. * //
-function SetWaitingPlayers() {
- if (Room.Players.All.length == 1 && Room.Players.All.length <= 1) {
- Room.Ui.GetContext().Hint.Value = '<b>\nДля начала, необходимо кол-во игроков: 2</b>';
- Room.Spawns.GetContext().Enable = false;
- MainTimer.Stop();
-} 
-if (Room.Players.All.length == 2 && Room.Players.All.length >= 1) {
- SetWaitingMode();
-  }
-}
 function SetWaitingMode() {
  StateProp.Value = WaitingStateValue;
  Room.Spawns.GetContext().Enable = false;
@@ -644,7 +633,6 @@ function GetPlayerInformation(p) {
 }
 
 ScoresTimer.RestartLoop(ScoresINTERVALtime);
-
 } catch (e) {
         Room.Players.All.forEach(msg => {
                 Room.msg.Show(`${e.name}: ${e.message} ${e.stack}`);
