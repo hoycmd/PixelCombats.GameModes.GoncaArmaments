@@ -187,12 +187,12 @@ if (Room.GameMode.Parameters.GetBool('Waiting2Player')) { SetWaitingPlayers();}
 	
 // * Состояние, игровых матчей. * //
 function SetWaitingPlayers() {
- if (Room.Players.All.length === 1) {
+ if (Room.Players.All.length <= 1) {
  Room.Ui.GetContext().Hint.Value = '<b>\nДля начала, необходимо кол-во игроков: 2</b>';
  Room.Spawns.GetContext().Enable = false;
  MainTimer.Stop();
 } 
-if (Room.Players.All.length === 2) {
+if (Room.Players.All.length >= 1) {
  SetWaitingMode();
   }
 }
