@@ -186,8 +186,7 @@ case End0fMatchStateValue:
 if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
   SetWaitingPlayers();
 }
-if !
-SetWaitingMode();
+if (!Room.GameMode.Parameters.GetBool('Waiting2Player')) SetWaitingMode();
 	
 // * Состояние, игровых матчей. * //
 if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
