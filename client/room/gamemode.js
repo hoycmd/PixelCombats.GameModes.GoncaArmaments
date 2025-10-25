@@ -4,6 +4,8 @@ import * as Room from 'pixel_combats/room';
 import * as default_timer from './default_timer.js';
 
 try {
+
+// * Обраюатываем юз попапов. * //
 Room.room.PopupsEnable = true;
 
 // * Константы таймеров и очков, команд. * //
@@ -64,14 +66,13 @@ Room.Teams.OnRequestJoinTeam.Add(function (p,t) {
  t.Add(p); 
 p.Properties.Get('RoomID').Value = p.IdInRoom;
 if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
- if (Room.Players.All.length === 1) {
+if (Room.Players.All.length == 1) {
  Room.Ui.GetContext().Hint.Value = '<b>\nДля начала, необходимо кол-во игроков: 2</b>';
  MainTimer.Stop();
 } 
-if (Room.Players.All.length === 2) {
- Room.Ui.GetContext().Hint.Value = '<b>\nКол-во игроков (2) набрато, запускаем игру...</b>';
- MainTimer.Restart(5);
- SetWaitingMode();
+if (Room.Players.All.length == 2) {
+  SetWaitingMode();
+  }
 }
  });
 // * Респавним игрока - после входа в команду. * //
@@ -92,10 +93,6 @@ Room.LeaderBoard.PlayersWeightGetter.Set(function (p) { return p.Properties.Get(
 
 // * Бессмертие, после респавна - игроков. * //
 Room.Spawns.GetContext().OnSpawn.Add(function (p) { 
-if (StateProp.Value == MockModeStateValue) {
- p.Properties.Immortality.Value = false;
- return;
-}
  p.Properties.Immortality.Value = true;
  t = p.Timers.Get('Immortality').Restart(5);
 });
@@ -111,7 +108,6 @@ Room.Spawns.OnSpawn.Add(function (p) {
 
 // * Обрабатываем, счётчик киллов. * //
 Room.Damage.OnKill.Add(function (p,k) {
- if (StateProp.Value != RazmincaMatchStateValue && StateProp.Value != MockModeStateValue) {
  if (k.Team != null && k.Team != p.Team) { 
  ++p.Properties.Kills.Value;
  p.Properties.Scores.Value += ScoresKILL;
@@ -128,18 +124,15 @@ if (p.Properties.Kills.Value === 35) { p.Properties.Scores.Value += 40, p.PopUp(
 if (p.Properties.Kills.Value === 40) { p.contextedProperties.SkinType.Value = 2, p.PopUp('SKIN ZEK\nВы получили: SKIN ZEK!'); }
 if (p.Properties.Kills.Value === 45) { p.Properties.Kills.Value += 10, p.PopUp('10 KILL\nВы получили: 10 KILL!'); }
 if (p.Properties.Kills.Value === 50) SetEnd0fMatch();
- }
 });
 
 // * Обрабатываем, счётчик смертей. * //
 Room.Damage.OnDeath.Add(function (p) {
- if (StateProp.Value != RazmincaMatchStateValue) {
  if (StateProp.Value == MockModeStateValue) {
   Room.Spawns.GetContext(p).Spawn(); 
  return;
 }
 ++p.Properties.Deaths.Value;
-    }
 });
 
 // * За каждую смерть игрока, отнимаем смерть в команде. * //
@@ -245,6 +238,9 @@ function SetCrucialMatch() {
  MainTimer.Restart(CrucialMatchTime);
  SpawnTeams(); 
 }
+
+
+
 function SetEnd0fMatch() {
 ScoresTimer.Stop(); 
 const leaderboard = Room.LeaderBoard.GetTeams();
@@ -266,20 +262,21 @@ function SetMockMode(winners, loosers) {
  Room.Ui.GetContext(loosers).Hint.Value = 'Поражение.\nМы проиграли, этот матч!';    // * Подска, для проигравших матч. * //	
  Room.Spawns.GetContext(loosers).Spawn(); // * Респавн, для лузеров. * //
  Room.Spawns.GetContext(loosers).RespawnTime.Value = 0; // * Таймер респавна игроков, для проигравших. * //
-for (const p of Room.Players.All) {
- p.inventory.Main.Value = true;
- p.inventory.MainInfinity.Value = true;
- p.inventory.Secondary.Value = true;
- p.inventory.Secondary.Value = true;
- p.inventory.Melee.Value = true;
- p.inventory.Explosive.Value = true;
- p.inventory.ExplosiveInfinity.Value = true;
- p.inventory.Build.Value = true;	
- p.inventory.BuildInfinity.Value = true;
-}
+ Room.Inventory.GetContext().Main.Value = true;
+ Room.Inventory.GetContext().MainInfinity.Value = true;
+ Room.Inventory.GetContext().Secondary.Value = true;
+ Room.Inventory.GetContext().Secondary.Value = true;
+ Room.Inventory.GetContext().Melee.Value = true;
+ Room.Inventory.GetContext().Explosive.Value = true;
+ Room.Inventory.GetContext().ExplosiveInfinity.Value = true;
+ Room.Inventory.GetContext().Build.Value = true;	
+ Room.Inventory.GetContext().BuildInfinity.Value = true;
  winners.ContextedProperties.SkinType.Value = 2; // * Задаём обработанный скин, для выигрывших игроков. * //
  loosers.ContextedProperties.SkinType.Value = 1; // * Задаём дублированный скин проигравших, игроков. * //
-	
+ Room.Players.All.forEach(p => {
+  p.Properties.Immortality.Value = false;
+ });
+
  if (RedTeam.Properties.Get('Deaths').Value <= maxDeaths && BlueTeam.Properties.Get('Deaths').Value >= maxDeaths && BlueTeam.Properties.Get('Deaths').Value == maxDeaths) {
 Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'DEf' }; 
 Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'DEf' };
@@ -572,6 +569,12 @@ let NewAreaView = Room.AreaViewService.GetContext().Get(AreaViewName);
   NewAreaView.Color = AreaViewColor;
   NewAreaView.Tags = AreaTags;
   NewAreaView.Enable = AreaViewEnable;
+}
+function UiBlueLos() {
+  Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'DEf' }; 
+  Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'DEf' };
+  RedTeam.Properties.Get('DEf').Value = TextWinnersRed;
+  BlueTeam.Properties.Get('DEf').Value = TextLoosersBlue;
 }
 function GiveBanPlayer(p) {
 	if (!p) return;
