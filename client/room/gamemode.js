@@ -65,7 +65,7 @@ Room.Teams.OnRequestJoinTeam.Add(function (p,t) {
 p.Properties.Get('RoomID').Value = p.IdInRoom;
 if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
  Wait();
-} else if (p.Team === null) Wait();
+}
  });
 // * Респавним игрока - после входа в команду. * //
 Room.Teams.OnPlayerChangeTeam.Add(function (p) { p.Spawns.Spawn()});
