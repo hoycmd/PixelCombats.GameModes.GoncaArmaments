@@ -72,6 +72,15 @@ if (Room.Players.All.length == 2) {
   SetWaitingMode();
   }
 }
+ // * Сколько игроков, в каждой команде - игроков. * //
+var blueCount = 0;
+var redCount = 0;
+if (p.Team == redTeam) {
+ ++redCount;
+}
+if (p.Team == blueCount) {
+ ++blueCount;
+}
  });
 // * Респавним игрока - после входа в команду. * //
 Room.Teams.OnPlayerChangeTeam.Add(function (p) { p.Spawns.Spawn()});
@@ -241,6 +250,10 @@ function SetCrucialMatch() {
  Room.Ui.GetContext().Hint.Value = 'Решающий раунд!\nВыйграйте, эту схватку!';
  Room.Spawns.GetContext().Despawn();
  Room.TeamsBalancer.BalanceTeams();
+Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'd' }; 
+ Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'd' };
+ Room.Teams.Get('Red').Properties.Get('d').Value = redCount;
+ Room.Teams.Get('Blue').Properties.Get('d').Value = blueCount;
  MainTimer.Restart(CrucialMatchTime);
  SpawnTeams(); 
 }
@@ -571,12 +584,6 @@ let NewAreaView = Room.AreaViewService.GetContext().Get(AreaViewName);
   NewAreaView.Color = AreaViewColor;
   NewAreaView.Tags = AreaTags;
   NewAreaView.Enable = AreaViewEnable;
-}
-function UiBlueLos() {
-  Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'DEf' }; 
-  Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'DEf' };
-  RedTeam.Properties.Get('DEf').Value = TextWinnersRed;
-  BlueTeam.Properties.Get('DEf').Value = TextLoosersBlue;
 }
 function GiveBanPlayer(p) {
 	if (!p) return;
