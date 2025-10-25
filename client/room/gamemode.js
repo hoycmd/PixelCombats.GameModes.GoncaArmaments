@@ -160,6 +160,16 @@ ScoresTimer.Restart(ScoresTimer);
 MainTimer.OnTimer.Add(function () {
  switch (StateProp.Value) {
 case WaitingStateValue:
+ if (Room.GameMode.Parameters.GetBool('Waiting2Player')) {
+ if (Room.Players.All.length === 1) {
+ Room.Ui.GetContext().Hint.Value = '<b>\nДля начала, необходимо кол-во игроков: 2</b>';
+ MainTimer.Stop();
+}
+if (Room.Players.All.length === 2) {
+ SetWaitingMode();
+  }
+break;
+}
  SetRazmincaMatch();
 break;
 case RazmincaMatchStateValue:
@@ -182,20 +192,9 @@ case End0fMatchStateValue:
 });
 
 // * Дублируем первое, игровое состояние матча. * //
-if (Room.GameMode.Parameters.GetBool('Waiting2Player')) SetWaitingPlayers();
 SetWaitingMode();
 	
 // * Состояние, игровых матчей. * //
-function SetWaitingPlayers() {
-if (Room.Players.All.length === 1) {
- Room.Ui.GetContext().Hint.Value = '<b>\nДля начала, необходимо кол-во игроков: 2</b>';
- Room.Spawns.GetContext().Enable = false;
- MainTimer.Stop();
-}
-if (Room.Players.All.length === 2) {
- SetWaitingMode();
-  }
-}
 function, SetWaitingMode() {
  StateProp.Value = WaitingStateValue;
  Room.Spawns.GetContext().Enable = false;
