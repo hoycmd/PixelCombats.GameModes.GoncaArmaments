@@ -1,8 +1,8 @@
 
-import * as Room from 'pixel_combats/room';
+import { GameMode } from 'pixel_combats/room';
 
 // * Константы имён, объектов. * //
-const length = Room.GameMode.Parameters.GetString('GameLength');
+const length = GameMode.Parameters.GetString('GameLength');
 
 // * Длинна, матча. * //
 export function GameModeMatchTime() {
