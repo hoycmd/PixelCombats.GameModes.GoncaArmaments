@@ -63,13 +63,13 @@ Ui.GetContext().MainTimerId.Value = mainTimer.Id;   // * Индификатор,
 // * Разрешаем игрокам, заходить в команду - по запросу. * //
 Teams.OnRequestJoinTeam.Add(function (p,t) { 
  t.Add(p); 
-p.Properties.Get('RoomID').Value = p.IdInRoom;
+p.Properties.Get(`RoomID`).Value = p.IdInRoom;
 if (GameMode.Parameters.GetBool('Waiting2Player')) {
 if (Players.All.length == 1) {
  Ui.GetContext().Hint.Value = '<b>\nДля начала, необходимо кол-во игроков: 2</b>';
- MainTimer.Stop();
+ mainTimer.Stop();
 } 
-if (Room.Players.All.length == 2) {
+if (Players.All.length == 2) {
   SetWaitingMode();
   }
 }
@@ -79,11 +79,11 @@ Teams.OnPlayerChangeTeam.Add(function (p) { p.Spawns.Spawn()});
 	
 // * Задаём значения в лидерборде, которые обязательно нужно вводить в таблицу. * //
 LeaderBoard.PlayerLeaderBoardValues = [
-  new DisplayValueHeader('Kills', '\nK', '\nK'),
-  new DisplayValueHeader('Deaths', '\nD', '\nD'),
-  new DisplayValueHeader('Spawns', '\nSP', '\nSP'),
-  new DisplayValueHeader('Scores', '\nSC', '\nSC'),
-  new DisplayValueHeader('RoomID', '\nRID', '\nRID')
+  new DisplayValueHeader(`Kills`, `\nK`, `\nK`),
+  new DisplayValueHeader(`Deaths`, `\nD`, `\nD`),
+  new DisplayValueHeader(`Spawns`, `\nSP`, `\nSP`),
+  new DisplayValueHeader(`Scores`, `\nSC`, `\nSC`),
+  new DisplayValueHeader(`RoomID`, `\nRID`, `\nRID`)
 ];
 // * Дублируем команды, за самые наилучшие смерти - в команде игрока. * //
 LeaderBoard.TeamWeightGetter.Set(function (t) { return t.Properties.Get('Deaths').Value; });
@@ -190,12 +190,12 @@ SetWaitingMode();
 function SetWaitingMode() {
  stateProp.Value = WaitingStateValue;
  Spawns.GetContext().Enable = false;
- Ui.GetContext().Hint.Value = '<b>By: ƬＮ丅 ｌivɆ (ᵒᶠᶠⁱᶜⁱᵃˡ) \nОжидание, игроков...</b>';
+ Ui.GetContext().Hint.Value = `<b>By: ƬＮ丅 ｌivɆ (ᵒᶠᶠⁱᶜⁱᵃˡ) \nОжидание, игроков...</b>`;
  mainTimer.Restart(WaitingPlayersTime);
 }
 function SetRazmincaMatch() {
  stateProp.Value = RazmincaMatchStateValue;
- Ui.GetContext().Hint.Value = 'Разминка.\nПотренируйтесь, перед матчем!';
+ Ui.GetContext().Hint.Value = `Разминка.\nПотренируйтесь, перед матчем!`;
 
  Inventory.GetContext().Main.Value = true;
  Inventory.GetContext().Secondary.Value = true;
@@ -214,7 +214,7 @@ function SetRazmincaMatch() {
 }
 function SetGameMode() {
  stateProp.Value = GameStateValue;
- Ui.GetContext().Hint.Value = 'Матч начался.\nПобедите, в этом раунде!';
+ Ui.GetContext().Hint.Value = `Матч начался.\nПобедите, в этом раунде!`;
   	
  Inventory.GetContext().Main.Value = false;
  Inventory.GetContext().Secondary.Value = false;
@@ -234,7 +234,7 @@ function SetGameMode() {
 }
 function SetCrucialMatch() {
  stateProp.Value = CrucialMatchStateValue;
- Ui.GetContext().Hint.Value = 'Решающий раунд!\nВыйграйте, эту схватку!';
+ Ui.GetContext().Hint.Value = `Решающий раунд!\nВыйграйте, эту схватку!`;
  Spawns.GetContext().Despawn();
  TeamsBalancer.BalanceTeams();
  mainTimer.Restart(CrucialMatchTime);
@@ -266,8 +266,8 @@ function SetMockMode(winners, loosers) {
  stateProp.Value = MockModeStateValue;  // * Дублируем, основное имя режиму. * //
  mainTimer.Restart(MockModeTime);   // * Включаем основной таймер, перезагрузки режима. * //
  scoresTimer.Stop();   // * Остонавливаем таймер очков. * //
- Ui.GetContext(winners).Hint.Value = 'Победа.\nВы выиграли, в этой битве!';   // * Подска, для выигрывших раунд. * //
- Ui.GetContext(loosers).Hint.Value = 'Поражение.\nМы проиграли, этот матч!';    // * Подска, для проигравших матч. * //	
+ Ui.GetContext(winners).Hint.Value = `Победа.\nВы выиграли, в этой битве!`;   // * Подска, для выигрывших раунд. * //
+ Ui.GetContext(loosers).Hint.Value = `Поражение.\nМы проиграли, этот матч!`;    // * Подска, для проигравших матч. * //	
  Spawns.GetContext(loosers).Spawn(); // * Респавн, для лузеров. * //
  Spawns.GetContext(loosers).RespawnTime.Value = 0; // * Таймер респавна игроков, для проигравших. * //
  winners.ContextedProperties.SkinType.Value = 2; // * Задаём обработанный скин, для выигрывших игроков. * //
@@ -306,9 +306,9 @@ redTeam.Properties.Get(`TextTabRedWinners`).Value = TextWinnersRed;
 }	  
  function SetEnd0fMatch_EndMode() {
 stateProp.Value = End0fMatchStateValue;
-Ui.GetContext().Hint.Value = '<b>BY: ƬＮ丅 ｌivɆ (ᵒᶠᶠⁱᶜⁱᵃˡ)\nКонец, матча!</b>';
+Ui.GetContext().Hint.Value = `<b>BY: ƬＮ丅 ｌivɆ (ᵒᶠᶠⁱᶜⁱᵃˡ)\nКонец, матча!</b>`;
 mainTimer.Restart(End0fMatchTime);
-Game.GameOver(LeaderBoard.GetTeams());
+Game.GameOver(LeaberBoard.GetTeams());
 Spawns.GetContext().Enable = false;
 Spawns.GetContext().Despawn();
 }
