@@ -5,7 +5,7 @@ import * as default_timer from './default_timer.js';
 
 try {
 
-// * Обраюатываем юз попапов. * //
+// * Обрабатываем юз попапов. * //
 Room.room.PopupsEnable = true;
 
 // * Константы таймеров и очков, команд. * //
@@ -160,6 +160,13 @@ ScoresTimer.Restart(ScoresTimer);
 MainTimer.OnTimer.Add(function () {
  switch (StateProp.Value) {
 case WaitingStateValue:
+if (Room.GameMode.Parameters.GetBool('Waiting2Player') && Room.Players.All.length < 2) {
+Room.Players.All.forEach(p => {
+	p.Ui.Hint.Value = '';
+	p.Ui.Hint.Value = 'Жди второго игрока!';
+});
+SetWaitingPlayers();
+}
  SetRazmincaMatch();
 break;
 case RazmincaMatchStateValue:
@@ -183,10 +190,7 @@ case End0fMatchStateValue:
 
 // * Дублируем первое, игровое состояние матча. * //
 SetWaitingMode();
-if (Room.GameMode.Parameters.GetBool('Waiting2Player')) { 
- SetWaitingPlayers();
-}												
-	
+
 // * Состояние, игровых матчей. * //
 function SetWaitingPlayers() {
  if (Room.Players.All.length == 1 && Room.Players.All.length <= 1) {
