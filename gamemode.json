@@ -16,7 +16,7 @@
    "Bool": [
       {
         "Name": "LoosenBlocks",
-        "DisplayName": "\n<b><color=#0095B6>Слабые</a> блоки</b>"
+        "DisplayName": "<b><color=#0095B6>Слабые</a> блоки</b>"
       },
       {
        "Name": "PartialDeserction",
