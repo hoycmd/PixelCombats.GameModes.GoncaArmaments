@@ -91,6 +91,10 @@ Room.LeaderBoard.PlayersWeightGetter.Set(function (p) { return p.Properties.Get(
 
 // * Бессмертие, после респавна - игроков. * //
 Room.Spawns.GetContext().OnSpawn.Add(function (p) { 
+if (StateProp.Value == MockModeStateValue) {
+ p.Properties.Immortality.Value = false;
+ return;
+}
  p.Properties.Immortality.Value = true;
  t = p.Timers.Get('Immortality').Restart(5);
 });
@@ -106,6 +110,7 @@ Room.Spawns.OnSpawn.Add(function (p) {
 
 // * Обрабатываем, счётчик киллов. * //
 Room.Damage.OnKill.Add(function (p,k) {
+ if (StateProp.Value != RazmincaMatchStateValue && StateProp.Value != MockModeStateValue) {
  if (k.Team != null && k.Team != p.Team) { 
  ++p.Properties.Kills.Value;
  p.Properties.Scores.Value += ScoresKILL;
@@ -122,15 +127,18 @@ if (p.Properties.Kills.Value === 35) { p.Properties.Scores.Value += 40, p.PopUp(
 if (p.Properties.Kills.Value === 40) { p.contextedProperties.SkinType.Value = 2, p.PopUp('SKIN ZEK\nВы получили: SKIN ZEK!'); }
 if (p.Properties.Kills.Value === 45) { p.Properties.Kills.Value += 10, p.PopUp('10 KILL\nВы получили: 10 KILL!'); }
 if (p.Properties.Kills.Value === 50) SetEnd0fMatch();
+ }
 });
 
 // * Обрабатываем, счётчик смертей. * //
 Room.Damage.OnDeath.Add(function (p) {
+ if (StateProp.Value != RazmincaMatchStateValue) {
  if (StateProp.Value == MockModeStateValue) {
   Room.Spawns.GetContext(p).Spawn(); 
  return;
 }
 ++p.Properties.Deaths.Value;
+    }
 });
 
 // * За каждую смерть игрока, отнимаем смерть в команде. * //
@@ -236,9 +244,6 @@ function SetCrucialMatch() {
  MainTimer.Restart(CrucialMatchTime);
  SpawnTeams(); 
 }
-
-
-
 function SetEnd0fMatch() {
 ScoresTimer.Stop(); 
 const leaderboard = Room.LeaderBoard.GetTeams();
@@ -270,7 +275,6 @@ for (const p of Room.Players.All) {
  p.inventory.ExplosiveInfinity.Value = true;
  p.inventory.Build.Value = true;	
  p.inventory.BuildInfinity.Value = true;
- p.Properties.Immortality.Value = false;	
 }
  winners.ContextedProperties.SkinType.Value = 2; // * Задаём обработанный скин, для выигрывших игроков. * //
  loosers.ContextedProperties.SkinType.Value = 1; // * Задаём дублированный скин проигравших, игроков. * //
