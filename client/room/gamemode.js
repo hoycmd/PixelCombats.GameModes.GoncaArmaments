@@ -216,10 +216,18 @@ function SetRazmincaMatch() {
  Room.Inventory.GetContext().Explosive.Value = true;
  Room.Inventory.GetContext().Build.Value = false;
 
+if (!Room.GameMode.Parameters.GetBool('MaxPlayers')) {
  Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'Text' }; 
  Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'Text' };
  RedTeam.Properties.Get('Text').Value = TextRed;
  BlueTeam.Properties.Get('Text').Value = TextBlue;
+}
+if (Room.GameMode.Parameters.GetBool('MaxPlayers')) {
+ Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'T' }; 
+ Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'T' };
+ RedTeam.Properties.Get('T').Value = redCount;
+ BlueTeam.Properties.Get('T').Value = blueCount;
+}
 
  Room.Spawns.GetContext().Enable = true; 
  MainTimer.Restart(RazmincaMatchTime);
@@ -250,10 +258,6 @@ function SetCrucialMatch() {
  Room.Ui.GetContext().Hint.Value = 'Решающий раунд!\nВыйграйте, эту схватку!';
  Room.Spawns.GetContext().Despawn();
  Room.TeamsBalancer.BalanceTeams();
-Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'd' }; 
- Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'd' };
- Room.Teams.Get('Red').Properties.Get('d').Value = redCount;
- Room.Teams.Get('Blue').Properties.Get('d').Value = blueCount;
  MainTimer.Restart(CrucialMatchTime);
  SpawnTeams(); 
 }
