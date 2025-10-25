@@ -93,6 +93,10 @@ Room.LeaderBoard.PlayersWeightGetter.Set(function (p) { return p.Properties.Get(
 
 // * Бессмертие, после респавна - игроков. * //
 Room.Spawns.GetContext().OnSpawn.Add(function (p) { 
+if (StateProp.Value == MockModeStateValue) {
+ p.Properties.Immortality.Value = false;
+ return;
+}
  p.Properties.Immortality.Value = true;
  t = p.Timers.Get('Immortality').Restart(5);
 });
@@ -103,6 +107,7 @@ Room.Timers.OnPlayerTimer.Add(function (t) {
 
 // * Обрабатываем, счётчик респавнов. * //
 Room.Spawns.OnSpawn.Add(function (p) { 
+ if (StateProp.Value == MockModeStateValue) return;
 	++p.Properties.Spawns.Value; 
 });
 
@@ -242,9 +247,6 @@ function SetCrucialMatch() {
  MainTimer.Restart(CrucialMatchTime);
  SpawnTeams(); 
 }
-
-
-
 function SetEnd0fMatch() {
 ScoresTimer.Stop(); 
 const leaderboard = Room.LeaderBoard.GetTeams();
@@ -256,6 +258,17 @@ if (leaderboard[0].Weight !== leaderboard[1].Weight) {
  for (const LosP of leaberboard[1].Team.Players) { 
 	 LosP.Properties.Scores.Value += ScoresLOOSER;
    }
+for (const p of Room.Players.All) {
+ p.iventory.Main.Value = true;
+ p.inventory.MainInfinity.Value = true;
+ p.inventory.Secondary.Value = true;
+ p.inventory.Secondary.Value = true;
+ p.inventory.Melee.Value = true;
+ p.inventory.Explosive.Value = true;
+ p.inventory.ExplosiveInfinity.Value = true;
+ p.inventory.Build.Value = true;	
+ p.inventory.BuildInfinity.Value = true;
+}
 } else { SetEnd0fMatch_EndMode(); }
 }
 function SetMockMode(winners, loosers) {
@@ -266,15 +279,6 @@ function SetMockMode(winners, loosers) {
  Room.Ui.GetContext(loosers).Hint.Value = 'Поражение.\nМы проиграли, этот матч!';    // * Подска, для проигравших матч. * //	
  Room.Spawns.GetContext(loosers).Spawn(); // * Респавн, для лузеров. * //
  Room.Spawns.GetContext(loosers).RespawnTime.Value = 0; // * Таймер респавна игроков, для проигравших. * //
- Room.nventory.GetContext().Main.Value = true;
- Room.Inventory.GetContext().MainInfinity.Value = true;
- Room.Inventory.GetContext().Secondary.Value = true;
- Room.Inventory.GetContext().Secondary.Value = true;
- Room.Inventory.GetContext().Melee.Value = true;
- Room.Inventory.GetContext().Explosive.Value = true;
- Room.Inventory.GetContext().ExplosiveInfinity.Value = true;
- Room.Inventory.GetContext().Build.Value = true;	
- Room.Inventory.GetContext().BuildInfinity.Value = true;
  winners.ContextedProperties.SkinType.Value = 2; // * Задаём обработанный скин, для выигрывших игроков. * //
  loosers.ContextedProperties.SkinType.Value = 1; // * Задаём дублированный скин проигравших, игроков. * //
 
