@@ -72,15 +72,6 @@ if (Room.Players.All.length == 2) {
   SetWaitingMode();
   }
 }
- // * Сколько игроков, в каждой команде - игроков. * //
-var blueCount = 0;
-var redCount = 0;
-if (p.Team == redTeam) {
- ++redCount;
-}
-if (p.Team == blueCount) {
- ++blueCount;
-}
  });
 // * Респавним игрока - после входа в команду. * //
 Room.Teams.OnPlayerChangeTeam.Add(function (p) { p.Spawns.Spawn()});
@@ -216,18 +207,10 @@ function SetRazmincaMatch() {
  Room.Inventory.GetContext().Explosive.Value = true;
  Room.Inventory.GetContext().Build.Value = false;
 
-if (!Room.GameMode.Parameters.GetBool('MaxPlayers')) {
  Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'Text' }; 
  Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'Text' };
  RedTeam.Properties.Get('Text').Value = TextRed;
  BlueTeam.Properties.Get('Text').Value = TextBlue;
-}
-if (Room.GameMode.Parameters.GetBool('MaxPlayers')) {
- Room.Ui.GetContext().TeamProp1.Value = { Team: 'Red', Prop: 'T' }; 
- Room.Ui.GetContext().TeamProp2.Value = { Team: 'Blue', Prop: 'T' };
- RedTeam.Properties.Get('T').Value = redCount;
- BlueTeam.Properties.Get('T').Value = blueCount;
-}
 
  Room.Spawns.GetContext().Enable = true; 
  MainTimer.Restart(RazmincaMatchTime);
